@@ -1,7 +1,7 @@
-const CACHE = 'studio-whatsapp-v3';
+const CACHE = 'studio-whatsapp-v4';
 const FILES = ['./', './index.html', './manifest.webmanifest', './icon.svg'];
 
-// Mobile app layout: keep the poster preview compact and let only the editor scroll.
+// Keep the poster preview compact while allowing the editor section to scroll.
 const MOBILE_LAYOUT = `
 <style id="mobile-layout-fix">
 @media (max-width: 700px) {
@@ -13,6 +13,7 @@ const MOBILE_LAYOUT = `
     overflow: hidden;
   }
   body {
+    height: 100dvh;
     display: flex;
     flex-direction: column;
   }
@@ -28,11 +29,12 @@ const MOBILE_LAYOUT = `
     box-sizing: border-box;
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: minmax(0, 42dvh) minmax(0, 1fr);
+    grid-template-rows: min(38dvh, 340px) minmax(0, 1fr);
+    flex: 1 1 auto;
     gap: 8px;
     width: 100%;
     max-width: none;
-    height: 100%;
+    height: auto;
     min-height: 0;
     margin: 0;
     padding: 8px;
@@ -50,7 +52,7 @@ const MOBILE_LAYOUT = `
     overflow: hidden;
   }
   #stage {
-    width: min(100%, 40dvh);
+    width: min(100%, 38dvh, 340px);
     max-width: 100%;
     max-height: 100%;
     flex: 0 1 auto;
@@ -75,17 +77,15 @@ const MOBILE_LAYOUT = `
 
 async function addMobileLayout(response) {
   const html = await response.text();
-  if (html.includes('id="mobile-layout-fix"')) {
-    return new Response(html, response);
-  }
+  if (html.includes('id="mobile-layout-fix"')) return new Response(html);
   const updatedHtml = html.replace('</head>', `${MOBILE_LAYOUT}\n</head>`);
-  const headers = new Headers(response.headers);
-  headers.delete('content-length');
-  headers.delete('content-encoding');
   return new Response(updatedHtml, {
     status: response.status,
     statusText: response.statusText,
-    headers
+    headers: {
+      'Content-Type': 'text/html; charset=utf-8',
+      'Cache-Control': 'no-cache'
+    }
   });
 }
 
