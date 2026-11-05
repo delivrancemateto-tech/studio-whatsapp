@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#101116">
+<meta name="description" content="Studio personnel pour créer des affiches et publications WhatsApp.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<title>Studio WhatsApp</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400;1,600;1,700;1,800;1,900&family=Playfair+Display:ital,wght@0,700;0,800;1,700;1,800&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#101116;--panel:#191b23;--muted:#a9adba;--accent:#477dff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:#f7f7fa;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
+header{padding:16px 18px 12px;background:#151720;border-bottom:1px solid #2b2e39;position:sticky;top:0;z-index:5}
+header h1{font-size:19px;margin:0 0 3px}
+header p{font-size:12px;color:var(--muted);margin:0}
+main{max-width:1100px;margin:auto;padding:14px;display:grid;gap:16px}
+.preview-wrap{display:flex;justify-content:center;align-items:flex-start}
+#stage{width:min(100%,520px);aspect-ratio:1/1;background:#151515;position:relative;overflow:hidden;touch-action:pan-y;box-shadow:0 8px 35px #0008;border:1px solid #30323a}
+#bgImage{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none;pointer-events:none}
+#shade{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none}
+#textLayer{position:absolute;left:8%;top:25%;width:84%;min-height:12%;display:flex;justify-content:center;align-items:center;text-align:center;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.28;font-family:Montserrat,Arial,sans-serif;font-size:32px;font-weight:900;font-style:italic;color:white;text-shadow:0 2px 8px #0008;outline:1px dashed transparent;cursor:move;touch-action:none;padding:5px}
+#textLayer.selected,#overlayImage.selected{outline:1px dashed #7da5ff;outline-offset:2px}
+#overlayImage{position:absolute;left:5%;top:72%;width:24%;height:auto;max-height:35%;object-fit:contain;display:none;cursor:move;touch-action:none;outline:1px dashed transparent}
+#signature{position:absolute;left:8%;bottom:7%;width:84%;text-align:center;white-space:pre-wrap;overflow-wrap:anywhere;font-family:Montserrat,Arial,sans-serif;font-size:17px;font-weight:900;font-style:italic;text-decoration:underline;color:white;text-shadow:0 2px 7px #000;cursor:move;touch-action:none;outline:1px dashed transparent;padding:4px}
+#signature.selected{outline:1px dashed #7da5ff}
+.panel{background:var(--panel);border:1px solid #2c2f3a;border-radius:16px;padding:14px}
+.panel h2{font-size:15px;margin:0 0 12px}
+.tabs{display:flex;gap:7px;overflow:auto;margin-bottom:12px}
+.tab{border:1px solid #383c49;border-radius:10px;background:#20232d;color:#fff;padding:9px 12px;white-space:nowrap;font-size:13px}
+.tab.active{background:#294b9a;border-color:#477dff}
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field.full{grid-column:1/-1}
+label{font-size:12px;color:#c8cad2}
+input,select,textarea,button{font:inherit}
+input[type=text],textarea,select{width:100%;background:#101219;color:white;border:1px solid #393d49;border-radius:9px;padding:10px;font-size:14px}
+textarea{min-height:90px;resize:vertical}
+input[type=color]{width:100%;height:40px;border:1px solid #393d49;border-radius:9px;background:#101219;padding:3px}
+input[type=range]{width:100%;accent-color:#6791ff}
+input[type=file]{font-size:12px;width:100%;color:#c9cbd3}
+button{border:1px solid #3b4050;background:#252936;color:white;border-radius:10px;padding:10px 12px;font-weight:650;font-size:13px}
+button.primary{background:#3168e8;border-color:#3168e8}
+button.danger{background:#46262c;border-color:#75404a}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.row>*{flex:1}
+.hint{font-size:11px;color:var(--muted);line-height:1.45}
+.swatches{display:flex;gap:8px;flex-wrap:wrap}
+.swatch{width:34px;height:34px;border:2px solid #ffffff40;border-radius:50%;padding:0}
+.actions{display:flex;gap:9px;flex-wrap:wrap}
+.actions button{flex:1;min-width:120px}
+#status{font-size:12px;color:#aebbd9;min-height:18px;margin-top:8px}
+.hidden{display:none!important}
+@media(min-width:850px){main{grid-template-columns:minmax(320px,520px) minmax(350px,1fr);align-items:start}.preview-wrap{position:sticky;top:90px}.panel{padding:17px}}
+</style>
+</head>
+<body>
+<header><h1>✦ Studio WhatsApp</h1><p>Crée tes affiches, ajoute tes images et exporte-les en PNG.</p></header>
+<main>
+<section class="preview-wrap">
+  <div id="stage" aria-label="Aperçu de l'affiche">
+    <img id="bgImage" alt="">
+    <div id="shade"></div>
+    <div id="textLayer" class="selected">Il n'y a qu'une seule réponse par rapport à l'inquiétude du lendemain :
+
+DIEU POURVOIRA !</div>
+    <img id="overlayImage" alt="Image superposée">
+    <div id="signature">@VOTRE_NOM</div>
+  </div>
+</section>
+<section>
+  <div class="panel">
+    <h2>Personnaliser l'affiche</h2>
+    <div class="tabs">
+      <button class="tab active" data-tab="texte">Texte</button>
+      <button class="tab" data-tab="fond">Arrière-plan</button>
+      <button class="tab" data-tab="image">Image par-dessus</button>
+      <button class="tab" data-tab="format">Format</button>
+    </div>
+
+    <div id="tab-texte">
+      <div class="controls">
+        <div class="field full"><label for="message">Texte principal</label><textarea id="message">Il n'y a qu'une seule réponse par rapport à l'inquiétude du lendemain :
+
+DIEU POURVOIRA !</textarea></div>
+        <div class="field"><label for="font">Police</label><select id="font"><option value="Montserrat">Montserrat</option><option value="Poppins">Poppins</option><option value="Playfair Display">Playfair Display</option><option value="Arial">Arial</option></select></div>
+        <div class="field"><label for="weight">Épaisseur</label><select id="weight"><option value="900">Très épaisse (900)</option><option value="800">Épaisse (800)</option><option value="700">Gras (700)</option><option value="600">Demi-gras (600)</option><option value="400">Normale (400)</option></select></div>
+        <div class="field"><label for="size">Taille du texte</label><input id="size" type="range" min="16" max="64" value="32"><span class="hint" id="sizeVal">32 px</span></div>
+        <div class="field"><label for="textColor">Couleur du texte</label><input id="textColor" type="color" value="#ffffff"></div>
+        <div class="field"><label for="align">Alignement</label><select id="align"><option value="center">Centré</option><option value="left">À gauche</option><option value="right">À droite</option></select></div>
+        <div class="field"><label for="italic">Style</label><select id="italic"><option value="italic">Italique</option><option value="normal">Droit</option></select></div>
+        <div class="field full"><label for="signatureText">Signature / référence (facultatif)</label><input id="signatureText" type="text" value="@VOTRE_NOM"></div>
+        <div class="field"><label for="sigSize">Taille signature</label><input id="sigSize" type="range" min="10" max="32" value="17"></div>
+        <div class="field"><label for="sigColor">Couleur signature</label><input id="sigColor" type="color" value="#ffffff"></div>
+        <div class="field full row"><button id="toggleSignature">Afficher / masquer signature</button><button id="resetText">Réinitialiser le texte</button></div>
+        <div class="field full"><p class="hint">Astuce : touche le texte directement dans l'aperçu, puis fais-le glisser pour le déplacer.</p></div>
+      </div>
+    </div>
+
+    <div id="tab-fond" class="hidden">
+      <div class="controls">
+        <div class="field full"><label for="backgroundFile">Choisir une photo de la galerie</label><input id="backgroundFile" type="file" accept="image/*"></div>
+        <div class="field full"><label>Couleurs de fond rapides</label><div class="swatches">
+          <button class="swatch" style="background:#151515" data-color="#151515" aria-label="Noir"></button>
+          <button class="swatch" style="background:#182b49" data-color="#182b49" aria-label="Bleu nuit"></button>
+          <button class="swatch" style="background:#26372d" data-color="#26372d" aria-label="Vert"></button>
+          <button class="swatch" style="background:#40252b" data-color="#40252b" aria-label="Bordeaux"></button>
+          <button class="swatch" style="background:#b8953d" data-color="#b8953d" aria-label="Doré"></button>
+          <button class="swatch" style="background:#eee5d6" data-color="#eee5d6" aria-label="Beige"></button>
+          <button class="swatch" style="background:#244f61" data-color="#244f61" aria-label="Bleu pétrole"></button>
+        </div></div>
+        <div class="field"><label for="bgColor">Couleur personnalisée</label><input id="bgColor" type="color" value="#151515"></div>
+        <div class="field"><label for="shadeOpacity">Voile sombre sur la photo</label><input id="shadeOpacity" type="range" min="0" max="90" value="25"><span class="hint" id="shadeVal">25 %</span></div>
+        <div class="field full"><button id="removeBg">Retirer la photo de fond</button></div>
+        <p class="hint field full">Le voile sombre aide à garder le texte lisible sur les photos. Tu peux le diminuer ou l'augmenter.</p>
+      </div>
+    </div>
+
+    <div id="tab-image" class="hidden">
+      <div class="controls">
+        <div class="field full"><label for="overlayFile">Ajouter un logo ou une image depuis la galerie</label><input id="overlayFile" type="file" accept="image/*"></div>
+        <div class="field"><label for="overlaySize">Taille de l'image</label><input id="overlaySize" type="range" min="8" max="65" value="24"></div>
+        <div class="field"><label for="overlayOpacity">Opacité</label><input id="overlayOpacity" type="range" min="10" max="100" value="100"></div>
+        <div class="field full row"><button id="removeOverlay" class="danger">Supprimer l'image</button><button id="frontOverlay">Mettre l'image au premier plan</button></div>
+        <p class="hint field full">Après l'ajout, fais glisser l'image dans l'aperçu pour la placer où tu veux. Le logo peut être placé devant ou derrière le texte avec le bouton de superposition.</p>
+      </div>
+    </div>
+
+    <div id="tab-format" class="hidden">
+      <div class="controls">
+        <div class="field full"><label for="format">Format de publication</label><select id="format"><option value="square">Carré — 1080 × 1080</option><option value="portrait">Portrait — 1080 × 1350</option><option value="story">Story — 1080 × 1920</option></select></div>
+        <div class="field full"><button id="centerText">Recentrer le texte</button></div>
+        <p class="hint field full">Pour déplacer un élément : pose ton doigt dessus et fais-le glisser. Le fichier PNG sera exporté à la résolution choisie.</p>
+      </div>
+    </div>
+  </div>
+  <div class="panel" style="margin-top:14px">
+    <h2>Terminer</h2>
+    <div class="actions"><button class="primary" id="download">⬇ Télécharger l'affiche PNG</button><button id="resetAll">Nouvelle affiche</button></div>
+    <div id="status" role="status"></div>
+    <p class="hint">Tes images restent sur ton appareil. Cette première version ne les envoie sur aucun serveur.</p>
+  </div>
+</section>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const stage=$('stage'), textLayer=$('textLayer'), signature=$('signature'), bgImage=$('bgImage'), overlay=$('overlayImage'), shade=$('shade');
+let bgUrl=null, overlayUrl=null, overlayOnTop=true, format='square', active='text';
+const setStatus=t=>$('status').textContent=t;
+function updateText(){
+  textLayer.textContent=$('message').value;
+  textLayer.style.fontFamily=`'${$('font').value}', Arial, sans-serif`;
+  textLayer.style.fontWeight=$('weight').value;
+  textLayer.style.fontSize=$('size').value+'px';
+  textLayer.style.color=$('textColor').value;
+  textLayer.style.textAlign=$('align').value;
+  textLayer.style.fontStyle=$('italic').value;
+  $('sizeVal').textContent=$('size').value+' px';
+  signature.textContent=$('signatureText').value;
+  signature.style.fontSize=$('sigSize').value+'px';
+  signature.style.color=$('sigColor').value;
+}
+['message','font','weight','size','textColor','align','italic','signatureText','sigSize','sigColor'].forEach(id=>$(id).addEventListener('input',updateText));
+$('toggleSignature').onclick=()=>signature.classList.toggle('hidden');
+$('resetText').onclick=()=>{$('message').value='Votre texte ici';$('signatureText').value='@VOTRE_NOM';updateText();};
+$('bgColor').oninput=e=>stage.style.background=e.target.value;
+document.querySelectorAll('[data-color]').forEach(b=>b.onclick=()=>{$('bgColor').value=b.dataset.color;stage.style.background=b.dataset.color;});
+$('shadeOpacity').oninput=e=>{shade.style.opacity=e.target.value/100;$('shadeVal').textContent=e.target.value+' %';};
+function loadImage(file,callback){if(!file)return;const reader=new FileReader();reader.onload=()=>callback(reader.result);reader.readAsDataURL(file);}
+$('backgroundFile').onchange=e=>loadImage(e.target.files[0],src=>{bgUrl=src;bgImage.src=src;bgImage.style.display='block';setStatus('Photo de fond ajoutée.');});
+$('removeBg').onclick=()=>{bgUrl=null;bgImage.removeAttribute('src');bgImage.style.display='none';setStatus('Photo de fond retirée.');};
+$('overlayFile').onchange=e=>loadImage(e.target.files[0],src=>{overlayUrl=src;overlay.src=src;overlay.style.display='block';overlay.style.width=$('overlaySize').value+'%';overlay.style.opacity=$('overlayOpacity').value/100;setStatus('Image ajoutée. Fais-la glisser pour la placer.');});
+$('overlaySize').oninput=e=>overlay.style.width=e.target.value+'%';
+$('overlayOpacity').oninput=e=>overlay.style.opacity=e.target.value/100;
+$('removeOverlay').onclick=()=>{overlayUrl=null;overlay.removeAttribute('src');overlay.style.display='none';};
+$('frontOverlay').onclick=()=>{overlayOnTop=!overlayOnTop;overlay.style.zIndex=overlayOnTop?'3':'1';textLayer.style.zIndex=overlayOnTop?'2':'3';signature.style.zIndex='4';setStatus(overlayOnTop?'Image au premier plan.':'Image derrière le texte.');};
+function select(el){[textLayer,signature,overlay].forEach(x=>x.classList.remove('selected'));el.classList.add('selected');}
+[textLayer,signature,overlay].forEach(el=>{el.addEventListener('pointerdown',e=>{if(el===overlay&&!overlayUrl)return;select(el);const rect=stage.getBoundingClientRect(),r=el.getBoundingClientRect();const sx=e.clientX,sy=e.clientY,left=r.left-rect.left,top=r.top-rect.top;el.setPointerCapture(e.pointerId);function move(ev){let x=Math.max(0,Math.min(rect.width-r.width,left+ev.clientX-sx));let y=Math.max(0,Math.min(rect.height-r.height,top+ev.clientY-sy));el.style.left=(x/rect.width*100)+'%';el.style.top=(y/rect.height*100)+'%';if(el===signature){el.style.bottom='auto';}}function end(){el.removeEventListener('pointermove',move);el.removeEventListener('pointerup',end);}el.addEventListener('pointermove',move);el.addEventListener('pointerup',end);});});
+$('format').onchange=e=>{format=e.target.value;const ratio=format==='square'?'1 / 1':format==='portrait'?'4 / 5':'9 / 16';stage.style.aspectRatio=ratio;};
+$('centerText').onclick=()=>{textLayer.style.left='8%';textLayer.style.top='25%';textLayer.style.width='84%';signature.style.left='8%';signature.style.top='auto';signature.style.bottom='7%';};
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');['texte','fond','image','format'].forEach(t=>$('tab-'+t).classList.toggle('hidden',t!==b.dataset.tab));});
+function loadImg(src){return new Promise((resolve,reject)=>{if(!src){resolve(null);return;}const im=new Image();im.onload=()=>resolve(im);im.onerror=reject;im.src=src;});}
+function roundedRect(ctx,x,y,w,h,r){ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.clip();}
+function wrapText(ctx,text,maxWidth){let lines=[];for(const para of text.split('\n')){if(para===''){lines.push('');continue;}let words=para.split(/\s+/),line='';for(const word of words){let test=line?line+' '+word:word;if(ctx.measureText(test).width>maxWidth&&line){lines.push(line);line=word;}else line=test;}lines.push(line);}return lines;}
+async function drawText(ctx,el,scale,stageRect,canvas){
+ const r=el.getBoundingClientRect();let x=(r.left-stageRect.left)*scale,y=(r.top-stageRect.top)*scale,w=r.width*scale;
+ const style=getComputedStyle(el),fontSize=parseFloat(style.fontSize)*scale;
+ ctx.save();ctx.font=`${style.fontStyle} ${style.fontWeight} ${fontSize}px "${style.fontFamily.split(',')[0].replace(/['"]/g,'')}"`;ctx.fillStyle=style.color;ctx.textAlign=style.textAlign;ctx.textBaseline='top';ctx.shadowColor='rgba(0,0,0,.55)';ctx.shadowBlur=8*scale;ctx.shadowOffsetY=2*scale;
+ const pad=5*scale,max=w-10*scale,lines=wrapText(ctx,el.textContent,max),lineH=fontSize*1.28;
+ let tx=style.textAlign==='left'?x+pad:style.textAlign==='right'?x+w-pad:x+w/2;
+ lines.forEach((line,i)=>{if(line)ctx.fillText(line,tx,y+pad+i*lineH);});
+ ctx.restore();
+}
+$('download').onclick=async()=>{
+ try{
+  await document.fonts.ready;
+  const rect=stage.getBoundingClientRect(),dims=format==='square'?[1080,1080]:format==='portrait'?[1080,1350]:[1080,1920];
+  const canvas=document.createElement('canvas');canvas.width=dims[0];canvas.height=dims[1];const ctx=canvas.getContext('2d'),sx=canvas.width/rect.width,sy=canvas.height/rect.height;
+  ctx.fillStyle=getComputedStyle(stage).backgroundColor||'#151515';ctx.fillRect(0,0,canvas.width,canvas.height);
+  const bg=await loadImg(bgUrl);if(bg){const scale=Math.max(canvas.width/bg.width,canvas.height/bg.height),w=bg.width*scale,h=bg.height*scale;ctx.drawImage(bg,(canvas.width-w)/2,(canvas.height-h)/2,w,h);}
+  ctx.fillStyle=`rgba(0,0,0,${parseFloat(shade.style.opacity)||0})`;ctx.fillRect(0,0,canvas.width,canvas.height);
+  if(overlayUrl&&!overlayOnTop){const im=await loadImg(overlayUrl),r=overlay.getBoundingClientRect();ctx.globalAlpha=parseFloat(overlay.style.opacity||1);ctx.drawImage(im,(r.left-rect.left)*sx,(r.top-rect.top)*sy,r.width*sx,r.height*sy);ctx.globalAlpha=1;}
+  await drawText(ctx,textLayer,sx,rect,canvas);
+  if(overlayUrl&&overlayOnTop){const im=await loadImg(overlayUrl),r=overlay.getBoundingClientRect();ctx.globalAlpha=parseFloat(overlay.style.opacity||1);ctx.drawImage(im,(r.left-rect.left)*sx,(r.top-rect.top)*sy,r.width*sx,r.height*sy);ctx.globalAlpha=1;}
+  if(!signature.classList.contains('hidden'))await drawText(ctx,signature,sx,rect,canvas);
+  const a=document.createElement('a');a.download='ma-publication-whatsapp.png';a.href=canvas.toDataURL('image/png');a.click();setStatus('Affiche PNG téléchargée !');
+ }catch(err){console.error(err);setStatus("Impossible d'exporter. Essaie avec une autre image.");}
+};
+$('resetAll').onclick=()=>{location.reload();};
+updateText();
+if('serviceWorker' in navigator && location.protocol.startsWith('http')){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}
+</script>
+</body>
+</html>
