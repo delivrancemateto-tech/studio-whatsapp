@@ -1,38 +1,83 @@
-const CACHE = 'studio-whatsapp-v2';
+const CACHE = 'studio-whatsapp-v3';
 const FILES = ['./', './index.html', './manifest.webmanifest', './icon.svg'];
 
+// Mobile app layout: keep the poster preview compact and let only the editor scroll.
 const MOBILE_LAYOUT = `
 <style id="mobile-layout-fix">
 @media (max-width: 700px) {
-  html, body { width: 100%; min-width: 0; overflow-x: hidden; }
+  html, body {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    margin: 0;
+    overflow: hidden;
+  }
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+  header {
+    position: relative;
+    top: auto;
+    flex: 0 0 auto;
+    padding: 10px 12px;
+  }
+  header h1 { font-size: 17px; }
+  header p { font-size: 11px; }
   main {
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 42dvh) minmax(0, 1fr);
+    gap: 8px;
     width: 100%;
     max-width: none;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 12px;
-    padding: 10px;
+    height: 100%;
+    min-height: 0;
+    margin: 0;
+    padding: 8px;
+    overflow: hidden;
   }
-  main > section, .preview-wrap, .controls, .field { min-width: 0; }
-  main > section, .preview-wrap { width: 100%; }
-  .preview-wrap { justify-content: center; }
+  main > section,
+  .preview-wrap,
+  .controls,
+  .field { min-width: 0; }
+  main > section { width: 100%; min-height: 0; }
+  .preview-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
   #stage {
-    width: min(100%, 38vh);
+    width: min(100%, 40dvh);
     max-width: 100%;
-    flex: none;
+    max-height: 100%;
+    flex: 0 1 auto;
   }
-  .controls { grid-template-columns: minmax(0, 1fr); }
+  main > section:nth-of-type(2) {
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .panel { width: 100%; min-width: 0; padding: 12px; }
+  .controls { grid-template-columns: minmax(0, 1fr); gap: 10px; }
   .field.full { grid-column: 1; }
-  .panel { min-width: 0; padding: 12px; }
   .tabs { max-width: 100%; overflow-x: auto; }
   .actions { flex-direction: column; }
   .actions button { width: 100%; min-width: 0; }
   input, select, textarea, button { max-width: 100%; }
+  input[type=file] { min-width: 0; }
 }
 </style>`;
 
 async function addMobileLayout(response) {
   const html = await response.text();
-  if (html.includes('id="mobile-layout-fix"')) return new Response(html, response);
+  if (html.includes('id="mobile-layout-fix"')) {
+    return new Response(html, response);
+  }
   const updatedHtml = html.replace('</head>', `${MOBILE_LAYOUT}\n</head>`);
   const headers = new Headers(response.headers);
   headers.delete('content-length');
