@@ -1,5 +1,5 @@
-const CACHE = 'studio-whatsapp-v6';
-const FILES = ['./', './index.html', './manifest.webmanifest', './icon.svg', './assets/logo-eglise.svg'];
+const CACHE = 'studio-whatsapp-v7';
+const FILES = ['./', './index.html', './manifest.webmanifest', './icon.svg', './bible-verses.json', './assets/logo-eglise.svg'];
 
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
