@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "verses": [
+    {
+      "id": "exode-14-14",
+      "reference": "Exode 14:14",
+      "book": "Exode",
+      "chapter": 14,
+      "verseStart": 14,
+      "translation": "À préciser selon la version utilisée",
+      "tags": ["confiance", "protection", "paix"],
+      "text": "L’Éternel combattra pour vous ; gardez le silence."
+    },
+    {
+      "id": "psaume-34-8",
+      "reference": "Psaume 34:8",
+      "book": "Psaume",
+      "chapter": 34,
+      "verseStart": 8,
+      "translation": "À préciser selon la version utilisée",
+      "tags": ["gôut", "bonté", "joie"],
+      "text": "Goûtez et voyez combien l’Éternel est bon ! Heureux l’homme qui cherche en lui son refuge."
+    },
+    {
+      "id": "corinthiens-13-4-5",
+      "reference": "1 Corinthiens 13:4-5",
+      "book": "1 Corinthiens",
+      "chapter": 13,
+      "verseStart": 4,
+      "verseEnd": 5,
+      "translation": "À préciser selon la version utilisée",
+      "tags": ["amour", "patience", "humilité"],
+      "text": "L’amour est patient, il est plein de bonté ; l’amour n’est point envieux ; l’amour ne se vante point, il ne s’enfle point d’orgueil, il ne fait rien d’inconvenant, il ne cherche point son intérêt..."
+    },
+    {
+      "id": "proverbes-9-10",
+      "reference": "Proverbes 9:10",
+      "book": "Proverbes",
+      "chapter": 9,
+      "verseStart": 10,
+      "translation": "À préciser selon la version utilisée",
+      "tags": ["sagesse", "connaissance", "début"],
+      "text": "Le commencement de la sagesse est la crainte de l’Éternel, et la connaissance du Saint est l’intelligence."
+    },
+    {
+      "id": "isaie-60-22",
+      "reference": "Ésaïe 60:22",
+      "book": "Ésaïe",
+      "chapter": 60,
+      "verseStart": 22,
+      "translation": "À préciser selon la version utilisée",
+      "tags": ["promesse", "temps", "espoir"],
+      "text": "Quand viendra le moment fixé par Dieu, Il accomplira ce qu’Il a promis."
+    }
+  ]
+}
