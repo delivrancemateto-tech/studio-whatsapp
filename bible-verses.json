@@ -1,0 +1,20 @@
+[
+  {
+    "id": "exode-14-14",
+    "reference": "Exode 14:14",
+    "text": "L'Éternel combattra pour vous ; et vous, gardez le silence.",
+    "tags": ["combat", "paix", "dieu", "silence", "confiance"]
+  },
+  {
+    "id": "corinthiens-13-4",
+    "reference": "1 Corinthiens 13:4-5",
+    "text": "L'amour est patient, il est plein de bonté ; l'amour n'est point envieux ; l'amour ne se vante point, il ne s'enfle point d'orgueil, il ne fait rien d'inconvenant, il ne cherche point son intérêt...",
+    "tags": ["amour", "bonté", "patience", "mariage"]
+  },
+  {
+    "id": "proverbes-9-10",
+    "reference": "Proverbes 9:10",
+    "text": "Le commencement de la sagesse, c'est la crainte de l'Éternel ; et la science des saints, c'est l'intelligence.",
+    "tags": ["sagesse", "crainte", "intelligence"]
+  }
+]

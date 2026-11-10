@@ -1,0 +1,55 @@
+STUDIO WHATSAPP — installation
+
+CONTENU
+- index.html : application
+- manifest.webmanifest : informations d'installation
+- bible-verses.json et versets_b.txt : bibliothèque de versets
+- sw.js : cache pour fonctionnement hors ligne après première visite
+- icon.svg : icône vectorielle source
+- icon-192.png, icon-512.png et icon-maskable-512.png : icônes PWA
+
+VERSETS ET MARQUEUR
+- L'onglet Versets recherche dans bible-verses.json et versets-b.json.
+- versets-b.json contient les versets convertis et classés par thème depuis versets_b.txt.
+- Avant un import JSON, les doublons exacts sont signalés et ignorés ; les références ou textes proches sont présentés pour accepter ou ignorer chaque verset.
+- L'importeur nettoie aussi les antislashs de mise en forme et espaces HTML, et peut récupérer des versets depuis une réponse JSON collée en plusieurs fragments.
+- Les versets choisis à l'import sont enregistrés uniquement dans le stockage local du navigateur sur cet appareil.
+- Le formulaire « Ajouter un seul verset » nettoie les références placées avant ou après le texte, reconnaît les 73 livres du canon catholique et leurs abréviations courantes, puis vérifie les doublons avant l'enregistrement local.
+- L'onglet Versets peut rechercher une référence biblique en ligne (chapitre, verset ou plage) dans les traductions françaises Louis Segond 1910, J.N. Darby et Ostervald. Clique sur « Utiliser dans l'affiche » sur un résultat pour l'appliquer immédiatement, ou ajoute une sélection à ta bibliothèque locale après vérification des doublons. Les livres deutérocanoniques ne sont pas inclus dans ces éditions en ligne.
+- La recherche en ligne utilise la Free Use Bible API (https://bible.helloao.org/). Seules la référence recherchée et la traduction choisie sont transmises au service ; les créations et images restent sur l'appareil.
+- Pour un effet page biblique, importe ta propre photo comme arrière-plan. L'application n'invente pas de page.
+- Dans Texte > Édition avancée, sélectionne un passage, choisis la couleur et l'effet du surlignage, puis applique-le.
+- Le surlignage est reproduit dans le PNG ; aucun dessin de stylo n'est affiché.
+- Le curseur Courbure légère du texte est facultatif et commence désactivé.
+
+SAUVEGARDE
+- Le brouillon est sauvegardé automatiquement dans le stockage local du navigateur.
+- L'onglet Historique permet d'enregistrer, retrouver et supprimer des créations.
+- Dans Historique > Sauvegarde de l’application, exporte ou restaure un fichier JSON contenant le brouillon, les créations enregistrées et les versets personnels. À la restauration, les créations et versets sont fusionnés ; le brouillon existant est remplacé seulement après confirmation s'il y en a un dans la sauvegarde.
+- Les images restent sur cet appareil et ne sont pas envoyées sur un serveur.
+- Conserve le fichier exporté hors de l'appareil : effacer les données du site supprime les brouillons et créations locaux.
+
+UTILISATION
+1. Décompresse le ZIP.
+2. Héberge le contenu du dossier sur un hébergement HTTPS (par exemple GitHub Pages ou Netlify).
+3. Ouvre l'adresse HTTPS dans Chrome sur Android.
+4. Menu ⋮ de Chrome > Ajouter à l'écran d'accueil / Installer l'application.
+5. Ouvre Studio WhatsApp depuis l'icône créée. La première visite nécessite une connexion pour charger les polices et mettre l'application en cache.
+
+IMPORTANT
+L'installation PWA via Chrome nécessite une adresse HTTPS (ou un serveur local adapté). Ouvrir simplement index.html comme un fichier ne permet généralement pas l'installation PWA.
+Les photos importées sont traitées localement dans le navigateur. Pour les polices Google, une connexion Internet est nécessaire au premier chargement; des polices de secours sont prévues.
+À l'ouverture depuis l'icône installée, une courte animation apparaît dans l'application (sauf si les animations réduites sont activées dans les réglages d'accessibilité). Le système ne garantit pas l'animation de l'écran natif de démarrage. Vérifie l'installation et l'affichage sur un téléphone Android/iOS avant publication.
+
+
+NOUVEAUTÉS — IMPORT JSON ET PERSPECTIVE
+- Onglet Versets : coller un tableau JSON ou un objet {"versets":[...]}.
+- Champs requis par verset : reference et text. tags est facultatif (tableau ou texte).
+- Les versets ajoutés sont sauvegardés dans le stockage local du navigateur.
+- Le bouton « Copier le prompt IA » fournit une consigne réutilisable pour obtenir un JSON compatible.
+- Onglet Fond : « Utiliser une page de Bible intégrée » charge une photographie de la Bible de Gutenberg (domaine public, Wikimedia Commons). Une texture SVG de secours est utilisée si la photo n'est pas accessible.
+- Édition avancée : perspective horizontale, perspective verticale, rotation et courbure du texte. L'export PNG reproduit la déformation affine du texte.
+
+Source de la photographie de Bible :
+Gutenberg open.jpg, photographie de Lunkwill, Wikimedia Commons, domaine public :
+https://commons.wikimedia.org/wiki/File:Gutenberg_open.jpg
