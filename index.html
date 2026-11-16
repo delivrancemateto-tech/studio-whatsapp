@@ -20,16 +20,35 @@ header{padding:16px 18px 12px;background:#151720;border-bottom:1px solid #2b2e39
 header h1{font-size:19px;margin:0 0 3px}
 header p{font-size:12px;color:var(--muted);margin:0}
 main{max-width:1100px;margin:auto;padding:14px;display:grid;gap:16px}
+.music-mode main{grid-template-columns:minmax(0,1fr)}
+.music-mode .preview-wrap{display:none!important}
 .preview-wrap{display:flex;justify-content:center;align-items:flex-start}
 #stage{width:min(100%,520px);aspect-ratio:1/1;background:#151515;position:relative;overflow:hidden;touch-action:pan-y;box-shadow:0 8px 35px #0008;border:1px solid #30323a}
 #bgImage{position:absolute;inset:-3%;width:106%;height:106%;object-fit:cover;display:none;pointer-events:none}
 #shade{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none}
 #styleOverlay{position:absolute;inset:0;z-index:1;pointer-events:none}
-#textLayer{position:absolute;left:8%;top:25%;width:84%;min-height:12%;display:flex;justify-content:center;align-items:center;text-align:center;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.28;font-family:Montserrat,Arial,sans-serif;font-size:32px;font-weight:900;font-style:italic;color:white;text-shadow:0 2px 8px #0008;outline:1px dashed transparent;cursor:move;touch-action:none;padding:9px;background:transparent;border-radius:8px;z-index:2}
-#textLayer{backdrop-filter:none}
-#textLayer.selected,#overlayImage.selected{outline:1px dashed #7da5ff;outline-offset:2px}
-#overlayImage{position:absolute;left:5%;top:72%;width:24%;height:auto;max-height:35%;object-fit:contain;display:none;cursor:move;touch-action:none;outline:1px dashed transparent}
-#signature{position:absolute;left:8%;bottom:7%;width:84%;text-align:center;white-space:pre-wrap;overflow-wrap:anywhere;font-family:Montserrat,Arial,sans-serif;font-size:17px;font-weight:900;font-style:italic;text-decoration:underline;color:white;text-shadow:0 2px 7px #000;cursor:move;touch-action:none;outline:1px dashed transparent;padding:4px}
+.text-layer{position:absolute;left:8%;top:25%;width:84%;min-height:8%;display:flex;justify-content:center;align-items:center;text-align:center;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.28;font-family:Montserrat,Arial,sans-serif;font-size:32px;font-weight:900;font-style:italic;color:white;text-shadow:0 2px 8px #0008;outline:1px dashed transparent;cursor:move;touch-action:none;padding:9px;background:transparent;border-radius:8px;z-index:2;backdrop-filter:none}
+.text-layer.selected,#overlayImage.selected,#captionBox.selected{outline:1px dashed #7da5ff;outline-offset:2px}
+.text-slots{display:grid;width:100%;min-width:0;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.text-slot{display:grid;justify-items:center;gap:3px;padding:7px 4px;min-width:0;max-width:100%;background:#20232d}
+.text-slot-icon{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:#3168e8;font-size:25px;line-height:1}
+.text-slot-label{font-size:10px;color:#c8cad2}
+.text-actions{display:flex;gap:8px}
+.text-actions button{flex:1}
+#textDialog{width:min(92vw,480px);max-height:85dvh;padding:0;border:1px solid #454a59;border-radius:16px;background:#191b23;color:#f7f7fa;box-shadow:0 20px 70px #000b}
+#textDialog::backdrop{background:#05070bcc;backdrop-filter:blur(4px)}
+.text-dialog-content{display:grid;gap:12px;padding:18px}
+.text-dialog-content h2{margin:0;font-size:18px}
+.text-dialog-content textarea{min-height:160px}
+.text-dialog-actions{display:flex;gap:8px;justify-content:flex-end}
+.text-dialog-actions button{min-width:100px}
+#overlayImage{position:absolute;left:5%;top:72%;width:24%;height:auto;max-height:35%;object-fit:contain;display:none;cursor:move;touch-action:none;outline:1px dashed transparent;z-index:4}
+#captionBox{position:absolute;left:7%;top:62%;width:86%;min-height:12%;padding:12px 15px;display:none;align-items:center;justify-content:center;text-align:center;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.35;font-family:Montserrat,Arial,sans-serif;font-size:18px;font-weight:700;color:#fff;background:rgba(24,28,38,.9);border:1px solid #ffffff50;box-shadow:0 4px 14px #0006;cursor:move;touch-action:none;outline:1px dashed transparent;z-index:3}
+#captionBox.shape-rounded{border-radius:14px}
+#captionBox.shape-rectangle{border-radius:0}
+#captionBox.shape-speech{border-radius:12px}
+#captionBox.shape-speech::after{content:"";position:absolute;left:22px;bottom:-12px;border-width:12px 12px 0 0;border-style:solid;border-color:var(--caption-background) transparent transparent transparent}
+#signature{position:absolute;left:8%;bottom:7%;width:84%;text-align:center;white-space:pre-wrap;overflow-wrap:anywhere;font-family:Montserrat,Arial,sans-serif;font-size:17px;font-weight:900;font-style:italic;text-decoration:underline;color:white;text-shadow:0 2px 7px #000;cursor:move;touch-action:none;outline:1px dashed transparent;padding:4px;z-index:5}
 #signature.selected{outline:1px dashed #7da5ff}
 
 .panel{background:var(--panel);border:1px solid #2c2f3a;border-radius:16px;padding:14px}
@@ -76,6 +95,11 @@ button.danger{background:#46262c;border-color:#75404a}
 .advanced-tools{border-top:1px solid #303440;padding-top:10px}
 .advanced-tools summary{cursor:pointer;color:#d7d9e0;font-size:13px;font-weight:650}
 .text-content{display:block;width:100%;white-space:pre-wrap;overflow-wrap:anywhere}
+.text-layer.cross-layout .text-content{text-transform:uppercase;font-weight:900;letter-spacing:.025em}
+.text-layer.cross-layout .cross-line{display:block;width:100%;text-align:center;line-height:.93;white-space:nowrap}
+.text-layer.cross-layout .cross-stem{font-size:.86em}
+.text-layer.cross-layout .cross-bar{font-size:1.28em;line-height:1.02;text-shadow:0 3px 5px #000b,0 7px 14px #0007}
+.text-layer.cross-layout .cross-line.is-active{outline:1px dashed #e2b85f;outline-offset:2px;border-radius:4px}
 .curve-word{display:inline-block;white-space:nowrap}
 .curve-character{position:relative}
 .text-segment{box-decoration-break:clone;-webkit-box-decoration-break:clone}
@@ -87,7 +111,7 @@ button.danger{background:#46262c;border-color:#75404a}
 .highlight-custom{border-radius:3px;padding:1px 0;box-decoration-break:clone;-webkit-box-decoration-break:clone}
 .hidden{display:none!important}
 @media(min-width:850px){main{grid-template-columns:minmax(320px,520px) minmax(350px,1fr);align-items:start}.preview-wrap{position:sticky;top:90px}.panel{padding:17px}}
-@media(max-width:849px){body{height:100dvh;overflow:hidden;display:flex;flex-direction:column}main{flex:1;min-height:0;width:100%;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(180px,56dvh) minmax(0,1fr);overflow:hidden}.preview-wrap{align-items:center;overflow:hidden}#stage{width:auto;height:100%;max-width:100%;max-height:100%;flex:none}#editor{min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:0 2px env(safe-area-inset-bottom,0px)}}
+@media(max-width:849px){html,body{width:100%;max-width:100%;overflow-x:hidden}body{height:100dvh;overflow-y:hidden;display:flex;flex-direction:column}header,main,#editor,.panel,.controls,.field.full{min-width:0;max-width:100%}main{flex:1;min-height:0;width:100%;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(180px,56dvh) minmax(0,1fr);overflow:hidden}.preview-wrap{align-items:center;overflow:hidden;min-width:0;width:100%}#stage{width:auto;height:100%;max-width:100%;max-height:100%;flex:none}#editor{min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:0 2px env(safe-area-inset-bottom,0px)}.text-slots{gap:5px}.text-slot{padding:6px 2px}.text-slot-label{font-size:9px}}
 
 /* Importateur JSON de bibliothèques de versets */
 .json-import-box{background:#12141c;border:1px solid #454052;border-radius:12px;padding:12px;display:grid;gap:9px}
@@ -116,6 +140,174 @@ button.danger{background:#46262c;border-color:#75404a}
 @keyframes splash-star-in{from{opacity:0;transform:scale(.3) rotate(-35deg)}to{opacity:1;transform:scale(1) rotate(0)}}
 @media(prefers-reduced-motion:reduce){.launch-splash,.launch-splash.hidden{transition:none}.launch-splash .splash-mark,.launch-splash .splash-lines,.launch-splash .splash-star{animation:none;stroke-dashoffset:0}.launch-splash{display:none}}
 
+/* Interface de création, inspirée d'un éditeur photo mobile */
+:root{color-scheme:light;--bg:#f4f5f8;--panel:#fff;--muted:#697386;--accent:#c49654;--ink:#17263b;--line:#e4e8ef}
+body{background:radial-gradient(ellipse at 12% 5%,#f8e9ed 0,transparent 34%),var(--bg);color:#202b3c}
+header{display:flex;align-items:center;gap:12px;padding:13px max(18px,calc((100vw - 1200px)/2));background:var(--ink);border:0;border-bottom:3px solid var(--accent);box-shadow:0 6px 20px #14233a20}
+header .history-actions{display:flex;align-items:center;gap:6px;margin-left:auto}
+header .history-actions button{min-width:40px;padding:8px 10px;background:#ffffff12;border-color:#ffffff30;color:#fff;font-size:17px}
+header .history-actions button:disabled{opacity:.42;box-shadow:none;transform:none;cursor:default}
+header h1{font-size:18px;letter-spacing:.01em;color:#fff}
+header p{font-size:11px;color:#c5ccda}
+.brand-mark{display:grid;place-items:center;width:38px;height:38px;flex:none;border:1px solid #ffffff2d;border-radius:12px;background:linear-gradient(145deg,#293b56,#1b2b42);color:#e6c382;font-size:21px;box-shadow:inset 0 1px #ffffff20}
+.brand-copy{min-width:0}
+main{max-width:1220px;padding:22px 22px 112px;gap:22px}
+.preview-wrap{padding:18px;border:1px solid #e6e8ed;border-radius:24px;background:linear-gradient(145deg,#fff,#f8f8fb);box-shadow:0 16px 42px #23334a12}
+#stage{border:6px solid #fff;border-radius:5px;box-shadow:0 14px 34px #16223830}
+#textLayer.selected,#overlayImage.selected,#captionBox.selected,#signature.selected{outline:1.5px dashed #d0a762;outline-offset:3px}
+.panel{padding:20px;background:#fff;border:1px solid #e6e9ef;border-radius:20px;box-shadow:0 14px 38px #23334a10}
+.panel h2{display:flex;align-items:center;gap:9px;color:var(--ink);font-size:17px}
+.panel h2::before{content:"";width:4px;height:18px;border-radius:4px;background:var(--accent)}
+.tabs{position:fixed;z-index:20;right:50%;bottom:calc(12px + env(safe-area-inset-bottom,0px));left:auto;display:grid;width:min(760px,calc(100vw - 32px));grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;margin:0;padding:8px;border:1px solid #e0e5ed;border-radius:17px;background:#fff;box-shadow:0 6px 24px #17263b24;transform:translateX(50%)}
+.tabs::-webkit-scrollbar{display:none}
+.tab{border:0;border-radius:10px 10px 0 0;background:transparent;color:#667085;padding:11px 13px;font-weight:650;transition:background .18s ease,color .18s ease}
+.tab:hover{background:#f4f6fa;color:var(--ink)}
+.tab.active{position:relative;background:#eef2f8;color:var(--ink)}
+.tab.active::after{position:absolute;right:12px;bottom:-1px;left:12px;height:3px;border-radius:3px 3px 0 0;background:var(--accent);content:""}
+.controls{gap:14px}
+.field{gap:7px}
+label{color:#465266;font-size:12px;font-weight:650}
+input[type=text],input[type=search],textarea,select{background:#fbfcfe;color:#202b3c;border:1px solid #dce2eb;border-radius:11px;padding:11px 12px;font-size:14px;transition:border-color .15s ease,box-shadow .15s ease}
+input[type=text]:focus,input[type=search]:focus,textarea:focus,select:focus{border-color:#7188aa;outline:none;box-shadow:0 0 0 3px #7188aa25}
+textarea{line-height:1.55}
+input[type=color]{height:42px;border:1px solid #dce2eb;border-radius:11px;background:#fbfcfe}
+input[type=range]{accent-color:#b18445}
+input[type=checkbox]{accent-color:#243957}
+input[type=file]{padding:10px;border:1px dashed #cbd3df;border-radius:11px;background:#fafbfc;color:#596579}
+button{border:1px solid #d8dee8;background:#f4f6f9;color:#27364c;border-radius:11px;padding:10px 13px;font-weight:650;transition:transform .16s ease,box-shadow .16s ease,background .16s ease}
+button:hover{background:#e9edf4;box-shadow:0 4px 12px #1a2e4814;transform:translateY(-1px)}
+button:focus-visible{outline:3px solid #c4965480;outline-offset:2px}
+button.primary{background:#203653;border-color:#203653;color:#fff}
+button.primary:hover{background:#2c496e}
+button.danger{background:#fff2f1;border-color:#f0d1ce;color:#a33d3a}
+.hint{color:#778195;font-size:11px}
+#sizeVal.is-warning{color:#b54736;font-weight:650}
+.cross-mode-toggle{width:100%;min-height:42px;border-color:#efc9c5;background:#fff2f0;color:#a52e28}
+.cross-mode-toggle[aria-pressed=true]{border-color:#b42318;background:#b42318;color:#fff}
+.cross-word-size{display:grid;grid-template-columns:minmax(0,1fr) 88px;align-items:center;gap:8px}
+.cross-word-size[hidden]{display:none}
+.cross-word-size input{min-width:0}
+.cross-word-size-label{grid-column:1/-1}
+.cross-word-nav{display:grid;grid-template-columns:48px minmax(0,1fr) 48px;align-items:center;gap:8px;margin-top:8px}
+.cross-word-nav[hidden]{display:none}
+.cross-word-nav button{min-width:44px;min-height:44px;padding:7px;font-size:19px}
+.cross-word-nav button:disabled{opacity:.42;box-shadow:none;transform:none;cursor:default}
+.cross-word-nav-status{text-align:center;font-size:11px;color:#667085}
+.cross-word-reset{width:100%;min-height:40px;border-color:#efc9c5;background:#fff2f0;color:#a52e28}
+.cross-word-reset[hidden]{display:none}
+.text-delete-selection{justify-self:start}
+.text-delete-status{min-height:16px;margin:0}
+.music-preview{display:block;grid-column:1/-1;width:min(100%,240px);height:auto;aspect-ratio:9/16;margin:0 auto;border:1px solid #ffffff25;border-radius:14px;background:#090b11;box-shadow:0 10px 28px #0007}
+.music-preview[hidden],.music-result[hidden]{display:none!important}
+.music-result{width:100%;margin-top:8px}
+.controls>.music-result{grid-column:1/-1}
+.music-status{min-height:18px}
+.music-export-progress{width:100%;accent-color:#6791ff}
+#downloadMusicVideo{display:block;width:100%;padding:12px;border:1px solid #3168e8;border-radius:10px;text-align:center;text-decoration:none;font-size:13px;font-weight:650;color:white}
+.music-player-dock{position:sticky;top:0;z-index:8;grid-column:1/-1;display:grid;justify-items:center;gap:8px;margin:-4px -4px 4px;padding:8px 8px 12px;border:1px solid #ffffff20;border-radius:16px;background:linear-gradient(180deg,#141620 0%,#101116f5 100%);box-shadow:0 10px 28px #0008;backdrop-filter:blur(14px)}
+.music-player-dock .music-preview-video{margin:0;width:auto;object-fit:contain}
+.music-preview{width:min(100%,min(360px,58dvh));max-height:58dvh}
+.music-player-controls{width:min(100%,420px);display:grid;grid-template-columns:48px minmax(0,1fr) 48px;align-items:center;gap:10px}
+.music-like-toggle{min-width:120px;padding:8px 14px;border-radius:999px}
+.music-like-toggle[aria-pressed="true"]{border-color:#ff4b72;background:#4a202d;color:#ff6b88}
+.music-transport{min-width:44px;min-height:44px;padding:8px;border-radius:50%;font-size:17px}
+.music-play-toggle{width:58px;height:58px;justify-self:center;border:0;border-radius:50%;background:#fff;color:#161820;font-size:24px}
+.music-play-toggle:hover{background:#f0c879}
+.music-timeline{grid-column:1/-1;display:grid;grid-template-columns:42px minmax(0,1fr) 42px;align-items:center;gap:8px;width:100%;font-size:11px;font-variant-numeric:tabular-nums;color:#e3e5ea}
+#musicTimeline[hidden],#musicPlayerControls[hidden]{display:none!important}
+.music-timeline input{min-width:0}
+.music-edit-fields{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.music-edit-fields .field.full{grid-column:1/-1}
+#musicSceneField[hidden]{display:none}
+.music-clip-status{font-variant-numeric:tabular-nums}
+.music-cover-preview{width:56px;height:56px;border-radius:50%;object-fit:cover;background:#282a30}
+.music-frame-preview{width:100px;height:64px;border:1px solid #ffffff30;border-radius:8px;object-fit:cover;background:#282a30}
+.music-clip-status{display:block;margin-top:5px}
+.music-mode main{min-height:calc(100dvh - 72px)}
+.music-mode #editor{max-height:calc(100dvh - 90px);overflow-y:auto;padding-bottom:100px;overscroll-behavior:contain}
+#tab-musique>.controls{grid-template-columns:minmax(0,1fr)}
+.music-mode .music-preview{border-radius:14px}
+.music-mode .music-edit-fields{grid-template-columns:1fr 1fr}
+.advanced-tools{border-color:#e5e9ef}
+.advanced-tools summary{color:#30415b}
+#status{color:#435978}
+.history-item,.verse-card,.json-import-box{background:#f8f9fb;border-color:#e3e7ed;border-radius:12px}
+.history-item img{border-radius:8px}
+.verse-card p{color:#4b5668}
+.verse-import-item{background:#fff;border-color:#e3e7ed}
+.verse-import-item span{color:#667085}
+.json-status.ok{color:#16784b}
+.json-status.error{color:#b42318}
+.verse-import-item input{accent-color:#243957}
+.swatch{border-color:#d6dbe4}
+.actions button{min-height:44px}
+.launch-splash{background:radial-gradient(circle at 50% 42%,#314968 0,#17263b 62%)}
+@media(min-width:850px){
+  main{grid-template-columns:minmax(320px,.9fr) minmax(380px,1.1fr);align-items:start}
+  .preview-wrap{top:102px}
+  .panel{padding:22px}
+}
+@media(max-width:849px){
+  header{min-height:64px;padding:10px 16px}
+  main{padding:12px;gap:12px;grid-template-rows:minmax(180px,50dvh) minmax(0,1fr)}
+  .preview-wrap{padding:10px;border-radius:18px}
+  .panel{padding:14px;border-radius:18px 18px 14px 14px}
+  .panel h2{margin-bottom:10px}
+  .tabs{margin-bottom:12px;padding-bottom:3px}
+  .tab{padding:10px 12px;font-size:12px}
+  .controls{gap:12px}
+  .actions{padding-bottom:4px}
+}
+@media(prefers-reduced-motion:reduce){
+  button,.tab,input[type=text],input[type=search],textarea,select{transition:none}
+  button:hover{transform:none}
+}
+@media(max-width:849px){
+  body{height:100dvh;min-height:0}
+  header{justify-content:space-between;gap:8px;padding:8px 12px}
+  header h1{font-size:15px}
+  header p{display:none}
+  .brand-mark{width:34px;height:34px}
+  .mobile-actions{display:flex;align-items:center;gap:7px}
+  header .history-actions{gap:4px;margin-left:auto}
+  header .history-actions button{min-width:36px;min-height:38px;padding:6px 8px;font-size:16px}
+  .mobile-actions button{min-height:38px;padding:7px 10px;font-size:11px}
+  #mobileDownload{background:#e8c987;border-color:#e8c987;color:#1b2b42}
+  main{padding:8px 12px 0;gap:8px;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(210px,45dvh) minmax(0,1fr)}
+  .music-mode main{min-height:0;grid-template-rows:minmax(0,1fr)}
+  .music-mode #editor{max-height:none;min-height:0}
+  .music-mode #editor>.panel:first-child{min-height:100%}
+  .preview-wrap{display:flex;min-height:0;width:100%;height:100%;padding:7px;align-items:center;justify-content:center}
+  #stage{max-height:100%;max-width:100%}
+  #editor{display:flex;flex-direction:column;min-height:0;overflow-y:auto;overflow-x:hidden;padding:0 0 calc(82px + env(safe-area-inset-bottom,0px));overscroll-behavior:contain}
+  #editor>.panel:first-child{flex:none;padding:14px 13px;border-radius:17px}
+  #message{min-height:112px}
+  #editor>.panel:last-child{display:none}
+  #editor .panel h2{font-size:16px}
+  .tabs{right:12px;bottom:calc(8px + env(safe-area-inset-bottom,0px));left:12px;width:auto;gap:2px;padding:7px 4px 5px;transform:none}
+  .tab{display:flex;min-width:0;min-height:52px;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:5px 1px;border-radius:11px;font-size:9px;font-weight:650;line-height:1.1;white-space:nowrap}
+  .tab.active{background:#edf1f7}
+  .tab.active::after{right:25%;left:25%;bottom:-1px;height:2px}
+  .tab-icon{color:#66758b;font-size:17px;line-height:1}
+  .tab.active .tab-icon{color:#b18445}
+  .music-player-dock{position:static;margin:-7px -6px 6px;padding:7px 7px 10px;border-radius:0 0 16px 16px}
+  .music-preview{height:56dvh;width:auto;max-height:58dvh;max-width:100%}
+  .music-player-controls{grid-template-columns:42px minmax(0,1fr) 42px;gap:7px}
+  .music-transport{min-width:40px;min-height:40px}
+  .music-play-toggle{width:50px;height:50px}
+  .music-edit-fields{grid-template-columns:1fr}
+  .music-edit-fields .field.full{grid-column:auto}
+  .mobile-tools{padding:10px 0;border-top:1px solid #e8ebf0}
+  .mobile-tools>summary{display:flex;align-items:center;justify-content:space-between;min-height:38px;list-style:none;color:#27364c;font-size:13px;font-weight:700}
+  .mobile-tools>summary::-webkit-details-marker{display:none}
+  .mobile-tools>summary::after{content:"＋";color:#9a7744;font-size:17px}
+  .mobile-tools[open]>summary::after{content:"−"}
+  .mobile-tools>.controls{padding-top:10px}
+  #tab-versets>.controls{gap:8px}
+  .online-verse-search{gap:6px;padding:9px}
+  .online-verse-search>p.hint{margin:0;font-size:10px;line-height:1.25}
+}
+@media(min-width:850px){.mobile-actions{display:none}}
 </style>
 </head>
 <body>
@@ -129,45 +321,55 @@ button.danger{background:#46262c;border-color:#75404a}
     </g>
   </svg>
 </div>
-<header><h1>✦ Studio WhatsApp</h1><p>Crée tes affiches, ajoute tes images et exporte-les en PNG.</p></header>
+<header><span class="brand-mark" aria-hidden="true">✦</span><div class="brand-copy"><h1>Studio WhatsApp</h1><p>Crée tes affiches et vidéos de statut personnalisées.</p></div><div class="history-actions" role="group" aria-label="Historique des modifications"><button id="undoButton" type="button" aria-label="Annuler" title="Annuler" disabled>↶</button><button id="redoButton" type="button" aria-label="Rétablir" title="Rétablir" disabled>↷</button></div><div class="mobile-actions"><button id="mobileDownload" type="button" aria-label="Télécharger l'affiche PNG">↓ PNG</button></div></header>
 <main>
 <section class="preview-wrap">
   <div id="stage" aria-label="Aperçu de l'affiche">
     <img id="bgImage" alt="">
     <div id="shade"></div>
     <div id="styleOverlay" aria-hidden="true"></div>
-    <div id="textLayer" class="selected">Il n'y a qu'une seule réponse par rapport à l'inquiétude du lendemain :
-
-DIEU POURVOIRA !</div>
+    <div id="textLayer" class="text-layer hidden"></div>
     <img id="overlayImage" alt="Image superposée">
+    <div id="captionBox" class="shape-rounded"></div>
     <div id="signature">@VOTRE_NOM</div>
   </div>
 </section>
 <section id="editor">
   <div class="panel">
     <h2>Personnaliser l'affiche</h2>
-    <div class="tabs" role="tablist" aria-label="Options de l'affiche">
-      <button class="tab active" data-tab="texte" type="button" role="tab" aria-selected="true">Texte</button>
-      <button class="tab" data-tab="fond" type="button" role="tab" aria-selected="false">Arrière-plan</button>
-      <button class="tab" data-tab="image" type="button" role="tab" aria-selected="false">Image par-dessus</button>
-      <button class="tab" data-tab="format" type="button" role="tab" aria-selected="false">Format</button>
-      <button class="tab" data-tab="historique" type="button" role="tab" aria-selected="false">Historique</button>
-      <button class="tab" data-tab="versets" type="button" role="tab" aria-selected="false">Versets</button>
-    </div>
+
 
     <div id="tab-texte">
       <div class="controls">
-        <div class="field full"><label for="message">Texte principal</label><textarea id="message">Il n'y a qu'une seule réponse par rapport à l'inquiétude du lendemain :
-
-DIEU POURVOIRA !</textarea></div>
+        <div class="field full">
+          <label>Ajouter du texte à l’affiche</label>
+          <div class="text-slots" role="group" aria-label="Ajouter jusqu’à quatre blocs de texte">
+            <button type="button" class="text-slot" data-text-slot aria-label="Ajouter un texte, emplacement 1"><span class="text-slot-icon" aria-hidden="true">+</span><span class="text-slot-label">Texte 1</span></button>
+            <button type="button" class="text-slot" data-text-slot aria-label="Ajouter un texte, emplacement 2"><span class="text-slot-icon" aria-hidden="true">+</span><span class="text-slot-label">Texte 2</span></button>
+            <button type="button" class="text-slot" data-text-slot aria-label="Ajouter un texte, emplacement 3"><span class="text-slot-icon" aria-hidden="true">+</span><span class="text-slot-label">Texte 3</span></button>
+            <button type="button" class="text-slot" data-text-slot aria-label="Ajouter un texte, emplacement 4"><span class="text-slot-icon" aria-hidden="true">+</span><span class="text-slot-label">Texte 4</span></button>
+          </div>
+          <button type="button" id="crossModeToggle" class="cross-mode-toggle" aria-pressed="false" disabled>✝ Activer le mode Croix</button>
+          <button type="button" id="resetCrossWordSizes" class="cross-word-reset" hidden>↻ Rétablir les tailles des mots à 100 %</button>
+          <p id="textMoveHint" class="hint">Ajoute jusqu’à quatre blocs indépendants, puis touche un bloc sur l’aperçu pour le sélectionner et le déplacer.</p>
+          <div class="text-actions"><button type="button" id="editText" disabled>Modifier le texte</button><button type="button" id="removeText" class="danger" disabled>Supprimer le bloc</button></div>
+          <p id="textBlockStatus" class="hint" role="status">Aucun bloc de texte ajouté.</p>
+        </div>
+        <div class="field full"><label id="sizeLabel" for="size">Taille du texte</label><div class="cross-word-size" id="crossWordSizeControl" hidden><span id="selectedCrossWord" class="hint cross-word-size-label"></span><label for="wordSizePercent" class="hint">Taille de ce mot (% de la taille globale)</label><input id="wordSizePercent" type="number" min="20" max="250" step="1" value="100" aria-label="Pourcentage du mot sélectionné"></div><div class="cross-word-nav" id="crossWordNav" role="group" aria-label="Naviguer entre les mots de la croix" hidden><button type="button" id="previousCrossWord" aria-label="Sélectionner le mot précédent" title="Mot précédent">↑</button><span id="crossWordNavStatus" class="cross-word-nav-status" aria-live="polite"></span><button type="button" id="nextCrossWord" aria-label="Sélectionner le mot suivant" title="Mot suivant">↓</button></div><input id="size" type="range" min="16" max="64" value="32"><span class="hint" id="sizeVal" aria-live="polite">32 px</span></div>
+        <div class="field full"><label for="markerColor">Couleur du surlignage</label><div class="row highlight-quick-controls"><input id="markerColor" type="color" value="#fff23b" aria-label="Choisir la couleur du surlignage"><button id="applyQuickHighlight" type="button">Appliquer au bloc</button></div><p class="hint">Sélectionne un passage dans « Modifier le texte », ou laisse tout le texte sans sélection pour surligner le bloc actif.</p></div>
+        <details class="field full mobile-tools" open>
+          <summary>Style et effets</summary>
+          <div class="controls">
+        <div class="field full"><label for="textLayout">Disposition du texte</label><select id="textLayout"><option value="normal">Texte classique</option><option value="cross">Croix stylée</option></select><p class="hint">En croix, le mot le plus long forme la barre horizontale et les autres mots s’alignent verticalement.</p></div>
         <div class="field"><label for="font">Police</label><select id="font"><option value="Montserrat">Montserrat</option><option value="Poppins">Poppins</option><option value="Playfair Display">Playfair Display</option><option value="Pacifico">Pacifico</option><option value="Arial">Arial</option></select></div>
         <div class="field"><label for="weight">Épaisseur</label><select id="weight"><option value="900">Très épaisse (900)</option><option value="800">Épaisse (800)</option><option value="700">Gras (700)</option><option value="600">Demi-gras (600)</option><option value="400">Normale (400)</option></select></div>
-        <div class="field"><label for="size">Taille du texte</label><input id="size" type="range" min="16" max="64" value="32"><span class="hint" id="sizeVal">32 px</span></div>
         <div class="field"><label for="textColor">Couleur du texte</label><input id="textColor" type="color" value="#ffffff"></div>
         <div class="field"><label for="align">Alignement</label><select id="align"><option value="center">Centré</option><option value="left">À gauche</option><option value="right">À droite</option></select></div>
         <div class="field"><label for="italic">Style</label><select id="italic"><option value="italic">Italique</option><option value="normal">Droit</option></select></div>
-        <div class="field full"><label class="checkline"><input id="blurText" type="checkbox"> Flouter le fond derrière le texte</label></div>
-        <div class="field full"><label>Styles rapides</label><div class="row"><button id="presetBible" type="button">Importer ma page Bible</button><button id="presetViolet" type="button">Surlignage violet</button><button id="presetBlue" type="button">Surlignage bleu</button></div></div>
+        <div class="field full"><label class="checkline"><input id="blurText" type="checkbox"> Flou adaptatif derrière le texte</label></div>
+        <div class="field full"><label for="textBlurAmount">Intensité du flou derrière le texte</label><input id="textBlurAmount" type="range" min="0" max="24" value="8"><span class="hint" id="textBlurAmountVal">8 px</span></div>
+        <div class="field full"><label for="textShadeOpacity">Ombrage sous le texte</label><input id="textShadeOpacity" type="range" min="0" max="70" value="20"><span class="hint" id="textShadeOpacityVal">20 %</span></div>
+        <div class="field full"><label>Styles rapides</label><div class="row"><button id="presetBible" type="button">Importer ma page Bible</button></div></div>
         <details class="field full advanced-tools">
           <summary>Édition avancée des sélections</summary>
           <div class="controls">
@@ -175,8 +377,7 @@ DIEU POURVOIRA !</textarea></div>
             <div class="field"><label for="segmentFont">Police du passage</label><select id="segmentFont"><option value="">Police générale</option><option>Montserrat</option><option>Poppins</option><option>Playfair Display</option><option>Pacifico</option><option>Arial</option></select></div>
             <div class="field"><label for="segmentWeight">Épaisseur du passage</label><select id="segmentWeight"><option value="">Épaisseur générale</option><option value="900">Très épaisse</option><option value="800">Épaisse</option><option value="700">Gras</option><option value="600">Demi-gras</option><option value="400">Normale</option></select></div>
             <div class="field full"><label class="checkline"><input id="segmentUseColor" type="checkbox"> Couleur personnalisée pour la sélection</label><input id="segmentColor" type="color" value="#ffffff" aria-label="Couleur du passage"></div>
-            <div class="field full"><label for="segmentHighlight">Surlignage</label><select id="segmentHighlight"><option value="">Aucun</option><option value="marker-yellow">Jaune</option><option value="marker-blue">Bleu</option><option value="neon-violet">Néon violet</option><option value="neon-blue">Néon bleu</option><option value="neon-gold">Néon or</option><option value="marker-custom">Couleur personnalisée</option></select></div>
-            <div class="field"><label for="markerColor">Couleur du surlignage</label><input id="markerColor" type="color" value="#a64dff"></div>
+            <div class="field full"><label for="segmentHighlight">Surlignage</label><select id="segmentHighlight"><option value="">Aucun</option><option value="marker-custom">Couleur personnalisée</option></select></div>
             <div class="field"><label for="markerMode">Effet du surlignage</label><select id="markerMode"><option value="classic">Translucide</option><option value="neon">Néon lumineux</option></select></div>
             <div class="field full"><label for="markerOpacity">Intensité du surlignage</label><input id="markerOpacity" type="range" min="15" max="75" value="42"><span class="hint" id="markerOpacityVal">42 %</span></div>
             <div class="field full"><label for="textCurve">Courbure légère du texte</label><input id="textCurve" type="range" min="0" max="8" value="0"><span class="hint" id="textCurveVal">Désactivée</span></div>
@@ -188,18 +389,26 @@ DIEU POURVOIRA !</textarea></div>
             <p id="segmentStatus" class="hint field full" role="status"></p>
           </div>
         </details>
+          </div>
+        </details>
+        <details class="field full mobile-tools" open>
+          <summary>Signature et options</summary>
+          <div class="controls">
         <div class="field full"><label for="signatureText">Signature / référence (facultatif)</label><input id="signatureText" type="text" value="@VOTRE_NOM"></div>
         <div class="field"><label for="sigSize">Taille signature</label><input id="sigSize" type="range" min="10" max="32" value="17"></div>
         <div class="field"><label for="sigColor">Couleur signature</label><input id="sigColor" type="color" value="#ffffff"></div>
         <div class="field full"><label class="checkline"><input id="underlineSignature" type="checkbox" checked> Souligner la signature</label></div>
-        <div class="field full row"><button id="toggleSignature">Afficher / masquer signature</button><button id="resetText">Réinitialiser le texte</button></div>
-        <div class="field full"><p class="hint">Astuce : touche le texte directement dans l'aperçu, puis fais-le glisser pour le déplacer.</p></div>
+        <div class="field full row"><button id="toggleSignature">Afficher / masquer signature</button><button id="resetText">Réinitialiser les textes</button></div>
+        <div class="field full"><p class="hint">Astuce : touche un bloc de texte dans l'aperçu pour le sélectionner, puis fais-le glisser.</p></div>
+          </div>
+        </details>
       </div>
     </div>
 
     <div id="tab-fond" class="hidden">
       <div class="controls">
         <div class="field full"><label for="backgroundFile">Importer ta page de Bible ou une autre photo</label><input id="backgroundFile" type="file" accept="image/*"></div>
+        <div class="field full"><button id="usePosterTemplate" type="button" class="primary">✦ Utiliser le modèle « Bible ouverte »</button><p class="hint">Photo intégrée sans texte préimprimé. Ajoute tes blocs avec les boutons + de l’onglet Texte.</p></div>
         <div class="field full"><button id="useBiblePage" type="button" class="primary">✦ Utiliser une page de Bible intégrée</button><p class="hint">Photographie historique d’une Bible ancienne (domaine public), avec fond texturé de secours si hors connexion. Tu peux aussi importer ta propre photo.</p></div>
         <div class="field full"><label>Couleurs de fond rapides</label><div class="swatches">
           <button class="swatch" style="background:#151515" data-color="#151515" aria-label="Noir"></button>
@@ -212,10 +421,23 @@ DIEU POURVOIRA !</textarea></div>
         </div></div>
         <div class="field"><label for="bgColor">Couleur personnalisée</label><input id="bgColor" type="color" value="#151515"></div>
         <div class="field"><label for="shadeOpacity">Voile sombre sur la photo</label><input id="shadeOpacity" type="range" min="0" max="90" value="25"><span class="hint" id="shadeVal">25 %</span></div>
+        <details class="field full mobile-tools" open>
+          <summary>Effets photo</summary>
+          <div class="controls">
         <div class="field full"><label for="backgroundBlur">Flou de la photo d'arrière-plan</label><input id="backgroundBlur" type="range" min="0" max="20" value="0"><span class="hint" id="backgroundBlurVal">0 px</span></div>
-        <div class="field full"><label class="checkline"><input id="bibleGlow" type="checkbox"> Halo doré centré</label></div>
+        <div class="field full"><label class="checkline"><input id="bibleGlow" type="checkbox"> Halo lumineux centré</label></div>
+        <div class="field full"><label for="glowColor">Couleur du halo</label><input id="glowColor" type="color" value="#ffcc78"><div class="swatches" aria-label="Couleurs rapides du halo">
+          <button type="button" class="swatch" style="background:#ffcc78" data-glow-color="#ffcc78" aria-label="Halo doré"></button>
+          <button type="button" class="swatch" style="background:#ff6b8a" data-glow-color="#ff6b8a" aria-label="Halo rose"></button>
+          <button type="button" class="swatch" style="background:#b56bff" data-glow-color="#b56bff" aria-label="Halo violet"></button>
+          <button type="button" class="swatch" style="background:#55aaff" data-glow-color="#55aaff" aria-label="Halo bleu"></button>
+          <button type="button" class="swatch" style="background:#54d69a" data-glow-color="#54d69a" aria-label="Halo vert"></button>
+        </div></div>
         <div class="field full"><label for="glowOpacity">Intensité du halo</label><input id="glowOpacity" type="range" min="0" max="80" value="45"><span class="hint" id="glowOpacityVal">45 %</span></div>
-        <div class="field full"><label class="checkline"><input id="vignette" type="checkbox"> Assombrir les bords</label></div>
+        <div class="field full"><label class="checkline"><input id="vignette" type="checkbox"> Ombrage progressif des bords</label></div>
+        <div class="field full"><label for="vignetteOpacity">Intensité de l'ombrage</label><input id="vignetteOpacity" type="range" min="0" max="90" value="62"><span class="hint" id="vignetteOpacityVal">62 %</span></div>
+          </div>
+        </details>
         <div class="field full"><button id="removeBg">Retirer la photo de fond</button></div>
         <p class="hint field full">L’application ne crée pas de page biblique : utilise ta propre image. Le voile, le flou, le halo et la vignette restent des effets facultatifs sur cette image.</p>
       </div>
@@ -227,14 +449,28 @@ DIEU POURVOIRA !</textarea></div>
         <div class="field"><label for="overlaySize">Taille de l'image</label><input id="overlaySize" type="range" min="8" max="65" value="24"></div>
         <div class="field"><label for="overlayOpacity">Opacité</label><input id="overlayOpacity" type="range" min="10" max="100" value="100"></div>
         <div class="field full row"><button id="removeOverlay" class="danger">Supprimer l'image</button><button id="frontOverlay">Mettre l'image au premier plan</button></div>
-        <p class="hint field full">Après l'ajout, fais glisser l'image dans l'aperçu pour la placer où tu veux. Le logo peut être placé devant ou derrière le texte avec le bouton de superposition.</p>
+        <details class="field full mobile-tools" open>
+          <summary>Ajouter un titre ou un encadré</summary>
+          <div class="controls">
+        <div class="field full advanced-tools"><p class="hint">Ajoute un titre, une note ou une description dans une forme. Choisis si elle apparaît derrière l’image ou par-dessus, puis déplace-la dans l’aperçu.</p></div>
+        <div class="field full"><label for="captionText">Titre / note / description</label><textarea id="captionText" placeholder="Écris le titre, la note ou la description à afficher…"></textarea></div>
+        <div class="field full"><label for="captionLayer">Superposition par rapport à l’image</label><select id="captionLayer"><option value="over">Par-dessus l’image</option><option value="behind">Derrière l’image</option></select></div>
+        <div class="field"><label for="captionShape">Forme de l’encadré</label><select id="captionShape"><option value="rounded">Rectangle arrondi</option><option value="rectangle">Rectangle</option><option value="speech">Bulle de dialogue</option></select></div>
+        <div class="field"><label for="captionSize">Taille du texte</label><input id="captionSize" type="range" min="12" max="36" value="18"><span class="hint" id="captionSizeVal">18 px</span></div>
+        <div class="field"><label for="captionBgColor">Couleur de l’encadré</label><input id="captionBgColor" type="color" value="#181c26"></div>
+        <div class="field"><label for="captionTextColor">Couleur du texte</label><input id="captionTextColor" type="color" value="#ffffff"></div>
+        <div class="field full"><label for="captionOpacity">Opacité de l’encadré</label><input id="captionOpacity" type="range" min="20" max="100" value="90"><span class="hint" id="captionOpacityVal">90 %</span></div>
+        <div class="field full row"><button type="button" class="primary" id="showCaption">Ajouter l’encadré</button><button type="button" class="danger" id="removeCaption">Retirer l’encadré</button></div>
+        <p class="hint field full">Fais glisser l’image et l’encadré où tu veux. Le logo peut être placé devant ou derrière le texte avec le bouton de superposition.</p>
+          </div>
+        </details>
       </div>
     </div>
 
     <div id="tab-format" class="hidden">
       <div class="controls">
         <div class="field full"><label for="format">Format de publication</label><select id="format"><option value="square">Carré — 1080 × 1080</option><option value="portrait">Portrait — 1080 × 1350</option><option value="story">Story — 1080 × 1920</option></select></div>
-        <div class="field full"><button id="centerText">Recentrer le texte</button></div>
+        <div class="field full"><button id="centerText">Recentrer le bloc sélectionné</button></div>
         <p class="hint field full">Pour déplacer un élément : pose ton doigt dessus et fais-le glisser. Le fichier PNG sera exporté à la résolution choisie.</p>
       </div>
     </div>
@@ -243,36 +479,41 @@ DIEU POURVOIRA !</textarea></div>
         <div class="field full"><button class="primary" id="saveProject" type="button">Enregistrer cette création</button></div>
         <p class="hint field full">Le brouillon est sauvegardé automatiquement. Les créations enregistrées restent sur cet appareil.</p>
         <div id="historyList" class="history-list field full"></div>
-        <div class="field full json-import-box backup-actions">
-          <strong>Sauvegarde de l’application</strong>
+        <details class="field full json-import-box backup-actions mobile-tools" open>
+          <summary>Sauvegarde de l’application</summary>
+          <div class="backup-actions">
           <p class="hint">Exporte le brouillon, tes créations enregistrées et tes versets personnels dans un fichier JSON. Tu peux ensuite les restaurer sur cet appareil ou sur un autre navigateur.</p>
           <button type="button" class="primary" id="exportBackup">Exporter ma sauvegarde JSON</button>
           <label for="importBackupFile" class="hint">Choisir une sauvegarde JSON à restaurer</label>
           <input type="file" id="importBackupFile" accept=".json,application/json">
           <button type="button" id="selectBackupFile">Choisir un fichier JSON</button>
           <div id="backupStatus" class="json-status hint backup-status" role="status"></div>
-        </div>
+          </div>
+        </details>
       </div>
     </div>
     <div id="tab-versets" class="hidden" role="tabpanel">
       <div class="controls">
         <div class="field full"><label for="verseSearch">Rechercher par texte, thème ou référence</label><input id="verseSearch" type="search" placeholder="Ex. amour, Exode, paix"></div>
-        <div class="field full json-import-box">
+        <p id="verseStatus" class="hint field full" role="status">Chargement des versets…</p>
+        <div id="verseList" class="verse-list field full"></div>
+        <div class="field full json-import-box online-verse-search">
           <strong>Rechercher dans la Bible en ligne</strong>
-          <p class="hint">Recherche par référence, chapitre ou plage de versets (ex. Psaumes 19:8 ou Marc 10:5-8). Choisis une traduction française du domaine public. Clique sur « Utiliser dans l’affiche » pour l’appliquer tout de suite, ou sélectionne des versets pour les ajouter à ta bibliothèque locale.</p>
+          <p class="hint">Recherche une référence, un chapitre ou une plage. Applique un résultat à l’affiche ou enregistre-le dans ta bibliothèque.</p>
           <label for="onlineVerseTranslation">Traduction</label>
           <select id="onlineVerseTranslation"><option value="fra_lsg">Louis Segond 1910</option><option value="fra_jnd">Bible J.N. Darby</option><option value="fra_ost">Bible Ostervald</option></select>
           <label for="onlineVerseReference">Référence biblique</label>
           <div class="row"><input id="onlineVerseReference" type="text" placeholder="Ex. Jean 3:16 ou Psaume 23"><button id="searchOnlineVerses" type="button" class="primary">Rechercher en ligne</button></div>
-          <p class="hint">Source : <a href="https://bible.helloao.org/" target="_blank" rel="noopener noreferrer">Free Use Bible API</a> · traductions du domaine public. Seules la référence et la traduction choisie sont envoyées ; aucune image ou création ne l’est.</p>
+          <p class="hint">Source : <a href="https://bible.helloao.org/" target="_blank" rel="noopener noreferrer">Free Use Bible API</a> · seule la référence et la traduction sont transmises.</p>
           <div id="onlineVerseStatus" class="json-status hint" role="status">Recherche par référence disponible avec une connexion Internet.</div>
           <div id="onlineVerseResults" class="verse-list"></div>
           <div id="onlineVerseActions" class="json-actions hidden"><button type="button" id="prepareOnlineVerses" class="primary">Ajouter la sélection à ma bibliothèque</button></div>
           <div id="onlineVerseReview" class="hidden"></div>
           <div id="onlineVerseConfirmActions" class="json-actions hidden"><button type="button" id="confirmOnlineVerses" class="primary">Enregistrer la sélection</button><button type="button" id="cancelOnlineVerses">Annuler</button></div>
         </div>
-        <div class="field full json-import-box">
-          <strong>Ajouter un seul verset</strong>
+        <details class="field full json-import-box mobile-tools" open>
+          <summary>Ajouter un seul verset</summary>
+          <div class="controls">
           <p class="hint">Colle une référence suivie du texte, ou le texte suivi de sa référence. Le nettoyeur reconnaît les livres bibliques, les numéros de verset, les guillemets et les sigles de traduction courants.</p>
           <textarea id="singleVerseInput" spellcheck="false" placeholder="Ex. Psaumes, 19:8 - La loi de l’Éternel est parfaite, elle restaure l’âme.&#10;&#10;Ou : [5] Jésus leur répondit : C’est à cause de la dureté de votre cœur...&#10;Marc 10:5 BDS"></textarea>
           <div class="json-actions"><button type="button" id="parseSingleVerse" class="primary">Nettoyer et vérifier</button></div>
@@ -280,9 +521,11 @@ DIEU POURVOIRA !</textarea></div>
           <div id="singleVerseActions" class="json-actions hidden"><button type="button" id="saveSingleVerse" class="primary">Enregistrer le verset</button><button type="button" id="cancelSingleVerse">Annuler</button></div>
           <div id="singleVerseStatus" class="json-status hint" role="status">Le verset sera vérifié avant d’être enregistré localement sur cet appareil.</div>
           <details><summary class="hint">Voir les 73 livres reconnus</summary><p class="hint">Genèse, Exode, Lévitique, Nombres, Deutéronome, Josué, Juges, Ruth, 1 Samuel, 2 Samuel, 1 Rois, 2 Rois, 1 Chroniques, 2 Chroniques, Esdras, Néhémie, Esther, Job, Psaumes, Proverbes, Ecclésiaste, Cantique des cantiques, Isaïe, Jérémie, Lamentations, Ézéchiel, Daniel, Osée, Joël, Amos, Abdias, Jonas, Michée, Nahum, Habacuc, Sophonie, Aggée, Zacharie, Malachie, Matthieu, Marc, Luc, Jean, Actes, Romains, 1 Corinthiens, 2 Corinthiens, Galates, Éphésiens, Philippiens, Colossiens, 1 Thessaloniciens, 2 Thessaloniciens, 1 Timothée, 2 Timothée, Tite, Philémon, Hébreux, Jacques, 1 Pierre, 2 Pierre, 1 Jean, 2 Jean, 3 Jean, Jude, Apocalypse, Tobie, Judith, Sagesse, Siracide, Baruch, 1 Maccabées et 2 Maccabées. Les accents, noms alternatifs, formes plurielles et abréviations courantes sont aussi reconnus.</p></details>
-        </div>
-        <div class="field full json-import-box">
-          <strong>Ajouter une bibliothèque de versets (JSON)</strong>
+          </div>
+        </details>
+        <details class="field full json-import-box mobile-tools" open>
+          <summary>Importer une bibliothèque (JSON)</summary>
+          <div class="controls">
           <p class="hint">Colle ici le JSON généré par ChatGPT ou une autre IA. Les antislashs de mise en forme et espaces HTML sont nettoyés automatiquement ; les réponses JSON en plusieurs fragments sont récupérées si possible. Les doublons et versets proches sont signalés avant l’import ; tu choisis lesquels ajouter. Ils restent enregistrés localement sur cet appareil.</p>
           <textarea id="verseJsonInput" spellcheck="false" placeholder='{"versets":[{"reference":"Jean 3:16","text":"Car Dieu a tant aimé le monde...","tags":["amour","foi"]}]}'></textarea>
           <div class="json-actions"><button type="button" id="importVerseJson" class="primary">Vérifier les versets</button><button type="button" id="copyVersePrompt">Copier le prompt IA</button></div>
@@ -290,9 +533,39 @@ DIEU POURVOIRA !</textarea></div>
           <div id="verseImportActions" class="json-actions hidden"><button type="button" id="confirmVerseImport" class="primary">Enregistrer la sélection</button><button type="button" id="cancelVerseImport">Annuler</button></div>
           <div id="jsonImportStatus" class="json-status hint" role="status">Format accepté : tableau JSON ou objet contenant « versets ».</div>
           <details><summary class="hint">Voir le format JSON attendu</summary><pre class="hint">{"versets":[{"reference":"Jean 3:16","text":"Texte du verset","tags":["amour","foi"]}]}</pre></details>
+          </div>
+        </details>
+      </div>
+    </div>
+    <div id="tab-musique" class="hidden" role="tabpanel">
+      <div class="controls">
+        <div class="music-player-dock">
+          <canvas id="musicPreviewCanvas" class="music-preview" width="360" height="640" aria-label="Aperçu vertical du lecteur musical"></canvas>
+          <button type="button" class="music-like-toggle" id="musicLikeToggle" aria-pressed="false">♡ J’aime</button>
+          <video id="musicVideoResult" class="music-result music-preview music-preview-video" controls playsinline hidden></video>
+          <div class="music-timeline" id="musicTimeline"><span id="musicCurrentTime">0:00</span><input id="musicSeek" type="range" min="0" max="1000" value="0" aria-label="Naviguer dans la chanson"><span id="musicTrackEnd">0:00</span></div>
+          <div class="music-player-controls" id="musicPlayerControls"><button type="button" class="music-transport" id="musicSkipBack" aria-label="Reculer de 10 secondes" title="Reculer de 10 secondes">−10</button><button type="button" class="music-play-toggle" id="musicPlayToggle" aria-label="Lire la musique" title="Lire">▶</button><button type="button" class="music-transport" id="musicSkipForward" aria-label="Avancer de 10 secondes" title="Avancer de 10 secondes">+10</button></div>
         </div>
-        <p id="verseStatus" class="hint field full" role="status">Chargement des versets…</p>
-        <div id="verseList" class="verse-list field full"></div>
+        <p class="hint field full">Choisis un modèle, personnalise le titre et l’artiste, puis navigue dans la chanson avec l’unique curseur. Place la lecture au début voulu et appuie sur « Définir le début ici » ; indique ensuite la durée de l’extrait. Les fichiers restent sur cet appareil.</p>
+        <div class="field full"><label for="musicFile">Choisir une musique</label><input id="musicFile" type="file" accept="audio/*"></div>
+        <audio id="musicAudio" class="music-result" preload="metadata" hidden></audio>
+        <p id="musicTrackInfo" class="hint field full" role="status">Aucune musique sélectionnée.</p>
+        <div class="music-edit-fields">
+          <div class="field"><label for="musicTitle">Titre de la chanson</label><input id="musicTitle" type="text" maxlength="80" placeholder="Titre de la chanson"></div>
+          <div class="field"><label for="musicArtist">Artiste</label><input id="musicArtist" type="text" maxlength="60" placeholder="Nom de l’artiste"></div>
+          <div class="field full"><label for="musicModel">Modèle du lecteur</label><select id="musicModel"><option value="vinyl">Studio vinyle</option><option value="card">Carte de statut (photo)</option></select><p class="hint">Le modèle Studio vinyle conserve le lecteur classique. Carte de statut reprend la présentation verticale de ton exemple.</p></div>
+          <div class="field full"><label for="musicCoverFile">Image au centre du disque</label><input id="musicCoverFile" type="file" accept="image/*"><div class="row"><img id="musicCoverPreview" class="music-cover-preview" alt="Aperçu de la pochette chargée" hidden><button type="button" id="removeMusicCover" class="danger" hidden>Retirer la pochette</button></div></div>
+          <div class="field full"><label for="musicPlatterColor">Couleur du cadre derrière le disque</label><input id="musicPlatterColor" type="color" value="#8f1914"><p class="hint">Avec une pochette, sa couleur dominante est appliquée automatiquement ; sans pochette, une palette variée est choisie. Tu peux toujours modifier cette couleur.</p></div>
+          <div class="field full"><label for="musicPlatterFile">Image dans le cadre derrière le disque (facultative)</label><input id="musicPlatterFile" type="file" accept="image/*"><div class="row"><img id="musicPlatterPreview" class="music-frame-preview" alt="Aperçu de l’image du cadre" hidden><button type="button" id="removeMusicPlatter" class="danger" hidden>Retirer l’image du cadre</button></div></div>
+          <div class="field full" id="musicSceneField" hidden><label for="musicSceneFile">Photo de fond de la carte (facultative)</label><input id="musicSceneFile" type="file" accept="image/*"><button type="button" id="removeMusicScene" class="danger" hidden>Retirer la photo de fond</button></div>
+          <div class="field full"><button type="button" id="setMusicClipStart" disabled>Définir le début de l’extrait ici</button><span class="hint music-clip-status">Début : <span id="musicClipStartLabel">0:00</span> · Fin prévue : <span id="musicClipEnd">0:30</span></span></div>
+          <div class="field"><label for="musicClipDuration">Durée de l’extrait (secondes)</label><input id="musicClipDuration" type="number" min="1" max="90" step="1" value="30" disabled><span id="musicClipDurationLabel" class="hint music-clip-status">0:30</span></div>
+        </div>
+        <div class="field full"><label for="musicDuration">Durée maximale du statut</label><select id="musicDuration"><option value="30">30 secondes</option><option value="60">1 minute</option><option value="90" selected>1 min 30</option><option value="120">2 minutes</option><option value="150">2 min 30</option><option value="180">3 minutes</option><option value="210">3 min 30</option><option value="240">4 minutes</option><option value="270">4 min 30</option><option value="300">5 minutes</option><option value="330">5 min 30</option><option value="360">6 minutes</option><option value="390">6 min 30</option><option value="420">7 minutes</option></select><p class="hint">La durée de l’extrait ne dépassera ni cette limite, ni la durée restante de la chanson. WhatsApp peut appliquer une limite différente selon sa version.</p></div>
+        <div class="field full"><button type="button" id="prepareMusicPreview">Préparer l’aperçu vertical</button></div>
+        <div class="field full"><button type="button" id="createMusicVideo" class="primary" disabled>Créer la vidéo de statut</button><p class="hint">Format vertical 9:16, 1080 × 1920, adapté à TikTok et WhatsApp Statut.</p><progress id="musicExportProgress" class="music-export-progress" max="1" value="0" hidden></progress><p id="musicExportStatus" class="hint music-status" role="status"></p></div>
+        <div class="field full"><a id="downloadMusicVideo" class="button primary hidden" download>Télécharger la vidéo</a></div>
+        <p class="hint field full">Garde l’application ouverte pendant la création. Télécharge ensuite la vidéo et choisis-la dans WhatsApp &gt; Statut.</p>
       </div>
     </div>
   </div>
@@ -304,66 +577,208 @@ DIEU POURVOIRA !</textarea></div>
   </div>
 </section>
 </main>
+<nav class="tabs" role="tablist" aria-label="Options de l'affiche">
+  <button class="tab active" data-tab="texte" type="button" role="tab" aria-selected="true" aria-label="Texte"><span class="tab-icon" aria-hidden="true">T</span><span>Texte</span></button>
+  <button class="tab" data-tab="fond" type="button" role="tab" aria-selected="false" aria-label="Arrière-plan"><span class="tab-icon" aria-hidden="true">◉</span><span>Fond</span></button>
+  <button class="tab" data-tab="image" type="button" role="tab" aria-selected="false" aria-label="Image par-dessus"><span class="tab-icon" aria-hidden="true">▧</span><span>Image</span></button>
+  <button class="tab" data-tab="format" type="button" role="tab" aria-selected="false" aria-label="Format"><span class="tab-icon" aria-hidden="true">□</span><span>Format</span></button>
+  <button class="tab" data-tab="historique" type="button" role="tab" aria-selected="false" aria-label="Historique"><span class="tab-icon" aria-hidden="true">◷</span><span>Historique</span></button>
+  <button class="tab" data-tab="versets" type="button" role="tab" aria-selected="false" aria-label="Versets"><span class="tab-icon" aria-hidden="true">✦</span><span>Versets</span></button>
+  <button class="tab" data-tab="musique" type="button" role="tab" aria-selected="false" aria-label="Musique"><span class="tab-icon" aria-hidden="true">♫</span><span>Musique</span></button>
+</nav>
+<dialog id="textDialog" aria-labelledby="textDialogTitle">
+  <form id="textDialogForm" class="text-dialog-content">
+    <h2 id="textDialogTitle">Ajouter un texte</h2>
+    <div class="field"><label for="textRole">Type de texte</label><select id="textRole"><option value="title">Titre</option><option value="paragraph">Paragraphe</option></select></div>
+    <div class="field"><label for="message">Ton texte</label><textarea id="message" maxlength="1200" placeholder="Écris ton titre ou ton paragraphe…"></textarea><button type="button" id="deleteTextSelection" class="text-delete-selection" disabled>Supprimer le passage sélectionné</button><p id="textDeleteStatus" class="hint text-delete-status" role="status">Sélectionne un passage pour le supprimer.</p></div>
+    <div class="text-dialog-actions"><button type="button" id="cancelTextDialog">Annuler</button><button type="submit" class="primary" id="saveTextBlock">Ajouter</button></div>
+  </form>
+</dialog>
 <script>
 const $=id=>document.getElementById(id);
-const stage=$('stage'), textLayer=$('textLayer'), signature=$('signature'), bgImage=$('bgImage'), overlay=$('overlayImage'), shade=$('shade'), styleOverlay=$('styleOverlay');
-const stateFields=['message','font','weight','size','textColor','align','italic','blurText','signatureText','sigSize','sigColor','underlineSignature','segmentFont','segmentWeight','segmentUseColor','segmentColor','segmentHighlight','markerColor','markerMode','markerOpacity','textCurve','textWarpX','textWarpY','textRotate','bgColor','shadeOpacity','backgroundBlur','bibleGlow','glowOpacity','vignette','overlaySize','overlayOpacity','format'];
-let bgUrl=null, overlayUrl=null, overlayOnTop=true, format='square', db=null, saveTimer=null, lastSavedAt=0, bibleVerses=[], textSegments=[];
-let lastMessageValue=$('message').value;
+const stage=$('stage'), textLayerTemplate=$('textLayer'), signature=$('signature'), bgImage=$('bgImage'), overlay=$('overlayImage'), caption=$('captionBox'), shade=$('shade'), styleOverlay=$('styleOverlay');
+const stateFields=['message','font','weight','size','textColor','align','italic','textLayout','blurText','textBlurAmount','textShadeOpacity','signatureText','sigSize','sigColor','underlineSignature','segmentFont','segmentWeight','segmentUseColor','segmentColor','segmentHighlight','markerColor','markerMode','markerOpacity','textCurve','textWarpX','textWarpY','textRotate','bgColor','shadeOpacity','backgroundBlur','bibleGlow','glowColor','glowOpacity','vignette','vignetteOpacity','overlaySize','overlayOpacity','captionText','captionLayer','captionShape','captionSize','captionBgColor','captionTextColor','captionOpacity','format'];
+const textStyleFields=['font','weight','size','textColor','align','italic','textLayout','blurText','textBlurAmount','textShadeOpacity','textCurve','textWarpX','textWarpY','textRotate'];
+let bgUrl=null, overlayUrl=null, overlayOnTop=true, format='square', db=null, saveTimer=null, lastSavedAt=0, bibleVerses=[], textSegments=[], textLayers=[], textLayer=null, undoHistory=[], undoIndex=-1, restoringHistory=false, nextTextId=1, editingTextLayer=null;
+let lastMessageValue='',musicFileUrl=null,musicPosterCanvas=null,musicVideoUrl=null,musicAudioContext=null,musicAudioSource=null,musicAnalyser=null,musicAudioDestination=null,musicRecording=false,musicLiked=false,musicArtworkUrl=null,musicArtworkImage=null,musicArtworkColor=null,musicSceneUrl=null,musicSceneImage=null,musicPlatterUrl=null,musicPlatterImage=null,musicPlatterColorManuallySet=false,musicClipStartTime=0,musicPreviewAnimation=0;
 const setStatus=t=>$('status').textContent=t;
 function colorWithOpacity(hex,opacity){const value=String(hex||'#b45cff').replace('#','');if(!/^[\da-f]{6}$/i.test(value))return`rgba(180,92,255,${opacity})`;return`rgba(${parseInt(value.slice(0,2),16)},${parseInt(value.slice(2,4),16)},${parseInt(value.slice(4,6),16)},${opacity})`;}
-function renderTextLayer(value){const content=document.createElement('span');content.className='text-content';const segments=textSegments.filter(segment=>segment.start>=0&&segment.end>segment.start&&segment.start<value.length).sort((a,b)=>a.start-b.start);let cursor=0;while(cursor<value.length){const segment=segments.find(item=>item.start<=cursor&&item.end>cursor);const next=segment?Math.min(value.length,segment.end):Math.min(value.length,...segments.filter(item=>item.start>cursor).map(item=>item.start),value.length);const span=document.createElement('span');span.textContent=value.slice(cursor,next);if(segment){const style=segment.style||{};span.className='text-segment';if(style.color)span.style.color=style.color;if(style.font)span.style.fontFamily=`'${style.font}', Arial, sans-serif`;if(style.weight)span.style.fontWeight=style.weight;if(['marker-yellow','marker-blue','neon-violet','neon-blue','neon-gold'].includes(style.highlight))span.classList.add(`highlight-${style.highlight}`);if(style.highlight==='marker-custom'){const markerColor=style.markerColor||'#b45cff',opacity=Number(style.markerOpacity??42)/100,neon=style.markerMode==='neon';span.classList.add('highlight-custom');span.dataset.highlight='marker-custom';span.dataset.markerColor=markerColor;span.dataset.markerOpacity=String(opacity);span.dataset.markerMode=neon?'neon':'classic';span.style.backgroundColor=colorWithOpacity(markerColor,opacity);span.style.boxShadow=neon?`0 0 6px ${colorWithOpacity(markerColor,.9)},0 0 16px ${colorWithOpacity(markerColor,.65)}`:'none';}}content.append(span);cursor=next;}if(!value)content.textContent='';textLayer.replaceChildren(content);}
+function captureTextSettings(){return Object.fromEntries(textStyleFields.map(id=>[id,$(id).type==='checkbox'?$(id).checked:$(id).value]));}
+function loadTextSettings(settings={}){for(const id of textStyleFields){if(settings[id]===undefined)continue;const input=$(id);if(input.type==='checkbox')input.checked=Boolean(settings[id]);else input.value=settings[id];}}
+function updateTextBlockControls(){const slots=[...document.querySelectorAll('[data-text-slot]')],full=textLayers.length>=4,cross=isCrossMode();slots.forEach(button=>{button.disabled=full;button.title=full?'Quatre blocs maximum':'Ajouter un bloc de texte';});$('editText').disabled=!textLayer;$('removeText').disabled=!textLayer;$('crossModeToggle').disabled=!textLayer;$('resetCrossWordSizes').hidden=!cross;$('textMoveHint').textContent=cross?'Fais glisser n’importe quel mot sur l’aperçu pour déplacer toute la croix.':'Ajoute jusqu’à quatre blocs indépendants, puis touche un bloc sur l’aperçu pour le sélectionner et le déplacer.';$('textBlockStatus').textContent=textLayer?`Bloc ${textLayers.indexOf(textLayer)+1} sur ${textLayers.length} sélectionné · ${textLayers.length}/4 blocs utilisés.${cross?' Touche un mot ou utilise les flèches ↑ ↓ pour régler sa taille.':''}`:textLayers.length?`${textLayers.length}/4 blocs utilisés. Touche un bloc sur l’affiche pour le sélectionner.`:'Aucun bloc de texte ajouté.';syncCrossModeButton();syncWordSizeControl();}
+function addTextLayer(value,role='paragraph',segments=[],settings=null,position=null,wordSizes=null,selectedWordIndex=null){
+  if(textLayers.length>=4){setStatus('Tu peux ajouter jusqu’à quatre blocs de texte.');return null;}
+  const template=textLayerTemplate,el=textLayers.length?template.cloneNode(false):template;
+  const id=`text-${nextTextId++}`;el.id=textLayers.length?`textLayer-${id}`:'textLayer';el.className='text-layer';el.dataset.textId=id;
+  el._textValue=value;el._textRole=role;el._segments=segments.map(segment=>({...segment,style:{...segment.style}}));el._crossWordSizes=Array.isArray(wordSizes)?wordSizes.map(size=>Math.max(20,Math.min(250,Number(size)||100))):[];el._selectedCrossWordIndex=Number.isInteger(selectedWordIndex)?selectedWordIndex:(Number.isInteger(settings?.crossWordIndex)?settings.crossWordIndex:null);
+  if(settings){el._settings={...settings};}
+  else{if(role==='title'){$('size').value='38';$('weight').value='900';$('italic').value='normal';}else{$('size').value='26';$('weight').value='700';$('italic').value='normal';}el._settings=captureTextSettings();}
+  el.style.left=position?.left||'8%';el.style.top=position?.top||`${20+textLayers.length*15}%`;el.style.width=position?.width||'84%';el.style.display='flex';el._autoPosition=position?.auto!==false;
+  stage.append(el);textLayers.push(el);select(el);updateText();updateTextBlockControls();return el;
+}
+function openTextDialog(layer=null){
+  if(!layer&&textLayers.length>=4){setStatus('Tu peux ajouter jusqu’à quatre blocs de texte.');return;}
+  editingTextLayer=layer;$('textDialogTitle').textContent=layer?'Modifier le texte':'Ajouter un texte';$('saveTextBlock').textContent=layer?'Enregistrer':'Ajouter';$('deleteTextSelection').disabled=true;$('textDeleteStatus').textContent='Sélectionne un passage pour le supprimer.';
+  $('message').value=layer?layer._textValue:'';$('textRole').value=layer?layer._textRole:'title';lastMessageValue=$('message').value;
+  $('textDialog').showModal();$('message').focus();
+}
+function clearTextLayers(){
+  const template=textLayerTemplate;for(const el of textLayers)if(el!==template)el.remove();
+  textLayers=[];textLayer=null;textSegments=[];nextTextId=1;template.className='text-layer hidden';template.removeAttribute('data-text-id');template.replaceChildren();template.style.cssText='';
+  $('message').value='';lastMessageValue='';updateTextBlockControls();
+}
+function makeTextRuns(value,start,end,segments){
+  const fragment=document.createDocumentFragment();let cursor=start;
+  while(cursor<end){
+    const segment=segments.find(item=>item.start<=cursor&&item.end>cursor),next=segment?Math.min(end,segment.end):Math.min(end,...segments.filter(item=>item.start>cursor).map(item=>item.start),end);
+    const span=document.createElement('span');span.textContent=value.slice(cursor,next);
+    if(segment){const style=segment.style||{};span.className='text-segment';if(style.color)span.style.color=style.color;if(style.font)span.style.fontFamily=`'${style.font}', Arial, sans-serif`;if(style.weight)span.style.fontWeight=style.weight;if(['marker-yellow','marker-blue','neon-violet','neon-blue','neon-gold'].includes(style.highlight))span.classList.add(`highlight-${style.highlight}`);if(style.highlight==='marker-custom'){const markerColor=style.markerColor||'#b45cff',opacity=Number(style.markerOpacity??42)/100,neon=style.markerMode==='neon';span.classList.add('highlight-custom');span.dataset.highlight='marker-custom';span.dataset.markerColor=markerColor;span.dataset.markerOpacity=String(opacity);span.dataset.markerMode=neon?'neon':'classic';span.style.backgroundColor=colorWithOpacity(markerColor,opacity);span.style.boxShadow=neon?`0 0 6px ${colorWithOpacity(markerColor,.9)},0 0 16px ${colorWithOpacity(markerColor,.65)}`:'none';}}
+    fragment.append(span);cursor=next;
+  }
+  return fragment;
+}
+function renderTextLayer(el,value,segments=[]){
+  if(!el)return;
+  const content=document.createElement('span');content.className='text-content';
+  segments=segments.filter(segment=>segment.start>=0&&segment.end>segment.start&&segment.start<value.length).sort((a,b)=>a.start-b.start);
+  if(el._settings?.textLayout==='cross'&&value.trim()){
+    el.classList.add('cross-layout');
+    const words=[...value.matchAll(/\S+/gu)].map(match=>({text:match[0],start:match.index,end:match.index+match[0].length}));
+    if(words.length){
+      const clean=word=>word.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\p{L}\p{N}]/gu,'');
+      const longest=Math.max(...words.map(word=>clean(word.text).length)),candidates=words.map((word,index)=>({word,index})).filter(item=>clean(item.word.text).length===longest),middle=(words.length-1)/2;
+      const axis=candidates.reduce((best,item)=>Math.abs(item.index-middle)<Math.abs(best.index-middle)?item:best,candidates[0]).index;
+      el._crossWordSizes=words.map((_,index)=>Math.max(20,Math.min(250,Number(el._crossWordSizes?.[index])||100)));
+      if(!Number.isInteger(el._selectedCrossWordIndex)||el._selectedCrossWordIndex<0||el._selectedCrossWordIndex>=words.length)el._selectedCrossWordIndex=axis;
+      words.forEach((word,index)=>{const line=document.createElement('span');line.className=`cross-line ${index===axis?'cross-bar':'cross-stem'}${index===el._selectedCrossWordIndex?' is-active':''}`;line.dataset.crossWordIndex=String(index);line.style.fontSize=`${(index===axis?128:86)*el._crossWordSizes[index]/100}%`;line.append(makeTextRuns(value,word.start,word.end,segments));content.append(line);});
+    }
+  }else{
+    el.classList.remove('cross-layout');
+    content.append(makeTextRuns(value,0,value.length,segments));
+  }
+  el.replaceChildren(content);
+}
 function updateText(){
-  textLayer.style.fontFamily=`'${$('font').value}', Arial, sans-serif`;
-  textLayer.style.fontWeight=$('weight').value;
-  textLayer.style.fontSize=$('size').value+'px';
-  textLayer.style.color=$('textColor').value;
-  textLayer.style.textAlign=$('align').value;
-  textLayer.style.fontStyle=$('italic').value;
-  textLayer.style.background=$('blurText').checked?'rgba(0,0,0,.2)':'transparent';
-  textLayer.style.backdropFilter=$('blurText').checked?'blur(8px)':'none';
+  if(textLayer){
+    const previousSettings=textLayer._settings||{},currentSettings=Object.fromEntries(textStyleFields.map(id=>[id,$(id).type==='checkbox'?$(id).checked:$(id).value]));
+    textLayer._settings=currentSettings;
+    textLayer.dataset.textLayout=$('textLayout').value;
+    textLayer.style.fontFamily=`'${$('font').value}', Arial, sans-serif`;
+    textLayer.style.fontWeight=$('weight').value;
+    textLayer.style.fontSize=textLayer._settings.size+'px';
+    textLayer.style.color=$('textColor').value;
+    textLayer.style.textAlign=$('align').value;
+    textLayer.style.fontStyle=$('italic').value;
+    textLayer.style.background=$('blurText').checked?`rgba(0,0,0,${Number($('textShadeOpacity').value)/100})`:'transparent';
+    textLayer.style.backdropFilter=$('blurText').checked?`blur(${Number($('textBlurAmount').value)}px)`:'none';
+    textLayer.style.transform=`perspective(900px) rotateX(${Number($('textWarpY').value)}deg) rotateY(${Number($('textWarpX').value)}deg) rotateZ(${Number($('textRotate').value)}deg)`;
+    textLayer._segments=textSegments.map(segment=>({...segment,style:{...segment.style}}));
+    renderTextLayer(textLayer,textLayer._textValue||'',textSegments);
+    fitTextLayer();
+    applyTextCurvePreview(textLayer);
+    syncCrossModeButton();syncWordSizeControl();
+  }
   signature.textContent=$('signatureText').value;
   signature.style.fontSize=$('sigSize').value+'px';
   signature.style.color=$('sigColor').value;
   signature.style.textDecoration=$('underlineSignature').checked?'underline':'none';
-  renderTextLayer($('message').value);
-  fitTextLayer();
-  applyTextCurvePreview();
+  caption.textContent=$('captionText').value;
+  caption.style.fontSize=$('captionSize').value+'px';
+  caption.style.color=$('captionTextColor').value;
+  caption.style.background=colorWithOpacity($('captionBgColor').value,Number($('captionOpacity').value)/100);
+  caption.style.setProperty('--caption-background',$('captionBgColor').value);
+  caption.classList.remove('shape-rectangle','shape-rounded','shape-speech');
+  caption.classList.add(`shape-${$('captionShape').value}`);
+  $('captionSizeVal').textContent=$('captionSize').value+' px';
+  $('captionOpacityVal').textContent=$('captionOpacity').value+' %';
   const wx=Number($('textWarpX').value),wy=Number($('textWarpY').value),rot=Number($('textRotate').value);
-  textLayer.style.transform=`perspective(900px) rotateX(${wy}deg) rotateY(${wx}deg) rotateZ(${rot}deg)`;
   $('textCurveVal').textContent=Number($('textCurve').value)?`${$('textCurve').value} / 8`:'Désactivée';
   $('textWarpXVal').textContent=`${wx}°`; $('textWarpYVal').textContent=`${wy}°`; $('textRotateVal').textContent=`${rot}°`;
 }
-function fitTextLayer(){const base=Number($('size').value);textLayer.style.fontSize=base+'px';const stageBounds=stage.getBoundingClientRect(),signatureBounds=signature.classList.contains('hidden')?null:signature.getBoundingClientRect(),bottomLimit=(signatureBounds?signatureBounds.top:stageBounds.bottom-stageBounds.height*.04)-stageBounds.height*.035;let applied=base;while(applied>12&&textLayer.getBoundingClientRect().bottom>bottomLimit){applied--;textLayer.style.fontSize=applied+'px';}$('sizeVal').textContent=applied===base?`${base} px`:`${base} px · ajusté à ${applied} px`;}
-function applyTextCurvePreview(){const intensity=Number($('textCurve').value),old=[...textLayer.querySelectorAll('.curve-word')];for(const word of old)word.replaceWith(document.createTextNode(word.textContent));if(!intensity)return;const walker=document.createTreeWalker(textLayer,NodeFilter.SHOW_TEXT),nodes=[];let node;while((node=walker.nextNode()))nodes.push(node);const segmenter=Intl.Segmenter?new Intl.Segmenter(undefined,{granularity:'grapheme'}):null;for(const textNode of nodes){const tokens=textNode.data.match(/\s+|[^\s]+/gu)||[],fragment=document.createDocumentFragment();for(const token of tokens){if(/^\s+$/u.test(token)){fragment.append(document.createTextNode(token));continue;}const word=document.createElement('span');word.className='curve-word';const pieces=segmenter?[...segmenter.segment(token)].map(item=>item.segment):Array.from(token);for(const piece of pieces){const glyph=document.createElement('span');glyph.className='curve-character';glyph.textContent=piece;word.append(glyph);}fragment.append(word);}textNode.replaceWith(fragment);}const lines=new Map();for(const glyph of textLayer.querySelectorAll('.curve-character')){const bounds=glyph.getBoundingClientRect();if(bounds.width<=0)continue;const line=Math.round(bounds.top*10)/10;if(!lines.has(line))lines.set(line,[]);lines.get(line).push({glyph,bounds});}for(const characters of lines.values()){const left=Math.min(...characters.map(item=>item.bounds.left)),right=Math.max(...characters.map(item=>item.bounds.right)),width=Math.max(1,right-left);for(const character of characters){const position=(character.bounds.left+character.bounds.width/2-left)/width,offset=intensity*2*position*(1-position);character.glyph.style.top=`${offset.toFixed(2)}px`;}}}
+function isCrossMode(){return Boolean(textLayer&&$('textLayout').value==='cross');}
+function syncCrossModeButton(){const button=$('crossModeToggle');if(!button)return;const active=isCrossMode();button.setAttribute('aria-pressed',String(active));button.textContent=active?'✝ Mode Croix activé':'✝ Activer le mode Croix';}
+function setCrossSizeStatus(baseSize,overflow=false){const smallCount=(textLayer?._crossWordSizes||[]).filter(size=>size<50).length,parts=[`${baseSize} px · toute la croix`];if(overflow)parts.push('texte coupé, réduis la taille globale ou déplace la croix');if(smallCount)parts.push(`attention : ${smallCount} mot${smallCount>1?'s':''} sous 50 %`);$('sizeVal').textContent=parts.join(' · ');$('sizeVal').classList.toggle('is-warning',overflow||smallCount>0);}
+function syncWordSizeControl(){if(!$('size'))return;const active=isCrossMode(),wordControl=$('crossWordSizeControl'),nav=$('crossWordNav');wordControl.hidden=!active;nav.hidden=!active;$('sizeLabel').textContent=active?'Taille de toute la croix':'Taille du texte';if(active){const words=[...(textLayer._textValue||'').matchAll(/\S+/gu)],index=Number.isInteger(textLayer._selectedCrossWordIndex)?textLayer._selectedCrossWordIndex:0,word=words[index]?.[0]||'',value=textLayer._crossWordSizes?.[index]||100,baseSize=Number(textLayer._settings?.size||32);$('size').min='16';$('size').max='64';$('size').step='1';$('size').value=String(baseSize);$('selectedCrossWord').textContent=word?`Mot ${index+1} : « ${word} »`:'Touchez un mot sur l’affiche';$('wordSizePercent').value=String(value);setCrossSizeStatus(baseSize,textLayer.dataset.textOverflow==='true');$('crossWordNavStatus').textContent=word?`Mot ${index+1} sur ${words.length}`:'Aucun mot';$('previousCrossWord').disabled=index<=0;$('nextCrossWord').disabled=index>=words.length-1;}else{$('size').min='16';$('size').max='64';$('size').step='1';$('size').value=String(textLayer?._settings?.size||$('size').value);$('sizeVal').textContent=`${$('size').value} px`;}if(textLayer)textLayer.querySelectorAll('.cross-line').forEach(line=>line.classList.toggle('is-active',Number(line.dataset.crossWordIndex)===textLayer._selectedCrossWordIndex));}
+function selectCrossWord(index){if(!isCrossMode())return;const words=[...(textLayer._textValue||'').matchAll(/\S+/gu)];if(!Number.isInteger(index)||index<0||index>=words.length)return;textLayer._selectedCrossWordIndex=index;syncWordSizeControl();queueDraft();}
+function setSelectedCrossWordSize(value){if(!isCrossMode())return;const parsed=Number(value),size=Math.max(20,Math.min(250,Math.round(Number.isFinite(parsed)?parsed:100))),index=textLayer._selectedCrossWordIndex,line=textLayer.querySelector(`.cross-line[data-cross-word-index="${index}"]`);if(!line)return;textLayer._crossWordSizes[index]=size;line.style.fontSize=`${(line.classList.contains('cross-bar')?128:86)*size/100}%`;$('wordSizePercent').value=String(size);fitTextLayer();queueDraft();}
+function fitTextLayer(){if(!textLayer)return;const base=Number(textLayer._settings?.size||$('size').value),cross=isCrossMode(),stageBounds=stage.getBoundingClientRect(),signatureBounds=signature.classList.contains('hidden')?null:signature.getBoundingClientRect(),bottomLimit=(signatureBounds?signatureBounds.top:stageBounds.bottom-stageBounds.height*.04)-stageBounds.height*.035;let applied=base;textLayer.style.fontSize=applied+'px';const lines=[...textLayer.querySelectorAll('.cross-line')],overflows=()=>textLayer.getBoundingClientRect().bottom>bottomLimit||lines.some(line=>line.scrollWidth>line.clientWidth+1);if(!cross)while(applied>12&&overflows()){applied--;textLayer.style.fontSize=applied+'px';}const overflow=overflows();textLayer.dataset.textOverflow=String(overflow);if(cross)setCrossSizeStatus(base,overflow);else{$('sizeVal').textContent=overflow?`${base} px · ajuste les mots ou déplace le bloc`:(applied===base?`${base} px`:`${base} px · ajusté à ${applied} px`);$('sizeVal').classList.toggle('is-warning',overflow);}}
+function applyTextCurvePreview(el=textLayer){if(!el)return;const intensity=Number(el._settings?.textCurve||0),old=[...el.querySelectorAll('.curve-word')];for(const word of old)word.replaceWith(document.createTextNode(word.textContent));if(!intensity)return;const walker=document.createTreeWalker(el,NodeFilter.SHOW_TEXT),nodes=[];let node;while((node=walker.nextNode()))nodes.push(node);const segmenter=Intl.Segmenter?new Intl.Segmenter(undefined,{granularity:'grapheme'}):null;for(const textNode of nodes){const tokens=textNode.data.match(/\s+|[^\s]+/gu)||[],fragment=document.createDocumentFragment();for(const token of tokens){if(/^\s+$/u.test(token)){fragment.append(document.createTextNode(token));continue;}const word=document.createElement('span');word.className='curve-word';const pieces=segmenter?[...segmenter.segment(token)].map(item=>item.segment):Array.from(token);for(const piece of pieces){const glyph=document.createElement('span');glyph.className='curve-character';glyph.textContent=piece;word.append(glyph);}fragment.append(word);}textNode.replaceWith(fragment);}const lines=new Map();for(const glyph of el.querySelectorAll('.curve-character')){const bounds=glyph.getBoundingClientRect();if(bounds.width<=0)continue;const line=Math.round(bounds.top*10)/10;if(!lines.has(line))lines.set(line,[]);lines.get(line).push({glyph,bounds});}for(const characters of lines.values()){const left=Math.min(...characters.map(item=>item.bounds.left)),right=Math.max(...characters.map(item=>item.bounds.right)),width=Math.max(1,right-left);for(const character of characters){const position=(character.bounds.left+character.bounds.width/2-left)/width,offset=intensity*2*position*(1-position);character.glyph.style.top=`${offset.toFixed(2)}px`;}}}
 function adjustSegmentsForEdit(previousText,nextText){let prefix=0;while(prefix<previousText.length&&prefix<nextText.length&&previousText[prefix]===nextText[prefix])prefix++;let suffix=0;while(suffix<previousText.length-prefix&&suffix<nextText.length-prefix&&previousText[previousText.length-1-suffix]===nextText[nextText.length-1-suffix])suffix++;const oldEnd=previousText.length-suffix,newEnd=nextText.length-suffix,delta=newEnd-oldEnd,adjusted=[];for(const segment of textSegments){if(segment.end<=prefix){adjusted.push(segment);continue;}if(segment.start>=oldEnd){adjusted.push({...segment,start:segment.start+delta,end:segment.end+delta});continue;}if(segment.start<prefix)adjusted.push({...segment,end:prefix});if(segment.end>oldEnd)adjusted.push({...segment,start:newEnd,end:segment.end+delta});}return adjusted.filter(segment=>segment.end>segment.start);}
-$('message').addEventListener('input',()=>{const value=$('message').value;textSegments=adjustSegmentsForEdit(lastMessageValue,value);lastMessageValue=value;updateText();queueDraft();});
-['font','weight','size','textColor','align','italic','blurText','signatureText','sigSize','sigColor','underlineSignature','textCurve','textWarpX','textWarpY','textRotate'].forEach(id=>$(id).addEventListener('input',()=>{updateText();queueDraft();}));
+function remapCrossWordSizes(previousText,nextText,sizes,selectedIndex){const previousWords=previousText.match(/\S+/gu)||[],nextWords=nextText.match(/\S+/gu)||[],table=Array.from({length:previousWords.length+1},()=>new Uint16Array(nextWords.length+1));for(let i=previousWords.length-1;i>=0;i--)for(let j=nextWords.length-1;j>=0;j--)table[i][j]=previousWords[i]===nextWords[j]?table[i+1][j+1]+1:Math.max(table[i+1][j],table[i][j+1]);const oldToNew=new Map(),nextToOld=new Map();let i=0,j=0;while(i<previousWords.length&&j<nextWords.length){if(previousWords[i]===nextWords[j]){oldToNew.set(i,j);nextToOld.set(j,i);i++;j++;}else if(table[i+1][j]>=table[i][j+1])i++;else j++;}const nextSizes=nextWords.map((_,index)=>nextToOld.has(index)?Math.max(20,Math.min(250,Number(sizes[nextToOld.get(index)])||100)):100);let nextSelected=oldToNew.get(selectedIndex);if(nextSelected===undefined){let closest=-1,distance=Infinity;for(const[oldIndex,newIndex]of oldToNew){const candidateDistance=Math.abs(oldIndex-selectedIndex);if(candidateDistance<distance){closest=newIndex;distance=candidateDistance;}}nextSelected=closest>=0?closest:Math.min(Math.max(0,selectedIndex),Math.max(0,nextWords.length-1));}return{sizes:nextSizes,selectedIndex:nextSelected};}
+$('message').addEventListener('select',()=>{$('deleteTextSelection').disabled=$('message').selectionStart===$('message').selectionEnd;});
+$('message').addEventListener('keyup',()=>{$('deleteTextSelection').disabled=$('message').selectionStart===$('message').selectionEnd;});
+$('message').addEventListener('mouseup',()=>{$('deleteTextSelection').disabled=$('message').selectionStart===$('message').selectionEnd;});
+document.addEventListener('selectionchange',()=>{const input=$('message');if(document.activeElement===input)$('deleteTextSelection').disabled=input.selectionStart===input.selectionEnd;});
+$('deleteTextSelection').onclick=()=>{const input=$('message'),start=input.selectionStart,end=input.selectionEnd;if(start===end){$('textDeleteStatus').textContent='Sélectionne d’abord le passage à supprimer.';input.focus();return;}input.setRangeText('',start,end,'start');$('deleteTextSelection').disabled=true;$('textDeleteStatus').textContent='Passage supprimé. Enregistre pour mettre à jour l’affiche.';input.focus();};
+$('resetCrossWordSizes').onclick=()=>{if(!isCrossMode())return;textLayer._crossWordSizes=(textLayer._textValue.match(/\S+/gu)||[]).map(()=>100);updateText();queueDraft();setStatus('Toutes les tailles de mots sont revenues à 100 %.');};
+$('textDialogForm').addEventListener('submit',event=>{
+  event.preventDefault();const value=$('message').value;if(!value.trim()){$('message').focus();return;}
+  if(editingTextLayer){
+    textLayer=editingTextLayer;textSegments=textLayer._segments||[];textSegments=adjustSegmentsForEdit(lastMessageValue,value);
+    if(textLayer._textValue!==value){const remapped=remapCrossWordSizes(lastMessageValue,value,textLayer._crossWordSizes||[],textLayer._selectedCrossWordIndex||0);textLayer._crossWordSizes=remapped.sizes;textLayer._selectedCrossWordIndex=remapped.selectedIndex;}
+    textLayer._textValue=value;textLayer._textRole=$('textRole').value;textLayer._segments=textSegments;
+    $('message').value=value;lastMessageValue=value;updateText();select(textLayer);
+  }else{
+    const role=$('textRole').value;
+    addTextLayer(value,role);
+    $('message').value=value;lastMessageValue=value;
+  }
+  $('textDialog').close();editingTextLayer=null;queueDraft();
+});
+$('cancelTextDialog').onclick=()=>$('textDialog').close();
+$('textDialog').addEventListener('close',()=>{editingTextLayer=null;});
+document.querySelectorAll('[data-text-slot]').forEach(button=>button.onclick=()=>openTextDialog());
+$('editText').onclick=()=>{if(textLayer)openTextDialog(textLayer);};
+$('removeText').onclick=()=>{if(!textLayer)return;const removed=textLayer;textLayers=textLayers.filter(layer=>layer!==removed);removed.remove();textLayer=null;textSegments=[];$('message').value='';lastMessageValue='';if(textLayers.length)select(textLayers[textLayers.length-1]);else updateTextBlockControls();updateText();queueDraft();};
+['font','weight','textColor','align','italic','blurText','textBlurAmount','textShadeOpacity','signatureText','sigSize','sigColor','underlineSignature','textCurve','textWarpX','textWarpY','textRotate','captionText','captionLayer','captionShape','captionSize','captionBgColor','captionTextColor','captionOpacity'].forEach(id=>$(id).addEventListener('input',()=>{updateText();syncOverlayLayers();queueDraft();}));
+$('size').addEventListener('input',()=>{updateText();queueDraft();});
+$('wordSizePercent').addEventListener('input',()=>{if($('wordSizePercent').value!=='')setSelectedCrossWordSize($('wordSizePercent').value);});
+$('wordSizePercent').addEventListener('change',()=>{if(isCrossMode()){setSelectedCrossWordSize($('wordSizePercent').value);syncWordSizeControl();}});
+$('crossModeToggle').onclick=()=>{if(!textLayer)return;$('textLayout').value=$('textLayout').value==='cross'?'normal':'cross';$('textLayout').dispatchEvent(new Event('input',{bubbles:true}));};
+$('previousCrossWord').onclick=()=>{if(textLayer)selectCrossWord(textLayer._selectedCrossWordIndex-1);};
+$('nextCrossWord').onclick=()=>{if(textLayer)selectCrossWord(textLayer._selectedCrossWordIndex+1);};
+$('textLayout').addEventListener('input',()=>{
+  if(textLayer?._settings?.textLayout==='cross')$('size').value=textLayer._settings.size||$('size').value;
+  if(textLayer?._autoPosition){
+    if($('textLayout').value==='cross')textLayer.style.top='5%';
+    else textLayer.style.top=`${20+textLayers.indexOf(textLayer)*15}%`;
+  }
+  updateText();updateTextBlockControls();queueDraft();
+});
 function setBgBlur(){const value=Number($('backgroundBlur').value);bgImage.style.filter=value?`blur(${value}px)`:'';$('backgroundBlurVal').textContent=value+' px';}
-function updateStyleOverlay(){const layers=[];if($('bibleGlow').checked)layers.push(`radial-gradient(ellipse at center, rgba(255,204,120,${Number($('glowOpacity').value)/100}) 0%, rgba(216,147,59,${Number($('glowOpacity').value)/260}) 32%, transparent 72%)`);if($('vignette').checked)layers.push('radial-gradient(ellipse at center, transparent 48%, rgba(0,0,0,.62) 100%)');styleOverlay.style.background=layers.join(',')||'none';$('glowOpacityVal').textContent=$('glowOpacity').value+' %';}
+function updateStyleOverlay(){const layers=[],glowColor=$('glowColor').value,glowOpacity=Number($('glowOpacity').value)/100,vignetteOpacity=Number($('vignetteOpacity').value)/100;if($('bibleGlow').checked)layers.push(`radial-gradient(ellipse at center, ${colorWithOpacity(glowColor,glowOpacity)} 0%, ${colorWithOpacity(glowColor,glowOpacity*.38)} 32%, ${colorWithOpacity(glowColor,0)} 72%)`);if($('vignette').checked)layers.push(`radial-gradient(ellipse at center, rgba(0,0,0,0) 48%, rgba(0,0,0,${vignetteOpacity}) 100%)`);styleOverlay.style.background=layers.join(',')||'none';$('glowOpacityVal').textContent=$('glowOpacity').value+' %';$('vignetteOpacityVal').textContent=$('vignetteOpacity').value+' %';$('textBlurAmountVal').textContent=$('textBlurAmount').value+' px';$('textShadeOpacityVal').textContent=$('textShadeOpacity').value+' %';}
 function replaceSegmentRange(start,end,style){const next=[];for(const segment of textSegments){if(segment.end<=start||segment.start>=end){next.push(segment);continue;}if(segment.start<start)next.push({...segment,end:start});if(segment.end>end)next.push({...segment,start:end});}if(style&&Object.keys(style).length)next.push({start,end,style});textSegments=next.sort((a,b)=>a.start-b.start);}
-function selectionRange(){const input=$('message'),value=input.value;let start=input.selectionStart,end=input.selectionEnd;if(start===end){$('segmentStatus').textContent='Sélectionne d’abord une portion du texte.';return null;}while(start>0&&!/\s/u.test(value[start-1]))start--;while(end<value.length&&!/\s/u.test(value[end]))end++;return{start,end};}
+function selectionRange(){if(!textLayer){$('segmentStatus').textContent='Ajoute ou sélectionne d’abord un bloc de texte.';return null;}const input=$('message'),value=textLayer._textValue||'';let start=input.selectionStart,end=input.selectionEnd;if(start===end){$('segmentStatus').textContent='Sélectionne d’abord une portion du texte dans Modifier le texte.';return null;}while(start>0&&!/\s/u.test(value[start-1]))start--;while(end<value.length&&!/\s/u.test(value[end]))end++;return{start,end};}
 function applySegmentStyle(){const range=selectionRange();if(!range)return;const style={},font=$('segmentFont').value,weight=$('segmentWeight').value,highlight=$('segmentHighlight').value;if(font)style.font=font;if(weight)style.weight=weight;if($('segmentUseColor').checked)style.color=$('segmentColor').value;if(highlight){style.highlight=highlight;if(highlight==='marker-custom'){style.markerColor=$('markerColor').value;style.markerMode=$('markerMode').value;style.markerOpacity=Number($('markerOpacity').value);}}if(!Object.keys(style).length){$('segmentStatus').textContent='Choisis au moins un style à appliquer.';return;}replaceSegmentRange(range.start,range.end,style);updateText();queueDraft();$('segmentStatus').textContent='Style appliqué à la sélection.';}
 $('bibleGlow').addEventListener('input',()=>{updateStyleOverlay();queueDraft();});
 $('vignette').addEventListener('input',()=>{updateStyleOverlay();queueDraft();});
 $('glowOpacity').addEventListener('input',()=>{updateStyleOverlay();queueDraft();});
-function applyPresetHighlight(color){const input=$('message'),start=input.selectionStart===input.selectionEnd?0:input.selectionStart,end=input.selectionStart===input.selectionEnd?input.value.length:input.selectionEnd;if(end<=start){setStatus('Ajoute d’abord du texte pour appliquer ce style.');return;}$('markerColor').value=color;$('markerMode').value='neon';replaceSegmentRange(start,end,{highlight:'marker-custom',markerColor:color,markerMode:'neon',markerOpacity:Number($('markerOpacity').value)});updateText();queueDraft();setStatus('Surlignage lumineux appliqué.');}
+$('glowColor').addEventListener('input',()=>{updateStyleOverlay();queueDraft();});
+$('glowColor').addEventListener('change',()=>{updateStyleOverlay();queueDraft();});
+$('glowColor').parentElement.querySelectorAll('[data-glow-color]').forEach(button=>button.onclick=()=>{$('glowColor').value=button.dataset.glowColor;updateStyleOverlay();queueDraft();});
+$('vignetteOpacity').addEventListener('input',()=>{updateStyleOverlay();queueDraft();});
+function applyCustomHighlight(){if(!textLayer){setStatus('Ajoute ou sélectionne d’abord un bloc de texte.');return;}const input=$('message'),start=input.selectionStart===input.selectionEnd?0:input.selectionStart,end=input.selectionStart===input.selectionEnd?input.value.length:input.selectionEnd;if(end<=start){setStatus('Ajoute d’abord du texte pour appliquer le surlignage.');return;}replaceSegmentRange(start,end,{highlight:'marker-custom',markerColor:$('markerColor').value,markerMode:$('markerMode').value,markerOpacity:Number($('markerOpacity').value)});updateText();queueDraft();setStatus('Surlignage personnalisé appliqué.');}
 $('presetBible').onclick=()=>{document.querySelector('.tab[data-tab="fond"]').click();$('backgroundFile').click();};
-$('presetViolet').onclick=()=>applyPresetHighlight('#a64dff');
-$('presetBlue').onclick=()=>applyPresetHighlight('#348fff');
+$('applyQuickHighlight').onclick=applyCustomHighlight;
 $('markerColor').addEventListener('input',queueDraft);
 $('markerMode').addEventListener('change',queueDraft);
 $('markerOpacity').addEventListener('input',()=>{$('markerOpacityVal').textContent=$('markerOpacity').value+' %';queueDraft();});
 $('applySegmentStyle').onclick=applySegmentStyle;
 $('removeSegmentStyle').onclick=()=>{const range=selectionRange();if(!range)return;replaceSegmentRange(range.start,range.end,null);updateText();queueDraft();$('segmentStatus').textContent='Style retiré de la sélection.';};
-$('clearSegmentStyles').onclick=()=>{textSegments=[];updateText();queueDraft();$('segmentStatus').textContent='Tous les styles de sélection ont été réinitialisés.';};
-function fitStage(){if(!window.matchMedia('(max-width:849px)').matches){stage.style.width='';stage.style.height='';fitTextLayer();return;}const bounds=document.querySelector('.preview-wrap').getBoundingClientRect(),ratio=format==='square'?1:format==='portrait'?4/5:9/16,width=Math.min(bounds.width,bounds.height*ratio);stage.style.width=width+'px';stage.style.height=width/ratio+'px';fitTextLayer();}
-function snapshot(){const values=Object.fromEntries(stateFields.map(id=>{const input=$(id);return[id,input.type==='checkbox'?input.checked:input.value];}));return{values,bgUrl,overlayUrl,overlayOnTop,segments:textSegments.map(segment=>({...segment,style:{...segment.style}})),signatureHidden:signature.classList.contains('hidden'),textPosition:{left:textLayer.style.left,top:textLayer.style.top,width:textLayer.style.width},signaturePosition:{left:signature.style.left,top:signature.style.top,bottom:signature.style.bottom},overlayPosition:{left:overlay.style.left,top:overlay.style.top}};}
-function restore(data){if(!data)return;for(const[id,value]of Object.entries(data.values||{})){const input=$(id);if(!input)continue;if(input.type==='checkbox')input.checked=Boolean(value);else input.value=value??'';}textSegments=Array.isArray(data.segments)?data.segments:[];lastMessageValue=$('message').value;bgUrl=data.bgUrl||null;overlayUrl=data.overlayUrl||null;overlayOnTop=data.overlayOnTop!==false;for(const[element,position]of[[textLayer,data.textPosition],[signature,data.signaturePosition],[overlay,data.overlayPosition]])if(position)for(const[property,value]of Object.entries(position))element.style[property]=value??'';signature.classList.toggle('hidden',Boolean(data.signatureHidden));bgImage.style.display=bgUrl?'block':'none';if(bgUrl)bgImage.src=bgUrl;else bgImage.removeAttribute('src');overlay.style.display=overlayUrl?'block':'none';if(overlayUrl)overlay.src=overlayUrl;else overlay.removeAttribute('src');overlay.style.width=$('overlaySize').value+'%';overlay.style.opacity=Number($('overlayOpacity').value)/100;overlay.style.zIndex=overlayOnTop?'3':'1';textLayer.style.zIndex=overlayOnTop?'2':'3';stage.style.background=$('bgColor').value;shade.style.opacity=Number($('shadeOpacity').value)/100;$('shadeVal').textContent=$('shadeOpacity').value+' %';format=$('format').value;stage.style.aspectRatio=format==='square'?'1 / 1':format==='portrait'?'4 / 5':'9 / 16';setBgBlur();updateStyleOverlay();updateText();fitStage();}
+$('clearSegmentStyles').onclick=()=>{if(!textLayer)return;textSegments=[];updateText();queueDraft();$('segmentStatus').textContent='Tous les styles de sélection ont été réinitialisés.';};
+function fitStage(){if(!window.matchMedia('(max-width:849px)').matches){stage.style.width='';stage.style.height='';fitTextLayer();return;}const preview=document.querySelector('.preview-wrap'),bounds=preview.getBoundingClientRect();if(bounds.width<=0||bounds.height<=0)return;const style=getComputedStyle(preview),availableWidth=bounds.width-parseFloat(style.paddingLeft)-parseFloat(style.paddingRight),availableHeight=bounds.height-parseFloat(style.paddingTop)-parseFloat(style.paddingBottom),ratio=format==='square'?1:format==='portrait'?4/5:9/16,width=Math.min(availableWidth,availableHeight*ratio);if(width<=0)return;stage.style.width=width+'px';stage.style.height=width/ratio+'px';fitTextLayer();}
+function snapshot(){const values=Object.fromEntries(stateFields.map(id=>{const input=$(id);return[id,input.type==='checkbox'?input.checked:input.value];}));values.message=textLayer?textLayer._textValue:'';return{values,bgUrl,overlayUrl,overlayOnTop,captionVisible:getComputedStyle(caption).display!=='none',segments:textSegments.map(segment=>({...segment,style:{...segment.style}})),textLayers:textLayers.map(el=>({text:el._textValue,role:el._textRole,segments:(el._segments||[]).map(segment=>({...segment,style:{...segment.style}})),settings:{...el._settings,crossWordIndex:el._selectedCrossWordIndex},wordSizes:[...(el._crossWordSizes||[])],position:{left:el.style.left,top:el.style.top,width:el.style.width,auto:el._autoPosition}})),selectedTextIndex:textLayers.indexOf(textLayer),signatureHidden:signature.classList.contains('hidden'),signaturePosition:{left:signature.style.left,top:signature.style.top,bottom:signature.style.bottom},overlayPosition:{left:overlay.style.left,top:overlay.style.top},captionPosition:{left:caption.style.left,top:caption.style.top,width:caption.style.width}};}
+function restore(data){if(!data)return;for(const[id,value]of Object.entries(data.values||{})){const input=$(id);if(!input)continue;if(input.type==='checkbox')input.checked=Boolean(value);else input.value=value??'';}bgUrl=data.bgUrl||null;overlayUrl=data.overlayUrl||null;overlayOnTop=data.overlayOnTop!==false;for(const[element,position]of[[signature,data.signaturePosition],[overlay,data.overlayPosition],[caption,data.captionPosition]])if(position)for(const[property,value]of Object.entries(position))element.style[property]=value??'';signature.classList.toggle('hidden',Boolean(data.signatureHidden));bgImage.style.display=bgUrl?'block':'none';if(bgUrl)bgImage.src=bgUrl;else bgImage.removeAttribute('src');overlay.style.display=overlayUrl?'block':'none';if(overlayUrl)overlay.src=overlayUrl;else overlay.removeAttribute('src');overlay.style.width=$('overlaySize').value+'%';overlay.style.opacity=Number($('overlayOpacity').value)/100;caption.style.display=data.captionVisible?'flex':'none';$('showCaption').textContent=data.captionVisible?'Masquer l’encadré':'Ajouter l’encadré';clearTextLayers();if(Array.isArray(data.textLayers)){for(const layer of data.textLayers){if(typeof layer?.text!=='string')continue;addTextLayer(layer.text,layer.role==='title'?'title':'paragraph',Array.isArray(layer.segments)?layer.segments:[],layer.settings||captureTextSettings(),layer.position||null,layer.wordSizes||null);}const selected=data.selectedTextIndex;if(Number.isInteger(selected)&&selected>=0&&selected<textLayers.length)select(textLayers[selected]);else{for(const layer of textLayers)layer.classList.remove('selected');textLayer=null;textSegments=[];updateTextBlockControls();}}else if(typeof data.values?.message==='string'&&data.values.message){const legacyPosition=data.textPosition||null;addTextLayer(data.values.message,'paragraph',Array.isArray(data.segments)?data.segments:[],captureTextSettings(),legacyPosition);}else updateTextBlockControls();lastMessageValue=textLayer?textLayer._textValue:'';syncOverlayLayers();stage.style.background=$('bgColor').value;shade.style.opacity=Number($('shadeOpacity').value)/100;$('shadeVal').textContent=$('shadeOpacity').value+' %';format=$('format').value;stage.style.aspectRatio=format==='square'?'1 / 1':format==='portrait'?'4 / 5':'9 / 16';setBgBlur();updateStyleOverlay();updateText();fitStage();}
 function openDatabase(){return new Promise((resolve,reject)=>{if(!('indexedDB'in window)){reject(Error('IndexedDB indisponible'));return;}const request=indexedDB.open('studio-whatsapp-creations',1);request.onupgradeneeded=()=>{if(!request.result.objectStoreNames.contains('projects'))request.result.createObjectStore('projects',{keyPath:'id'});};request.onsuccess=()=>{db=request.result;resolve(db);};request.onerror=()=>reject(request.error);});}
 function store(mode,operation){return new Promise((resolve,reject)=>{const transaction=db.transaction('projects',mode),request=operation(transaction.objectStore('projects'));transaction.oncomplete=()=>resolve(request.result);transaction.onerror=()=>reject(transaction.error||request.error);transaction.onabort=()=>reject(transaction.error);});}
+function updateHistoryButtons(){$('undoButton').disabled=undoIndex<=0;$('redoButton').disabled=undoIndex<0||undoIndex>=undoHistory.length-1;}
+function recordHistoryState(){if(restoringHistory)return;const state=snapshot(),serialized=JSON.stringify(state);if(undoIndex>=0&&undoHistory[undoIndex].serialized===serialized)return;undoHistory=undoHistory.slice(0,undoIndex+1);undoHistory.push({state,serialized});if(undoHistory.length>30)undoHistory.shift();undoIndex=undoHistory.length-1;updateHistoryButtons();}
+function resetHistory(){const state=snapshot();undoHistory=[{state,serialized:JSON.stringify(state)}];undoIndex=0;updateHistoryButtons();}
+async function moveHistory(direction){if(saveTimer){clearTimeout(saveTimer);saveTimer=null;}recordHistoryState();const next=undoIndex+direction;if(next<0||next>=undoHistory.length)return;undoIndex=next;restoringHistory=true;try{restore(undoHistory[undoIndex].state);}finally{restoringHistory=false;}updateHistoryButtons();if(db)await saveDraft();setStatus(direction<0?'Modification annulée.':'Modification rétablie.');}
+$('undoButton').onclick=()=>moveHistory(-1);
+$('redoButton').onclick=()=>moveHistory(1);
 async function saveDraft(){if(!db)return false;try{await store('readwrite',projects=>projects.put({id:'__draft__',saved:false,updatedAt:Date.now(),state:snapshot()}));return true;}catch(error){setStatus('Brouillon non sauvegardé : espace de stockage insuffisant.');return false;}}
-function queueDraft(){clearTimeout(saveTimer);saveTimer=setTimeout(saveDraft,450);}
+function queueDraft(){musicPosterCanvas=null;if($('musicFile')?.files.length&&!musicRecording)$('createMusicVideo').disabled=true;if(musicVideoUrl&&!musicRecording){$('musicVideoResult').hidden=true;$('downloadMusicVideo').classList.add('hidden');$('musicExportStatus').textContent='Affiche modifiée. Prépare un nouvel aperçu avant de créer une autre vidéo.';}clearTimeout(saveTimer);saveTimer=setTimeout(()=>{saveTimer=null;recordHistoryState();saveDraft();},450);}
 function saveTitle(signatureText,savedAt){const name=String(signatureText||'').trim()||'Création',timestamp=`${new Date(savedAt).toLocaleString('fr-FR')}.${String(savedAt%1000).padStart(3,'0')}`;return`${name} - ${timestamp}`;}
 function exportFileName(signatureText,savedAt){const name=String(signatureText||'').trim().replace(/[<>:"/\\|?*\u0000-\u001f]/g,'-').replace(/\s+/g,' ').replace(/[. ]+$/,'')||'creation',date=new Date(savedAt),timestamp=`${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}_${String(date.getHours()).padStart(2,'0')}-${String(date.getMinutes()).padStart(2,'0')}-${String(date.getSeconds()).padStart(2,'0')}-${String(savedAt%1000).padStart(3,'0')}`;return`${name}_${timestamp}.png`;}
 async function renderHistory(){if(!db)return;const list=$('historyList');try{const projects=await store('readonly',items=>items.getAll()),saved=projects.filter(item=>item.saved).sort((a,b)=>b.updatedAt-a.updatedAt);list.replaceChildren();if(!saved.length){const empty=document.createElement('p');empty.className='empty-history';empty.textContent='Aucune création enregistrée pour le moment.';list.append(empty);return;}for(const item of saved){const displayTitle=item.namingVersion===2?item.title:saveTitle(item.state?.values?.signatureText,item.updatedAt),row=document.createElement('div');row.className='history-item';const image=document.createElement('img');image.alt='';image.src=item.state.bgUrl||item.state.overlayUrl||'';const details=document.createElement('div');details.className='history-info';const title=document.createElement('strong');title.textContent=displayTitle;details.append(title);const open=document.createElement('button');open.type='button';open.textContent='Ouvrir';open.onclick=()=>{restore(item.state);queueDraft();setStatus(`Création « ${displayTitle} » retrouvée.`);};const remove=document.createElement('button');remove.type='button';remove.className='danger';remove.textContent='×';remove.setAttribute('aria-label','Supprimer '+displayTitle);remove.onclick=async()=>{if(confirm(`Supprimer « ${displayTitle} » ?`)){await store('readwrite',items=>items.delete(item.id));renderHistory();}};row.append(image,details,open,remove);list.append(row);}}catch(error){list.textContent='Impossible de lire les créations enregistrées.';}}
@@ -384,6 +799,7 @@ async function exportLocalBackup(){
 function validateBackupProject(project,index){
  if(!project||typeof project!=='object'||typeof project.id!=='string'||!project.id||!project.state||typeof project.state!=='object'||!project.state.values||typeof project.state.values!=='object')throw Error(`La création ${index+1} de la sauvegarde est invalide.`);
  for(const field of ['bgUrl','overlayUrl']){const image=project.state[field];if(image!==null&&image!==undefined&&(typeof image!=='string'||!image.startsWith('data:image/')))throw Error(`L’image de la création ${index+1} n’est pas une image intégrée valide.`);}
+ const layers=project.state.textLayers;if(layers!==undefined&&(!Array.isArray(layers)||layers.length>4||layers.some(layer=>!layer||typeof layer.text!=='string')))throw Error(`Les blocs de texte de la création ${index+1} sont invalides (quatre blocs maximum).`);
  return project;
 }
 function validateBackupVerse(verse,index){
@@ -425,13 +841,32 @@ async function importLocalBackup(file){
 }
 async function saveProject(){if(!db){setStatus('Le stockage local est indisponible dans ce navigateur.');return;}const savedAt=Math.max(Date.now(),lastSavedAt+1);lastSavedAt=savedAt;const signatureName=String($('signatureText').value||'').trim()||'Création',title=saveTitle(signatureName,savedAt);try{const id=crypto.randomUUID?crypto.randomUUID():`${savedAt}-${Math.random().toString(36).slice(2)}`;await store('readwrite',projects=>projects.put({id,signatureName,title,namingVersion:2,saved:true,updatedAt:savedAt,state:snapshot()}));await renderHistory();setStatus(`Création « ${title} » enregistrée sur cet appareil.`);}catch(error){setStatus('Enregistrement impossible : espace de stockage insuffisant.');}}
 $('toggleSignature').onclick=()=>{signature.classList.toggle('hidden');fitTextLayer();queueDraft();};
-$('resetText').onclick=()=>{$('message').value='Votre texte ici';lastMessageValue=$('message').value;textSegments=[];$('signatureText').value='@VOTRE_NOM';updateText();queueDraft();};
+$('resetText').onclick=()=>{clearTextLayers();$('signatureText').value='@VOTRE_NOM';updateText();queueDraft();};
 $('bgColor').oninput=e=>{stage.style.background=e.target.value;queueDraft();};
 document.querySelectorAll('[data-color]').forEach(b=>b.onclick=()=>{$('bgColor').value=b.dataset.color;stage.style.background=b.dataset.color;queueDraft();});
 $('shadeOpacity').oninput=e=>{shade.style.opacity=e.target.value/100;$('shadeVal').textContent=e.target.value+' %';queueDraft();};
 $('backgroundBlur').oninput=()=>{setBgBlur();queueDraft();};
 function loadImage(file,callback){if(!file)return;if(!file.type.startsWith('image/')){setStatus('Choisis un fichier image valide.');return;}const reader=new FileReader();reader.onload=()=>callback(reader.result);reader.onerror=()=>setStatus('Impossible de lire cette image.');reader.readAsDataURL(file);}
 $('backgroundFile').onchange=e=>loadImage(e.target.files[0],src=>{bgUrl=src;bgImage.src=src;bgImage.style.display='block';setBgBlur();setStatus('Photo de fond ajoutée.');queueDraft();});
+$('usePosterTemplate').onclick=async()=>{
+ setStatus('Préparation du modèle « Bible ouverte »…');
+ try{
+  const response=await fetch('./modele-bible.jpg');
+  if(!response.ok)throw Error(`Chargement impossible (${response.status}).`);
+  const blob=await response.blob();
+  bgUrl=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=()=>reject(reader.error||Error('Lecture de l’image impossible.'));reader.readAsDataURL(blob);});
+  bgImage.src=bgUrl;bgImage.style.display='block';
+  clearTextLayers();
+  $('signatureText').value='';
+  $('format').value='story';format='story';stage.style.aspectRatio='9 / 16';
+  $('bgColor').value='#ffffff';stage.style.background='#ffffff';
+  $('shadeOpacity').value='0';shade.style.opacity='0';$('shadeVal').textContent='0 %';
+  $('backgroundBlur').value='0';setBgBlur();updateText();fitStage();
+  document.querySelector('.tab[data-tab="texte"]').click();
+  setStatus('Modèle « Bible ouverte » prêt. Ajoute ton texte dans l’onglet Texte.');
+  queueDraft();
+ }catch(error){setStatus(`Impossible de charger le modèle « Bible ouverte » : ${error.message}`);}
+};
 
 function makeBuiltinBiblePage(){
  const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200">
@@ -464,16 +899,23 @@ $('overlayFile').onchange=e=>loadImage(e.target.files[0],src=>{overlayUrl=src;ov
 $('overlaySize').oninput=e=>{overlay.style.width=e.target.value+'%';queueDraft();};
 $('overlayOpacity').oninput=e=>{overlay.style.opacity=e.target.value/100;queueDraft();};
 $('removeOverlay').onclick=()=>{overlayUrl=null;overlay.removeAttribute('src');overlay.style.display='none';queueDraft();};
-$('frontOverlay').onclick=()=>{overlayOnTop=!overlayOnTop;overlay.style.zIndex=overlayOnTop?'3':'1';textLayer.style.zIndex=overlayOnTop?'2':'3';signature.style.zIndex='4';setStatus(overlayOnTop?'Image au premier plan.':'Image derrière le texte.');queueDraft();};
-function select(el){[textLayer,signature,overlay].forEach(x=>x.classList.remove('selected'));el.classList.add('selected');}
- [textLayer,signature,overlay].forEach(el=>{el.addEventListener('pointerdown',e=>{if(el===overlay&&!overlayUrl)return;select(el);const rect=stage.getBoundingClientRect(),r=el.getBoundingClientRect();const sx=e.clientX,sy=e.clientY,left=r.left-rect.left,top=r.top-rect.top;el.setPointerCapture(e.pointerId);function move(ev){let x=Math.max(0,Math.min(rect.width-r.width,left+ev.clientX-sx));let y=Math.max(0,Math.min(rect.height-r.height,top+ev.clientY-sy));el.style.left=(x/rect.width*100)+'%';el.style.top=(y/rect.height*100)+'%';if(el===signature){el.style.bottom='auto';}}function end(){el.removeEventListener('pointermove',move);el.removeEventListener('pointerup',end);el.removeEventListener('pointercancel',end);fitTextLayer();queueDraft();}el.addEventListener('pointermove',move);el.addEventListener('pointerup',end);el.addEventListener('pointercancel',end);});});
+$('frontOverlay').onclick=()=>{overlayOnTop=!overlayOnTop;syncOverlayLayers();setStatus(overlayOnTop?'Image au premier plan.':'Image derrière le texte.');queueDraft();};
+function select(el){[...textLayers,signature,overlay,caption].forEach(x=>x.classList.remove('selected'));el.classList.add('selected');if(el.classList.contains('text-layer')){textLayer=el;textSegments=(el._segments||[]).map(segment=>({...segment,style:{...segment.style}}));$('message').value=el._textValue||'';$('textRole').value=el._textRole||'paragraph';loadTextSettings(el._settings);lastMessageValue=el._textValue||'';}else textLayer=null;updateTextBlockControls();}
+function captionVisible(){return getComputedStyle(caption).display!=='none';}
+function syncOverlayLayers(){textLayers.forEach(el=>el.style.zIndex='2');overlay.style.zIndex=overlayOnTop?'4':'1';caption.style.zIndex=overlayOnTop?($('captionLayer').value==='behind'?'3':'5'):($('captionLayer').value==='behind'?'0':'2');signature.style.zIndex='6';}
+function placeCaptionOverImage(){caption.style.width='86%';const stageRect=stage.getBoundingClientRect(),captionRect=caption.getBoundingClientRect();let left=(stageRect.width-captionRect.width)/2,top=(stageRect.height-captionRect.height)/2;if(overlayUrl&&overlay.style.display!=='none'){const imageRect=overlay.getBoundingClientRect();left=imageRect.left-stageRect.left+(imageRect.width-captionRect.width)/2;top=imageRect.top-stageRect.top+(imageRect.height-captionRect.height)/2;}left=Math.max(0,Math.min(stageRect.width-captionRect.width,left));top=Math.max(0,Math.min(stageRect.height-captionRect.height,top));caption.style.left=`${left/stageRect.width*100}%`;caption.style.top=`${top/stageRect.height*100}%`;}
+$('captionLayer').addEventListener('change',()=>{syncOverlayLayers();queueDraft();});
+$('showCaption').onclick=()=>{if(captionVisible()){caption.style.display='none';$('showCaption').textContent='Ajouter l’encadré';queueDraft();return;}if(!$('captionText').value.trim())$('captionText').value='Votre commentaire ou description';updateText();caption.style.display='flex';placeCaptionOverImage();syncOverlayLayers();$('showCaption').textContent='Masquer l’encadré';queueDraft();};
+$('removeCaption').onclick=()=>{$('captionText').value='';caption.style.display='none';$('showCaption').textContent='Ajouter l’encadré';updateText();queueDraft();};
+stage.addEventListener('pointerdown',e=>{const layer=e.target.closest('.text-layer');if(layer)layer._autoPosition=false;},{capture:true});
+stage.addEventListener('pointerdown',e=>{const el=e.target.closest('.text-layer,#signature,#overlayImage,#captionBox');if(!el||!stage.contains(el)||(el===overlay&&!overlayUrl)||(el===caption&&!captionVisible()))return;if(el.classList.contains('text-layer')&&el._settings?.textLayout==='cross'){const word=e.target.closest('.cross-line');if(word&&el.contains(word))el._selectedCrossWordIndex=Number(word.dataset.crossWordIndex);}select(el);const rect=stage.getBoundingClientRect(),r=el.getBoundingClientRect(),sx=e.clientX,sy=e.clientY,left=r.left-rect.left,top=r.top-rect.top;el.setPointerCapture(e.pointerId);function move(ev){const x=Math.max(0,Math.min(rect.width-r.width,left+ev.clientX-sx)),y=Math.max(0,Math.min(rect.height-r.height,top+ev.clientY-sy));el.style.left=x/rect.width*100+'%';el.style.top=y/rect.height*100+'%';if(el===signature)el.style.bottom='auto';}function end(){el.removeEventListener('pointermove',move);el.removeEventListener('pointerup',end);el.removeEventListener('pointercancel',end);fitTextLayer();queueDraft();}el.addEventListener('pointermove',move);el.addEventListener('pointerup',end);el.addEventListener('pointercancel',end);});
 $('format').onchange=e=>{format=e.target.value;const ratio=format==='square'?'1 / 1':format==='portrait'?'4 / 5':'9 / 16';stage.style.aspectRatio=ratio;fitStage();queueDraft();};
 $('saveProject').onclick=saveProject;
 $('exportBackup').onclick=exportLocalBackup;
 $('selectBackupFile').onclick=()=>$('importBackupFile').click();
 $('importBackupFile').onchange=event=>{const file=event.target.files?.[0];if(file)importLocalBackup(file);event.target.value='';};
 $('verseSearch').addEventListener('input',()=>renderVerses());
-function renderVerses(){const query=$('verseSearch').value.trim().toLocaleLowerCase('fr-FR'),list=$('verseList'),matches=bibleVerses.filter(verse=>[verse.reference,verse.text,...verse.tags].some(value=>value.toLocaleLowerCase('fr-FR').includes(query)));list.replaceChildren();if(!matches.length){const empty=document.createElement('p');empty.className='empty-history';empty.textContent='Aucun verset ne correspond à cette recherche.';list.append(empty);return;}for(const verse of matches){const card=document.createElement('article');card.className='verse-card';const reference=document.createElement('h3');reference.textContent=verse.reference;const text=document.createElement('p');text.textContent=verse.text;const tags=document.createElement('p');tags.className='hint';tags.textContent=verse.tags.join(' · ');const use=document.createElement('button');use.type='button';use.className='primary';use.textContent='Utiliser ce verset';use.onclick=()=>useVerse(verse.id);card.append(reference,text,tags,use);list.append(card);}}
+function renderVerses(){const query=$('verseSearch').value.trim().toLocaleLowerCase('fr-FR'),list=$('verseList');list.replaceChildren();if(!query){const prompt=document.createElement('p');prompt.className='empty-history';prompt.textContent='Saisis un mot-clé pour parcourir les versets.';list.append(prompt);return;}const matches=bibleVerses.filter(verse=>[verse.reference,verse.text,...verse.tags].some(value=>value.toLocaleLowerCase('fr-FR').includes(query)));if(!matches.length){const empty=document.createElement('p');empty.className='empty-history';empty.textContent='Aucun verset ne correspond à cette recherche.';list.append(empty);return;}for(const verse of matches){const card=document.createElement('article');card.className='verse-card';const reference=document.createElement('h3');reference.textContent=verse.reference;const text=document.createElement('p');text.textContent=verse.text;const tags=document.createElement('p');tags.className='hint';tags.textContent=verse.tags.join(' · ');const use=document.createElement('button');use.type='button';use.className='primary';use.textContent='Utiliser ce verset';use.onclick=()=>useVerse(verse.id);card.append(reference,text,tags,use);list.append(card);}}
 async function loadVerses(){
  try{
   const[jsonResponse,convertedResponse]=await Promise.all([fetch('./bible-verses.json'),fetch('./versets-b.json')]);
@@ -760,47 +1202,232 @@ $('copyVersePrompt').onclick=async()=>{
  catch(error){$('verseJsonInput').value=prompt;$('jsonImportStatus').textContent='Copie automatique indisponible : prompt placé dans la zone.';}
 };
 
-function applyVerseToPoster(verse){$('message').value=verse.text;lastMessageValue=verse.text;textSegments=[];$('signatureText').value=verse.reference;updateText();queueDraft();document.querySelector('.tab[data-tab="texte"]').click();setStatus(`${verse.reference} ajouté à l’affiche.`);}
+function applyVerseToPoster(verse){if(!textLayer){textLayer=addTextLayer(verse.text,'paragraph');if(!textLayer)return;}else{select(textLayer);textLayer._textValue=verse.text;textSegments=[];textLayer._segments=[];$('message').value=verse.text;lastMessageValue=verse.text;}textLayer._textValue=verse.text;textSegments=[];textLayer._segments=[];$('message').value=verse.text;lastMessageValue=verse.text;$('signatureText').value=verse.reference;updateText();queueDraft();document.querySelector('.tab[data-tab="texte"]').click();setStatus(`${verse.reference} ajouté à l’affiche.`);}
 function useVerse(id){const verse=bibleVerses.find(item=>item.id===id);if(verse)applyVerseToPoster(verse);}
-$('centerText').onclick=()=>{textLayer.style.left='8%';textLayer.style.top='25%';textLayer.style.width='84%';signature.style.left='8%';signature.style.top='';signature.style.bottom='7%';fitTextLayer();queueDraft();};
-document.querySelectorAll('.tab').forEach(button=>button.onclick=()=>{document.querySelectorAll('.tab').forEach(tab=>{tab.classList.remove('active');tab.setAttribute('aria-selected','false');});button.classList.add('active');button.setAttribute('aria-selected','true');['texte','fond','image','format','historique','versets'].forEach(tab=>$('tab-'+tab).classList.toggle('hidden',tab!==button.dataset.tab));});
+$('centerText').onclick=()=>{if(textLayer){textLayer.style.left='8%';textLayer.style.top='25%';textLayer.style.width='84%';fitTextLayer();}signature.style.left='8%';signature.style.top='';signature.style.bottom='7%';queueDraft();};
+const mobileToolsQuery=window.matchMedia('(max-width:849px)');
+function syncMobileToolGroups(){document.querySelectorAll('details.mobile-tools').forEach(section=>{section.open=!mobileToolsQuery.matches;});}
+syncMobileToolGroups();
+mobileToolsQuery.addEventListener('change',syncMobileToolGroups);
+document.querySelectorAll('.tab[data-tab]').forEach(button=>button.onclick=()=>{document.querySelectorAll('.tab[data-tab]').forEach(tab=>{const active=tab.dataset.tab===button.dataset.tab;tab.classList.toggle('active',active);tab.setAttribute('aria-selected',String(active));});document.body.classList.toggle('music-mode',button.dataset.tab==='musique');['texte','fond','image','format','historique','versets','musique'].forEach(tab=>$('tab-'+tab).classList.toggle('hidden',tab!==button.dataset.tab));if(button.dataset.tab==='musique')animateMusicPreview();else{cancelAnimationFrame(musicPreviewAnimation);musicPreviewAnimation=0;}if(mobileToolsQuery.matches)$('editor').scrollTop=0;});
+$('mobileDownload').onclick=downloadPoster;
 function loadImg(src){return new Promise((resolve,reject)=>{if(!src){resolve(null);return;}const im=new Image();im.onload=()=>resolve(im);im.onerror=reject;im.src=src;});}
 function roundedRect(ctx,x,y,w,h,r){ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.clip();}
 function splitLongWord(ctx,word,maxWidth){const parts=[];let part='';for(const char of Array.from(word)){if(part&&ctx.measureText(part+char).width>maxWidth){parts.push(part);part=char;}else part+=char;}if(part)parts.push(part);return parts;}
 function wrapText(ctx,text,maxWidth){const lines=[];for(const paragraph of text.split('\n')){if(!paragraph){lines.push('');continue;}let line='';for(const word of paragraph.split(/\s+/)){const candidate=line?line+' '+word:word;if(ctx.measureText(candidate).width<=maxWidth){line=candidate;continue;}if(line){lines.push(line);line='';}const parts=splitLongWord(ctx,word,maxWidth);lines.push(...parts.slice(0,-1));line=parts.at(-1)||'';}lines.push(line);}return lines;}
-function blurBehindText(ctx,canvas,rect,sx,sy){if(!$('blurText').checked)return;const bounds=textLayer.getBoundingClientRect(),x=Math.max(0,Math.floor((bounds.left-rect.left)*sx)),y=Math.max(0,Math.floor((bounds.top-rect.top)*sy)),width=Math.min(canvas.width-x,Math.ceil(bounds.width*sx)),height=Math.min(canvas.height-y,Math.ceil(bounds.height*sy));if(width<=0||height<=0)return;const blurred=document.createElement('canvas');blurred.width=canvas.width;blurred.height=canvas.height;const blurCtx=blurred.getContext('2d');const radius=10*sx;blurCtx.filter=`blur(${radius}px)`;blurCtx.drawImage(canvas,0,0);blurCtx.filter='none';ctx.drawImage(blurred,x,y,width,height,x,y,width,height);ctx.fillStyle='rgba(0,0,0,.2)';ctx.fillRect(x,y,width,height);}
-function drawStyleEffects(ctx,canvas){const centerX=canvas.width/2,centerY=canvas.height/2,radius=Math.hypot(centerX,centerY);if($('bibleGlow').checked){const intensity=Number($('glowOpacity').value)/100,gradient=ctx.createRadialGradient(centerX,centerY,0,centerX,centerY,radius);gradient.addColorStop(0,`rgba(255,204,120,${intensity})`);gradient.addColorStop(.42,`rgba(216,147,59,${intensity*.38})`);gradient.addColorStop(1,'rgba(216,147,59,0)');ctx.fillStyle=gradient;ctx.fillRect(0,0,canvas.width,canvas.height);}if($('vignette').checked){const gradient=ctx.createRadialGradient(centerX,centerY,radius*.32,centerX,centerY,radius);gradient.addColorStop(0,'rgba(0,0,0,0)');gradient.addColorStop(1,'rgba(0,0,0,.62)');ctx.fillStyle=gradient;ctx.fillRect(0,0,canvas.width,canvas.height);}}
+function blurBehindText(ctx,canvas,rect,sx,sy,el){const settings=el?._settings||{};if(!settings.blurText)return;const bounds=el.getBoundingClientRect(),x=Math.max(0,Math.floor((bounds.left-rect.left)*sx)),y=Math.max(0,Math.floor((bounds.top-rect.top)*sy)),width=Math.min(canvas.width-x,Math.ceil(bounds.width*sx)),height=Math.min(canvas.height-y,Math.ceil(bounds.height*sy));if(width<=0||height<=0)return;const blurred=document.createElement('canvas');blurred.width=canvas.width;blurred.height=canvas.height;const blurCtx=blurred.getContext('2d'),radius=Number(settings.textBlurAmount)*sx;blurCtx.filter=`blur(${radius}px)`;blurCtx.drawImage(canvas,0,0);blurCtx.filter='none';ctx.save();roundedRect(ctx,x,y,width,height,8*sx);ctx.drawImage(blurred,x,y,width,height,x,y,width,height);ctx.fillStyle=`rgba(0,0,0,${Number(settings.textShadeOpacity)/100})`;ctx.fillRect(x,y,width,height);ctx.restore();}
+function drawStyleEffects(ctx,canvas){const centerX=canvas.width/2,centerY=canvas.height/2,radius=Math.hypot(centerX,centerY);if($('bibleGlow').checked){const intensity=Number($('glowOpacity').value)/100,color=$('glowColor').value,gradient=ctx.createRadialGradient(centerX,centerY,0,centerX,centerY,radius);gradient.addColorStop(0,colorWithOpacity(color,intensity));gradient.addColorStop(.42,colorWithOpacity(color,intensity*.38));gradient.addColorStop(1,colorWithOpacity(color,0));ctx.fillStyle=gradient;ctx.fillRect(0,0,canvas.width,canvas.height);}if($('vignette').checked){const gradient=ctx.createRadialGradient(centerX,centerY,radius*.32,centerX,centerY,radius);gradient.addColorStop(0,'rgba(0,0,0,0)');gradient.addColorStop(1,`rgba(0,0,0,${Number($('vignetteOpacity').value)/100})`);ctx.fillStyle=gradient;ctx.fillRect(0,0,canvas.width,canvas.height);}}
 function drawSegmentedText(ctx,el,sx,sy,stageRect){
  const bounds=el.getBoundingClientRect(),cx=(bounds.left-stageRect.left+bounds.width/2)*sx,cy=(bounds.top-stageRect.top+bounds.height/2)*sy;
- const wx=Number($('textWarpX').value)*Math.PI/180,wy=Number($('textWarpY').value)*Math.PI/180,rot=Number($('textRotate').value)*Math.PI/180;
+ const settings=el._settings||{},wx=Number(settings.textWarpX)*Math.PI/180,wy=Number(settings.textWarpY)*Math.PI/180,rot=Number(settings.textRotate)*Math.PI/180;
  ctx.save();ctx.translate(cx,cy);ctx.rotate(rot);ctx.transform(1,Math.tan(wy)*.45,Math.tan(wx)*.45,1,0,0);ctx.translate(-cx,-cy);
  const walker=document.createTreeWalker(el,NodeFilter.SHOW_TEXT),runs=[];let node;while((node=walker.nextNode())){const parent=node.parentElement,style=getComputedStyle(parent),parts=Intl.Segmenter?[...new Intl.Segmenter(undefined,{granularity:'grapheme'}).segment(node.data)]:Array.from(node.data).map((segment,index,array)=>({segment,index:array.slice(0,index).join('').length}));for(const part of parts){const range=document.createRange();range.setStart(node,part.index);range.setEnd(node,part.index+part.segment.length);const bounds=range.getBoundingClientRect();if(bounds.width<=0)continue;const line=Math.round(bounds.top*100)/100,last=runs[runs.length-1];if(last&&last.parent===parent&&last.line===line){last.text+=part.segment;last.right=bounds.right;last.top=Math.min(last.top,bounds.top);last.bottom=Math.max(last.bottom,bounds.bottom);}else runs.push({parent,style,line,text:part.segment,left:bounds.left,right:bounds.right,top:bounds.top,bottom:bounds.bottom});}}
- for(const run of runs){const style=run.style,fontSize=parseFloat(style.fontSize)*sx,family=style.fontFamily.split(',')[0].replace(/[\'"]/g,''),font=`${style.fontStyle} ${style.fontWeight} ${fontSize}px "${family}"`,x=(run.left-stageRect.left)*sx,y=(run.top-stageRect.top)*sy,width=Math.max(0,(run.right-run.left)*sx),height=Math.max(fontSize*1.2,(run.bottom-run.top)*sy),styleElement=run.parent.closest('.text-segment')||run.parent;ctx.save();ctx.font=font;ctx.textBaseline='top';const highlight=styleElement.dataset.highlight||[...styleElement.classList].find(name=>name.startsWith('highlight-'))?.slice('highlight-'.length),colors={'marker-yellow':'rgba(255,230,60,.42)','marker-blue':'rgba(54,162,255,.4)','neon-violet':'rgba(171,76,255,.48)','neon-blue':'rgba(42,151,255,.46)','neon-gold':'rgba(255,190,55,.48)'},custom=highlight==='marker-custom',highlightColor=custom?colorWithOpacity(styleElement.dataset.markerColor,Number(styleElement.dataset.markerOpacity)):colors[highlight],glow=custom?styleElement.dataset.markerMode==='neon':Boolean(highlight?.startsWith('neon-'));if(highlightColor){ctx.shadowColor=glow?custom?colorWithOpacity(styleElement.dataset.markerColor,Math.min(1,Number(styleElement.dataset.markerOpacity)+.25)):highlightColor:'transparent';ctx.shadowBlur=glow?14*sx:0;ctx.fillStyle=highlightColor;ctx.fillRect(x-2*sx,y+height*.16,width+4*sx,height*.72);}ctx.font=font;ctx.fillStyle=style.color;ctx.shadowColor='rgba(0,0,0,.55)';ctx.shadowBlur=8*sx;ctx.shadowOffsetY=2*sy;ctx.fillText(run.text,x,y);ctx.restore();}ctx.restore();}
+ for(const run of runs){const style=run.style,fontSize=parseFloat(style.fontSize)*sx,family=style.fontFamily.split(',')[0].replace(/[\'"]/g,''),font=`${style.fontStyle} ${style.fontWeight} ${fontSize}px "${family}"`,x=(run.left-stageRect.left)*sx,y=(run.top-stageRect.top)*sy,width=Math.max(0,(run.right-run.left)*sx),height=Math.max(fontSize*1.2,(run.bottom-run.top)*sy),styleElement=run.parent.closest('.text-segment')||run.parent,text=el.dataset.textLayout==='cross'?run.text.toLocaleUpperCase('fr-FR'):run.text;ctx.save();ctx.font=font;ctx.textBaseline='top';const highlight=styleElement.dataset.highlight||[...styleElement.classList].find(name=>name.startsWith('highlight-'))?.slice('highlight-'.length),colors={'marker-yellow':'rgba(255,230,60,.42)','marker-blue':'rgba(54,162,255,.4)','neon-violet':'rgba(171,76,255,.48)','neon-blue':'rgba(42,151,255,.46)','neon-gold':'rgba(255,190,55,.48)'},custom=highlight==='marker-custom',highlightColor=custom?colorWithOpacity(styleElement.dataset.markerColor,Number(styleElement.dataset.markerOpacity)):colors[highlight],glow=custom?styleElement.dataset.markerMode==='neon':Boolean(highlight?.startsWith('neon-'));if(highlightColor){ctx.shadowColor=glow?custom?colorWithOpacity(styleElement.dataset.markerColor,Math.min(1,Number(styleElement.dataset.markerOpacity)+.25)):highlightColor:'transparent';ctx.shadowBlur=glow?14*sx:0;ctx.fillStyle=highlightColor;ctx.fillRect(x-2*sx,y+height*.16,width+4*sx,height*.72);}ctx.font=font;ctx.fillStyle=style.color;ctx.shadowColor='rgba(0,0,0,.55)';ctx.shadowBlur=8*sx;ctx.shadowOffsetY=2*sy;ctx.fillText(text,x,y);ctx.restore();}ctx.restore();}
+function drawCaptionShape(ctx,el,sx,sy,stageRect){const bounds=el.getBoundingClientRect(),x=(bounds.left-stageRect.left)*sx,y=(bounds.top-stageRect.top)*sy,w=bounds.width*sx,h=bounds.height*sy,style=getComputedStyle(el),shape=$('captionShape').value,radius=shape==='rectangle'?0:Math.min(14*sx,h/2);ctx.save();ctx.fillStyle=style.backgroundColor;ctx.shadowColor='rgba(0,0,0,.35)';ctx.shadowBlur=14*sx;ctx.beginPath();ctx.roundRect(x,y,w,h,radius);ctx.fill();ctx.shadowColor='transparent';if(shape==='speech'){ctx.beginPath();ctx.moveTo(x+24*sx,y+h-1);ctx.lineTo(x+42*sx,y+h-1);ctx.lineTo(x+24*sx,y+h+13*sy);ctx.closePath();ctx.fill();}const borderWidth=parseFloat(style.borderTopWidth)*sx;if(borderWidth>0){ctx.strokeStyle=style.borderTopColor;ctx.lineWidth=borderWidth;ctx.beginPath();ctx.roundRect(x,y,w,h,radius);ctx.stroke();}ctx.restore();}
+async function drawOverlayImage(ctx,rect,sx,sy){if(!overlayUrl)return;const image=await loadImg(overlayUrl),bounds=overlay.getBoundingClientRect();ctx.globalAlpha=parseFloat(overlay.style.opacity||1);ctx.drawImage(image,(bounds.left-rect.left)*sx,(bounds.top-rect.top)*sy,bounds.width*sx,bounds.height*sy);ctx.globalAlpha=1;}
+async function drawCaption(ctx,rect,sx,sy){if(!captionVisible())return;drawCaptionShape(ctx,caption,sx,sy,rect);await drawText(ctx,caption,sx,sy,rect);}
 async function drawText(ctx,el,sx,sy,stageRect){
- if(el===textLayer&&(textSegments.length||Number($('textCurve').value)>0||Number($('textWarpX').value)!==0||Number($('textWarpY').value)!==0||Number($('textRotate').value)!==0)){drawSegmentedText(ctx,el,sx,sy,stageRect);return;}
+ if(el.classList.contains('text-layer')&&(el._settings?.textLayout==='cross'||(el._segments||[]).length||Number(el._settings?.textCurve)>0||Number(el._settings?.textWarpX)!==0||Number(el._settings?.textWarpY)!==0||Number(el._settings?.textRotate)!==0)){drawSegmentedText(ctx,el,sx,sy,stageRect);return;}
  const r=el.getBoundingClientRect(),x=(r.left-stageRect.left)*sx,y=(r.top-stageRect.top)*sy,w=r.width*sx;
  const style=getComputedStyle(el),fontSize=parseFloat(style.fontSize)*sx;
  ctx.save();ctx.font=`${style.fontStyle} ${style.fontWeight} ${fontSize}px "${style.fontFamily.split(',')[0].replace(/[\'"]/g,'')}"`;ctx.fillStyle=style.color;ctx.textAlign='left';ctx.textBaseline='top';ctx.shadowColor='rgba(0,0,0,.55)';ctx.shadowBlur=8*sx;ctx.shadowOffsetY=2*sy;
- const padLeft=parseFloat(style.paddingLeft)*sx,padRight=parseFloat(style.paddingRight)*sx,padTop=parseFloat(style.paddingTop)*sy,padBottom=parseFloat(style.paddingBottom)*sy,max=Math.max(1,w-padLeft-padRight),lines=wrapText(ctx,el.textContent,max),lineHeight=(parseFloat(style.lineHeight)||parseFloat(style.fontSize)*1.2)*sx,contentHeight=r.height*sy-padTop-padBottom,startY=y+padTop+(el===textLayer?Math.max(0,(contentHeight-lines.length*lineHeight)/2):0);
+ const padLeft=parseFloat(style.paddingLeft)*sx,padRight=parseFloat(style.paddingRight)*sx,padTop=parseFloat(style.paddingTop)*sy,padBottom=parseFloat(style.paddingBottom)*sy,max=Math.max(1,w-padLeft-padRight),lines=wrapText(ctx,el.textContent,max),lineHeight=(parseFloat(style.lineHeight)||parseFloat(style.fontSize)*1.2)*sx,contentHeight=r.height*sy-padTop-padBottom,startY=y+padTop+(el.classList.contains('text-layer')||el===caption?Math.max(0,(contentHeight-lines.length*lineHeight)/2):0);
  lines.forEach((line,index)=>{if(!line)return;const lineWidth=ctx.measureText(line).width,drawX=style.textAlign==='left'?x+padLeft:style.textAlign==='right'?x+w-padRight-lineWidth:x+(w-lineWidth)/2,drawY=startY+index*lineHeight;ctx.fillText(line,drawX,drawY);if(el===signature&&$('underlineSignature').checked){ctx.save();ctx.shadowColor='transparent';ctx.strokeStyle=style.color;ctx.lineWidth=Math.max(1,fontSize*.07);ctx.beginPath();ctx.moveTo(drawX,drawY+fontSize*.95);ctx.lineTo(drawX+lineWidth,drawY+fontSize*.95);ctx.stroke();ctx.restore();}});
  ctx.restore();
 }
-$('download').onclick=async()=>{
+async function drawTextLayers(ctx,canvas,rect,sx,sy){for(const el of textLayers){blurBehindText(ctx,canvas,rect,sx,sy,el);await drawText(ctx,el,sx,sy,rect);}}
+async function renderPosterCanvas(dims){
+ await document.fonts.ready;
+ const rect=stage.getBoundingClientRect(),canvas=document.createElement('canvas');canvas.width=dims[0];canvas.height=dims[1];const ctx=canvas.getContext('2d'),sx=canvas.width/rect.width,sy=canvas.height/rect.height;
+ ctx.fillStyle=getComputedStyle(stage).backgroundColor||'#151515';ctx.fillRect(0,0,canvas.width,canvas.height);
+ const bg=await loadImg(bgUrl);if(bg){const scale=Math.max(canvas.width/bg.width,canvas.height/bg.height),w=bg.width*scale,h=bg.height*scale,blur=Number($('backgroundBlur').value)*sx;ctx.save();if(blur){ctx.filter=`blur(${blur}px)`;ctx.drawImage(bg,(canvas.width-w)/2-2*blur,(canvas.height-h)/2-2*blur,w+4*blur,h+4*blur);}else ctx.drawImage(bg,(canvas.width-w)/2,(canvas.height-h)/2,w,h);ctx.restore();}
+ ctx.fillStyle=`rgba(0,0,0,${parseFloat(shade.style.opacity)||0})`;ctx.fillRect(0,0,canvas.width,canvas.height);
+ drawStyleEffects(ctx,canvas);
+ if(!overlayOnTop){
+  if(captionVisible()&&$('captionLayer').value==='behind')await drawCaption(ctx,rect,sx,sy);
+  await drawOverlayImage(ctx,rect,sx,sy);
+  await drawTextLayers(ctx,canvas,rect,sx,sy);
+  if(captionVisible()&&$('captionLayer').value==='over')await drawCaption(ctx,rect,sx,sy);
+ }else{
+  await drawTextLayers(ctx,canvas,rect,sx,sy);
+  if(captionVisible()&&$('captionLayer').value==='behind')await drawCaption(ctx,rect,sx,sy);
+  await drawOverlayImage(ctx,rect,sx,sy);
+  if(captionVisible()&&$('captionLayer').value==='over')await drawCaption(ctx,rect,sx,sy);
+ }
+ if(!signature.classList.contains('hidden'))await drawText(ctx,signature,sx,sy,rect);
+ return canvas;
+}
+async function downloadPoster(){
  try{
-  await document.fonts.ready;
-  const rect=stage.getBoundingClientRect(),dims=format==='square'?[1080,1080]:format==='portrait'?[1080,1350]:[1080,1920];
-  const canvas=document.createElement('canvas');canvas.width=dims[0];canvas.height=dims[1];const ctx=canvas.getContext('2d'),sx=canvas.width/rect.width,sy=canvas.height/rect.height;
-  ctx.fillStyle=getComputedStyle(stage).backgroundColor||'#151515';ctx.fillRect(0,0,canvas.width,canvas.height);
-  const bg=await loadImg(bgUrl);if(bg){const scale=Math.max(canvas.width/bg.width,canvas.height/bg.height),w=bg.width*scale,h=bg.height*scale,blur=Number($('backgroundBlur').value)*sx;ctx.save();if(blur){ctx.filter=`blur(${blur}px)`;ctx.drawImage(bg,(canvas.width-w)/2-2*blur,(canvas.height-h)/2-2*blur,w+4*blur,h+4*blur);}else ctx.drawImage(bg,(canvas.width-w)/2,(canvas.height-h)/2,w,h);ctx.restore();}
-  ctx.fillStyle=`rgba(0,0,0,${parseFloat(shade.style.opacity)||0})`;ctx.fillRect(0,0,canvas.width,canvas.height);
-  drawStyleEffects(ctx,canvas);
-  if(overlayUrl&&!overlayOnTop){const im=await loadImg(overlayUrl),r=overlay.getBoundingClientRect();ctx.globalAlpha=parseFloat(overlay.style.opacity||1);ctx.drawImage(im,(r.left-rect.left)*sx,(r.top-rect.top)*sy,r.width*sx,r.height*sy);ctx.globalAlpha=1;}
-  blurBehindText(ctx,canvas,rect,sx,sy);
-  await drawText(ctx,textLayer,sx,sy,rect);
-  if(overlayUrl&&overlayOnTop){const im=await loadImg(overlayUrl),r=overlay.getBoundingClientRect();ctx.globalAlpha=parseFloat(overlay.style.opacity||1);ctx.drawImage(im,(r.left-rect.left)*sx,(r.top-rect.top)*sy,r.width*sx,r.height*sy);ctx.globalAlpha=1;}
-  if(!signature.classList.contains('hidden'))await drawText(ctx,signature,sx,sy,rect);
-  const a=document.createElement('a'),exportedAt=Math.max(Date.now(),lastSavedAt+1);lastSavedAt=exportedAt;a.download=exportFileName($('signatureText').value,exportedAt);a.href=canvas.toDataURL('image/png');a.click();setStatus('Affiche PNG téléchargée !');
- }catch(err){console.error(err);setStatus("Impossible d'exporter. Essaie avec une autre image.");}
+  const dims=format==='square'?[1080,1080]:format==='portrait'?[1080,1350]:[1080,1920],canvas=await renderPosterCanvas(dims);
+  const a=document.createElement('a'),exportedAt=Math.max(Date.now(),lastSavedAt+1);lastSavedAt=exportedAt;a.download=exportFileName($('signatureText').value,exportedAt);a.href=canvas.toDataURL('image/png');a.click();setStatus('Affiche PNG téléchargée !');$('mobileDownload').title='Affiche PNG téléchargée !';
+ }catch(err){console.error(err);setStatus("Impossible d'exporter. Essaie avec une autre image.");$('mobileDownload').title="Impossible d'exporter l'affiche PNG.";}
+}
+$('download').onclick=downloadPoster;
+function formatMusicTime(seconds){if(!Number.isFinite(seconds)||seconds<0)return'0:00';const value=Math.floor(seconds);return`${Math.floor(value/60)}:${String(value%60).padStart(2,'0')}`;}
+function mixMusicColor(color,target,amount){
+ const source=color.match(/[0-9a-f]{2}/gi)?.map(value=>parseInt(value,16));
+ const destination=target.match(/[0-9a-f]{2}/gi)?.map(value=>parseInt(value,16));
+ if(!source||source.length<3||!destination||destination.length<3)return color;
+ return`#${source.map((value,index)=>Math.round(value+(destination[index]-value)*amount).toString(16).padStart(2,'0')).join('')}`;
+}
+function musicPalette(trackName='',artistName=''){
+ if(musicArtworkColor)return{primary:musicArtworkColor,secondary:mixMusicColor(musicArtworkColor,'#ffffff',.42),backgroundStart:mixMusicColor(musicArtworkColor,'#080a12',.84),backgroundMiddle:mixMusicColor(musicArtworkColor,'#10131c',.72),backgroundEnd:mixMusicColor(musicArtworkColor,'#05060a',.91),vinylLight:mixMusicColor(musicArtworkColor,'#62666e',.78),vinylMiddle:mixMusicColor(musicArtworkColor,'#1b1d22',.85),vinylDark:mixMusicColor(musicArtworkColor,'#050609',.94)};
+ const palettes=[
+  {primary:'#42c8f5',secondary:'#f34f9d',backgroundStart:'#10233b',backgroundMiddle:'#173d59',backgroundEnd:'#10131e',vinylLight:'#344d60',vinylMiddle:'#18232d',vinylDark:'#080d13'},
+  {primary:'#35d6b0',secondary:'#ff9b55',backgroundStart:'#0c302c',backgroundMiddle:'#14534a',backgroundEnd:'#101c20',vinylLight:'#36574e',vinylMiddle:'#182a27',vinylDark:'#08110f'},
+  {primary:'#b28aff',secondary:'#5de0dc',backgroundStart:'#261642',backgroundMiddle:'#40265d',backgroundEnd:'#15101f',vinylLight:'#504064',vinylMiddle:'#251b30',vinylDark:'#0d0912'},
+  {primary:'#ff6680',secondary:'#ffc857',backgroundStart:'#3a1727',backgroundMiddle:'#652538',backgroundEnd:'#1c1018',vinylLight:'#63404b',vinylMiddle:'#2a1c22',vinylDark:'#10090d'},
+  {primary:'#b3df54',secondary:'#52b9ff',backgroundStart:'#253418',backgroundMiddle:'#405923',backgroundEnd:'#141b12',vinylLight:'#52613a',vinylMiddle:'#26301b',vinylDark:'#0c1008'},
+  {primary:'#ffae42',secondary:'#b58aff',backgroundStart:'#402516',backgroundMiddle:'#673817',backgroundEnd:'#1d1510',vinylLight:'#61452e',vinylMiddle:'#2a2017',vinylDark:'#100b07'}
+ ];
+ const key=`${trackName} ${artistName}`.toLocaleLowerCase();let hash=0;
+ for(let index=0;index<key.length;index++)hash=(hash*31+key.charCodeAt(index))|0;
+ return palettes[Math.abs(hash)%palettes.length];
+}
+function dominantMusicColor(image){
+ const sample=document.createElement('canvas');sample.width=32;sample.height=32;
+ const context=sample.getContext('2d',{willReadFrequently:true});context.drawImage(image,0,0,32,32);
+ const pixels=context.getImageData(0,0,32,32).data,histogram=new Map(),allColors=new Map();
+ for(let index=0;index<pixels.length;index+=4){
+  if(pixels[index+3]<160)continue;
+  const red=pixels[index],green=pixels[index+1],blue=pixels[index+2],max=Math.max(red,green,blue),min=Math.min(red,green,blue),brightness=(max+min)/510;
+  const key=[red,green,blue].map(value=>Math.min(15,Math.floor(value/16))).join(',');
+  allColors.set(key,(allColors.get(key)||0)+1);
+  if(max-min>=28&&brightness>=.09&&brightness<=.94)histogram.set(key,(histogram.get(key)||0)+1);
+ }
+ const colors=histogram.size?histogram:allColors;if(!colors.size)return'#8f1914';
+ const [key]=[...colors.entries()].sort((first,second)=>second[1]-first[1])[0];
+ return`#${key.split(',').map(value=>(Number(value)*16+8).toString(16).padStart(2,'0')).join('')}`;
+}
+function drawMusicFrame(canvas,frequencies=null,progress=0,duration=30,trackName='',artistName='',elapsed=0,displayElapsed=elapsed,motionTime=elapsed){
+ const ctx=canvas.getContext('2d'),width=canvas.width,height=canvas.height,isCard=$('musicModel').value==='card',palette=musicPalette(trackName,artistName);ctx.clearRect(0,0,width,height);
+ if(isCard&&musicSceneImage){const scale=Math.max(width/musicSceneImage.width,height/musicSceneImage.height),imageWidth=musicSceneImage.width*scale,imageHeight=musicSceneImage.height*scale;ctx.save();ctx.filter='blur(12px) brightness(.42)';ctx.drawImage(musicSceneImage,(width-imageWidth)/2,(height-imageHeight)/2,imageWidth,imageHeight);ctx.restore();}else{const background=ctx.createLinearGradient(0,0,width,height);background.addColorStop(0,palette.backgroundStart);background.addColorStop(.52,palette.backgroundMiddle);background.addColorStop(1,palette.backgroundEnd);ctx.fillStyle=background;ctx.fillRect(0,0,width,height);}
+ if(isCard){ctx.fillStyle='rgba(5,8,15,.53)';ctx.fillRect(0,0,width,height);ctx.save();ctx.fillStyle='rgba(12,15,23,.5)';ctx.strokeStyle='rgba(255,255,255,.18)';ctx.lineWidth=width*.003;ctx.beginPath();ctx.roundRect(width*.08,height*.08,width*.84,height*.84,width*.045);ctx.fill();ctx.stroke();ctx.restore();ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle=palette.secondary;ctx.font=`700 ${Math.round(width*.032)}px system-ui,sans-serif`;ctx.fillText('NOW PLAYING',width/2,height*.13);}
+ const platterX=width*.055,platterY=isCard?height*.255:height*.135,platterWidth=width*.89,platterHeight=isCard?height*.46:height*.53,platterRadius=width*.065;ctx.save();ctx.shadowColor='rgba(0,0,0,.4)';ctx.shadowBlur=height*.018;ctx.beginPath();ctx.roundRect(platterX,platterY,platterWidth,platterHeight,platterRadius);ctx.fillStyle=$('musicPlatterColor').value||palette.primary;ctx.fill();ctx.shadowBlur=0;if(musicPlatterImage){ctx.save();ctx.beginPath();ctx.roundRect(platterX,platterY,platterWidth,platterHeight,platterRadius);ctx.clip();const scale=Math.max(platterWidth/musicPlatterImage.width,platterHeight/musicPlatterImage.height),imageWidth=musicPlatterImage.width*scale,imageHeight=musicPlatterImage.height*scale;ctx.drawImage(musicPlatterImage,platterX+(platterWidth-imageWidth)/2,platterY+(platterHeight-imageHeight)/2,imageWidth,imageHeight);ctx.fillStyle='rgba(0,0,0,.14)';ctx.fillRect(platterX,platterY,platterWidth,platterHeight);ctx.restore();}ctx.strokeStyle=palette.secondary;ctx.globalAlpha=.55;ctx.lineWidth=width*.004;ctx.stroke();ctx.globalAlpha=1;ctx.restore();
+ const centerX=width*.5,centerY=isCard?height*.48:height*.402,radius=isCard?width*.32:width*.385,rotation=motionTime*.22*Math.PI*2,centerLabel=radius*.39,glow=.55+.3*Math.sin(motionTime*1.7);
+ ctx.save();ctx.globalAlpha=glow;ctx.shadowColor=palette.primary;ctx.shadowBlur=height*.045;ctx.strokeStyle=palette.primary;ctx.lineWidth=height*.009;ctx.beginPath();ctx.arc(centerX,centerY,radius*1.025,0,Math.PI*2);ctx.stroke();ctx.restore();
+ const vinyl=ctx.createRadialGradient(centerX-radius*.23,centerY-radius*.25,radius*.08,centerX,centerY,radius);vinyl.addColorStop(0,palette.vinylLight);vinyl.addColorStop(.3,palette.vinylMiddle);vinyl.addColorStop(.68,palette.vinylMiddle);vinyl.addColorStop(1,palette.vinylDark);ctx.save();ctx.shadowColor='rgba(0,0,0,.5)';ctx.shadowBlur=height*.02;ctx.fillStyle=vinyl;ctx.beginPath();ctx.arc(centerX,centerY,radius,0,Math.PI*2);ctx.fill();ctx.restore();
+ ctx.save();ctx.translate(centerX,centerY);ctx.rotate(rotation);for(let index=0;index<19;index++){const grooveRadius=radius*(.39+index*.03);ctx.beginPath();ctx.arc(0,0,grooveRadius,0,Math.PI*2);ctx.strokeStyle=index%3===0?'rgba(255,255,255,.13)':'rgba(0,0,0,.3)';ctx.lineWidth=Math.max(1,width*.002);ctx.stroke();}
+ ctx.beginPath();ctx.arc(0,0,centerLabel,0,Math.PI*2);const labelGradient=ctx.createRadialGradient(-centerLabel*.3,-centerLabel*.35,1,0,0,centerLabel);labelGradient.addColorStop(0,palette.secondary);labelGradient.addColorStop(1,palette.primary);ctx.fillStyle=labelGradient;ctx.fill();if(musicArtworkImage){ctx.save();ctx.beginPath();ctx.arc(0,0,centerLabel*.86,0,Math.PI*2);ctx.clip();const coverSize=centerLabel*1.72,coverScale=Math.max(coverSize/musicArtworkImage.width,coverSize/musicArtworkImage.height);ctx.drawImage(musicArtworkImage,-coverSize/2,-coverSize/2,musicArtworkImage.width*coverScale,musicArtworkImage.height*coverScale);ctx.restore();}ctx.strokeStyle=palette.secondary;ctx.globalAlpha=.8;ctx.lineWidth=width*.006;ctx.beginPath();ctx.arc(0,0,centerLabel*.88,0,Math.PI*2);ctx.stroke();ctx.globalAlpha=1;if(!musicArtworkImage){ctx.fillStyle='#fff';ctx.font=`700 ${Math.round(width*.026)}px system-ui,sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('♫  MUSIQUE  ♫',0,-centerLabel*.48);ctx.fillText('STATUT',0,centerLabel*.48);}ctx.beginPath();ctx.arc(0,0,centerLabel*.07,0,Math.PI*2);ctx.fillStyle='#17191c';ctx.fill();ctx.beginPath();ctx.arc(0,0,centerLabel*.024,0,Math.PI*2);ctx.fillStyle='#f4ece9';ctx.fill();ctx.restore();
+ if(!isCard){const pivotX=width*.86,pivotY=height*.175,sway=Math.sin(motionTime*.55)*.045,needleX=centerX+radius*.54,needleY=centerY+radius*.57;ctx.save();ctx.translate(pivotX,pivotY);ctx.rotate(sway);ctx.lineCap='round';ctx.lineJoin='round';ctx.strokeStyle='rgba(0,0,0,.65)';ctx.lineWidth=width*.035;ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-width*.105,height*.535-pivotY);ctx.quadraticCurveTo(-width*.11,height*.58-pivotY,needleX-pivotX,needleY-pivotY);ctx.stroke();const arm=ctx.createLinearGradient(0,0,needleX-pivotX,needleY-pivotY);arm.addColorStop(0,'#fff');arm.addColorStop(.46,'#8a8e94');arm.addColorStop(.7,'#f8f8f8');arm.addColorStop(1,'#aeb2b8');ctx.strokeStyle=arm;ctx.lineWidth=width*.014;ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-width*.105,height*.535-pivotY);ctx.quadraticCurveTo(-width*.11,height*.58-pivotY,needleX-pivotX,needleY-pivotY);ctx.stroke();ctx.fillStyle='#ddd';ctx.beginPath();ctx.arc(0,0,width*.047,0,Math.PI*2);ctx.fill();ctx.fillStyle='#fafafa';ctx.beginPath();ctx.arc(0,0,width*.027,0,Math.PI*2);ctx.fill();ctx.fillStyle='#f4f4f4';ctx.beginPath();ctx.roundRect(needleX-pivotX-width*.028,needleY-pivotY-width*.02,width*.056,width*.07,width*.015);ctx.fill();ctx.restore();}
+ const title=trackName||'Titre de la chanson',artist=artistName||'Nom de l’artiste',detailsY=isCard?height*.735:height*.725,titleFont=`700 ${Math.round(width*(isCard ? .05 : .044))}px system-ui,sans-serif`,titleMaxWidth=width*.84;ctx.font=titleFont;ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillStyle='#fff';
+ const titleWidth=ctx.measureText(title).width;
+ if(titleWidth>titleMaxWidth){
+  const travelDistance=titleWidth-titleMaxWidth,scrollDuration=travelDistance/Math.max(28,width*.045),pauseDuration=1.5,cycleDuration=pauseDuration+scrollDuration+pauseDuration,cycleTime=((elapsed%cycleDuration)+cycleDuration)%cycleDuration;
+  const offset=cycleTime<=pauseDuration?0:cycleTime<=pauseDuration+scrollDuration?travelDistance*(cycleTime-pauseDuration)/scrollDuration:travelDistance;
+  ctx.save();ctx.beginPath();ctx.rect(width/2-titleMaxWidth/2,detailsY-titleMaxWidth*.08,titleMaxWidth,titleMaxWidth*.16);ctx.clip();ctx.fillText(title,width/2-titleMaxWidth/2-offset,detailsY);ctx.restore();
+ }else{ctx.textAlign='center';ctx.fillText(title,width/2,detailsY);}
+ ctx.font=`500 ${Math.round(width*.034)}px system-ui,sans-serif`;ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.78)';const shortArtist=artist.length>38?`${artist.slice(0,35)}…`:artist;ctx.fillText(shortArtist,width/2,detailsY+height*.048,width*.82);
+ const socialY=isCard?height*.79:height*.795,iconSize=width*.07;ctx.save();ctx.strokeStyle=musicLiked?'#ff4b72':'#fff';ctx.fillStyle=musicLiked?'#ff4b72':'transparent';ctx.lineWidth=Math.max(2,width*.009);ctx.lineCap='round';ctx.lineJoin='round';ctx.beginPath();ctx.moveTo(width*.11,socialY);ctx.bezierCurveTo(width*.11,socialY-iconSize*.42,width*.11+iconSize*.55,socialY-iconSize*.45,width*.11+iconSize*.55,socialY-iconSize*.12);ctx.bezierCurveTo(width*.11+iconSize*.55,socialY-iconSize*.45,width*.11+iconSize*1.1,socialY-iconSize*.42,width*.11+iconSize*1.1,socialY);ctx.bezierCurveTo(width*.11+iconSize*1.1,socialY+iconSize*.18,width*.11+iconSize*.55,socialY+iconSize*.52,width*.11+iconSize*.55,socialY+iconSize*.62);ctx.bezierCurveTo(width*.11+iconSize*.55,socialY+iconSize*.52,width*.11,socialY+iconSize*.18,width*.11,socialY);if(musicLiked)ctx.fill();ctx.stroke();ctx.beginPath();for(let index=-1;index<=1;index++){ctx.moveTo(width*.89,socialY+index*iconSize*.38);ctx.arc(width*.89,socialY+index*iconSize*.38,Math.max(1,width*.007),0,Math.PI*2);}ctx.fillStyle='#fff';ctx.fill();ctx.restore();
+ const barX=width*.09,barY=isCard?height*.835:height*.835,barWidth=width*.82,barHeight=Math.max(2,height*.006),trackProgress=Math.max(0,Math.min(1,progress));ctx.fillStyle='rgba(255,255,255,.35)';ctx.fillRect(barX,barY,barWidth,barHeight);ctx.fillStyle=palette.primary;ctx.fillRect(barX,barY,barWidth*trackProgress,barHeight);ctx.save();ctx.shadowColor=palette.primary;ctx.shadowBlur=height*.012;ctx.beginPath();ctx.arc(barX+barWidth*trackProgress,barY+barHeight/2,height*.009,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();ctx.restore();ctx.font=`500 ${Math.round(width*.032)}px system-ui,sans-serif`;ctx.textAlign='left';ctx.fillStyle='#ffffffc9';ctx.fillText(formatMusicTime(displayElapsed),barX,barY+height*.035);ctx.textAlign='right';ctx.fillText(formatMusicTime(duration),barX+barWidth,barY+height*.035);
+ const controlY=isCard?height*.925:height*.925,controlXs=[width*.2,width*.4,width*.6,width*.8],controlSize=width*.065;ctx.save();ctx.strokeStyle='#fff';ctx.fillStyle='#fff';ctx.lineWidth=Math.max(2,width*.009);ctx.lineCap='round';ctx.lineJoin='round';
+ const triangle=(x,y,direction)=>{ctx.beginPath();ctx.moveTo(x-direction*controlSize*.32,y-controlSize*.42);ctx.lineTo(x+direction*controlSize*.3,y);ctx.lineTo(x-direction*controlSize*.32,y+controlSize*.42);ctx.closePath();ctx.fill();};
+ triangle(controlXs[0],controlY,-1);triangle(controlXs[0]+controlSize*.36,controlY,-1);
+ const pauseWidth=controlSize*.2;ctx.fillRect(controlXs[1]-pauseWidth*1.6,controlY-controlSize*.44,pauseWidth,controlSize*.88);ctx.fillRect(controlXs[1]+pauseWidth*.6,controlY-controlSize*.44,pauseWidth,controlSize*.88);
+ triangle(controlXs[2],controlY,1);triangle(controlXs[2]-controlSize*.36,controlY,1);
+ ctx.beginPath();ctx.moveTo(controlXs[3]-controlSize*.42,controlY-controlSize*.3);ctx.lineTo(controlXs[3]+controlSize*.28,controlY-controlSize*.3);ctx.moveTo(controlXs[3]-controlSize*.42,controlY);ctx.lineTo(controlXs[3]+controlSize*.28,controlY);ctx.moveTo(controlXs[3]-controlSize*.42,controlY+controlSize*.3);ctx.lineTo(controlXs[3]+controlSize*.1,controlY+controlSize*.3);ctx.stroke();ctx.beginPath();ctx.arc(controlXs[3]+controlSize*.34,controlY+controlSize*.31,controlSize*.12,0,Math.PI*2);ctx.fill();ctx.restore();
+}
+async function prepareMusicPreview(){
+ const button=$('prepareMusicPreview');button.disabled=true;$('musicExportStatus').textContent='Préparation de l’aperçu vertical…';
+ try{invalidateMusicVideo(null);renderMusicPreview();musicPosterCanvas=$('musicPreviewCanvas');$('createMusicVideo').disabled=!$('musicFile').files.length;$('musicExportStatus').textContent='Aperçu prêt. Tu peux écouter la musique ou créer la vidéo.';}
+ catch(error){console.error(error);musicPosterCanvas=null;$('createMusicVideo').disabled=true;$('musicExportStatus').textContent='Impossible de préparer l’aperçu du disque.';}
+ finally{button.disabled=false;}
+}
+function musicClipStart(){return musicClipStartTime;}
+function musicClipDuration(){return Number($('musicClipDuration').value)||30;}
+function updateMusicClipControls(){
+ const audio=$('musicAudio'),trackDuration=Number.isFinite(audio.duration)?audio.duration:0,limit=Number($('musicDuration').value),duration=$('musicClipDuration');
+ if(!trackDuration){$('musicSeek').disabled=true;$('musicSeek').max='0';$('musicPlayToggle').disabled=true;$('musicSkipBack').disabled=true;$('musicSkipForward').disabled=true;$('setMusicClipStart').disabled=true;duration.min='1';duration.max=String(limit);duration.value='30';duration.disabled=true;$('musicCurrentTime').textContent='0:00';$('musicTrackEnd').textContent='0:00';$('musicClipStartLabel').textContent='0:00';$('musicClipDurationLabel').textContent='0:30';$('musicClipEnd').textContent='0:30';return;}
+ musicClipStartTime=Math.max(0,Math.min(musicClipStartTime,Math.max(0,trackDuration-1)));
+ $('musicSeek').disabled=false;$('musicSeek').max=String(Math.ceil(trackDuration));$('musicSeek').value=String(Math.round(audio.currentTime||0));$('musicPlayToggle').disabled=false;$('musicSkipBack').disabled=false;$('musicSkipForward').disabled=false;$('setMusicClipStart').disabled=false;
+ const available=Math.max(1,Math.floor(Math.min(limit,trackDuration-musicClipStartTime)));
+ duration.min='1';duration.max=String(available);duration.disabled=false;
+ if(Number(duration.value)>available)duration.value=String(available);
+ if(Number(duration.value)<1||!Number.isFinite(Number(duration.value)))duration.value=String(Math.min(30,available));
+ $('musicCurrentTime').textContent=formatMusicTime(audio.currentTime||0);$('musicTrackEnd').textContent=formatMusicTime(trackDuration);$('musicClipStartLabel').textContent=formatMusicTime(musicClipStartTime);$('musicClipDurationLabel').textContent=formatMusicTime(Number(duration.value));$('musicClipEnd').textContent=formatMusicTime(Math.min(trackDuration,musicClipStartTime+Number(duration.value)));
+}
+function renderMusicPreview(){
+ const audio=$('musicAudio'),start=musicClipStart(),duration=musicClipDuration(),elapsed=Math.max(0,Math.min(duration,(audio.currentTime||start)-start));
+ const palette=musicPalette($('musicTitle').value,$('musicArtist').value);if(!musicPlatterColorManuallySet)$('musicPlatterColor').value=palette.primary;
+ drawMusicFrame($('musicPreviewCanvas'),null,duration?elapsed/duration:0,duration,$('musicTitle').value,$('musicArtist').value,audio.currentTime||0,elapsed,performance.now()/1000);
+ musicPosterCanvas=$('musicPreviewCanvas');
+ $('createMusicVideo').disabled=!$('musicFile').files.length||audio.readyState<1||musicRecording;
+}
+function animateMusicPreview(){
+ if(musicPreviewAnimation||!document.body.classList.contains('music-mode')||musicRecording)return;
+ const animate=()=>{if(!document.body.classList.contains('music-mode')||musicRecording){musicPreviewAnimation=0;return;}renderMusicPreview();musicPreviewAnimation=requestAnimationFrame(animate);};
+ musicPreviewAnimation=requestAnimationFrame(animate);
+}
+function invalidateMusicVideo(message='Réglages modifiés. Crée une nouvelle vidéo pour appliquer les changements.'){
+ if(musicRecording)return;
+ if(musicVideoUrl){URL.revokeObjectURL(musicVideoUrl);musicVideoUrl=null;}
+ $('musicVideoResult').pause();$('musicVideoResult').removeAttribute('src');$('musicVideoResult').load();$('musicVideoResult').hidden=true;$('musicPreviewCanvas').hidden=false;$('musicTimeline').hidden=false;$('musicPlayerControls').hidden=false;$('downloadMusicVideo').removeAttribute('href');$('downloadMusicVideo').classList.add('hidden');
+ musicPosterCanvas=null;$('createMusicVideo').disabled=true;if(message)$('musicExportStatus').textContent=message;
+}
+function updateMusicPlayButton(){
+ const playing=!$('musicAudio').paused;$('musicPlayToggle').textContent=playing?'❚❚':'▶';$('musicPlayToggle').setAttribute('aria-label',playing?'Mettre en pause':'Lire la musique');$('musicPlayToggle').title=playing?'Pause':'Lire';
+}
+function ensureMusicAudioGraph(){
+ if(!musicAudioContext&&typeof AudioContext!=='undefined'){
+  musicAudioContext=new AudioContext();musicAudioSource=musicAudioContext.createMediaElementSource($('musicAudio'));musicAnalyser=musicAudioContext.createAnalyser();musicAnalyser.fftSize=256;musicAudioDestination=musicAudioContext.createMediaStreamDestination();musicAudioSource.connect(musicAnalyser);musicAnalyser.connect(musicAudioContext.destination);musicAnalyser.connect(musicAudioDestination);
+ }
+ return musicAudioContext?.resume();
+}
+async function playMusicClip(){
+ const audio=$('musicAudio');
+ if(!audio.src){$('musicExportStatus').textContent='Choisis d’abord un fichier audio.';return;}
+ try{await ensureMusicAudioGraph();if(audio.currentTime>=audio.duration)audio.currentTime=musicClipStart();await audio.play();}catch(error){console.error(error);$('musicExportStatus').textContent='Impossible de lire cette musique. Vérifie son format et le volume de l’appareil.';}
+}
+$('prepareMusicPreview').onclick=prepareMusicPreview;
+$('musicFile').addEventListener('change',()=>{
+ const file=$('musicFile').files[0];if(!file)return;
+ $('musicAudio').pause();if(musicFileUrl)URL.revokeObjectURL(musicFileUrl);musicFileUrl=URL.createObjectURL(file);$('musicAudio').src=musicFileUrl;$('musicAudio').hidden=false;$('musicAudio').load();musicClipStartTime=0;updateMusicClipControls();const defaultTitle=file.name.replace(/\.[^.]+$/,'');if(!$('musicTitle').value||$('musicTitle').dataset.autoTitle==='true')$('musicTitle').value=defaultTitle;$('musicTitle').dataset.autoTitle='true';$('musicTrackInfo').textContent=`Musique choisie : ${file.name} · ${(file.size/1048576).toFixed(1)} Mo. La lecture reste locale.`;invalidateMusicVideo('Musique changée. Navigue dans la piste et définis le début de l’extrait.');updateMusicPlayButton();
+});
+$('musicAudio').addEventListener('loadedmetadata',()=>{const audio=$('musicAudio'),file=$('musicFile').files[0];if(!file)return;musicClipStartTime=0;updateMusicClipControls();$('musicTrackInfo').textContent=`${file.name} · durée ${formatMusicTime(audio.duration)}. Fais glisser l’unique curseur ou écoute la piste, puis définis le début de l’extrait.`;renderMusicPreview();});
+$('musicAudio').addEventListener('play',()=>{updateMusicPlayButton();animateMusicPreview();});
+$('musicAudio').addEventListener('pause',()=>{updateMusicPlayButton();renderMusicPreview();});
+$('musicAudio').addEventListener('timeupdate',()=>{const audio=$('musicAudio'),trackDuration=Number.isFinite(audio.duration)?audio.duration:0;$('musicCurrentTime').textContent=formatMusicTime(audio.currentTime);$('musicTrackEnd').textContent=formatMusicTime(trackDuration);$('musicSeek').value=String(Math.round(audio.currentTime));if(!musicRecording)renderMusicPreview();});
+$('musicPlayToggle').onclick=()=>{$('musicAudio').paused?playMusicClip():$('musicAudio').pause();};
+$('musicLikeToggle').onclick=()=>{musicLiked=!musicLiked;$('musicLikeToggle').setAttribute('aria-pressed',String(musicLiked));$('musicLikeToggle').textContent=musicLiked?'♥ Aimé':'♡ J’aime';invalidateMusicVideo('Option J’aime modifiée. Prépare à nouveau l’aperçu avant l’export.');renderMusicPreview();};
+$('musicSkipBack').onclick=()=>{$('musicAudio').currentTime=Math.max(0,$('musicAudio').currentTime-10);};
+$('musicSkipForward').onclick=()=>{$('musicAudio').currentTime=Math.min($('musicAudio').duration,$('musicAudio').currentTime+10);};
+$('musicSeek').addEventListener('input',()=>{const audio=$('musicAudio');audio.currentTime=Math.min(Number($('musicSeek').value),audio.duration);$('musicCurrentTime').textContent=formatMusicTime(audio.currentTime);if(audio.paused)renderMusicPreview();});
+$('setMusicClipStart').onclick=()=>{const audio=$('musicAudio'),duration=Number.isFinite(audio.duration)?audio.duration:0;if(!duration)return;musicClipStartTime=Math.min(audio.currentTime,Math.max(0,duration-1));updateMusicClipControls();invalidateMusicVideo('Début d’extrait modifié. Prépare à nouveau l’aperçu avant l’export.');renderMusicPreview();};
+$('musicClipDuration').addEventListener('input',()=>{updateMusicClipControls();invalidateMusicVideo();renderMusicPreview();});
+$('musicDuration').addEventListener('change',()=>{updateMusicClipControls();invalidateMusicVideo();renderMusicPreview();});
+for(const id of ['musicTitle','musicArtist','musicModel'])$(id).addEventListener(id==='musicModel'?'change':'input',()=>{if(id==='musicTitle')$(id).dataset.autoTitle='false';invalidateMusicVideo();renderMusicPreview();});
+$('musicModel').addEventListener('change',()=>{$('musicSceneField').hidden=$('musicModel').value!=='card';renderMusicPreview();});
+function loadMusicImage(inputId,kind){$(inputId).addEventListener('change',async()=>{const file=$(inputId).files[0];if(!file)return;if(!file.type.startsWith('image/')){$('musicExportStatus').textContent='Choisis un fichier image valide.';return;}const url=URL.createObjectURL(file);try{const image=await loadImg(url);if(kind==='cover'){if(musicArtworkUrl)URL.revokeObjectURL(musicArtworkUrl);musicArtworkUrl=url;musicArtworkImage=image;musicArtworkColor=dominantMusicColor(image);musicPlatterColorManuallySet=false;$('musicPlatterColor').value=musicArtworkColor;$('musicCoverPreview').src=url;$('musicCoverPreview').hidden=false;$('removeMusicCover').hidden=false;}else if(kind==='platter'){if(musicPlatterUrl)URL.revokeObjectURL(musicPlatterUrl);musicPlatterUrl=url;musicPlatterImage=image;$('musicPlatterPreview').src=url;$('musicPlatterPreview').hidden=false;$('removeMusicPlatter').hidden=false;}else{if(musicSceneUrl)URL.revokeObjectURL(musicSceneUrl);musicSceneUrl=url;musicSceneImage=image;$('removeMusicScene').hidden=false;}invalidateMusicVideo();renderMusicPreview();}catch(error){URL.revokeObjectURL(url);console.error(error);$('musicExportStatus').textContent='Impossible de charger cette image.';}});}
+loadMusicImage('musicCoverFile','cover');loadMusicImage('musicSceneFile','scene');
+loadMusicImage('musicPlatterFile','platter');
+$('musicPlatterColor').addEventListener('input',()=>{musicPlatterColorManuallySet=true;invalidateMusicVideo();renderMusicPreview();});
+$('removeMusicCover').onclick=()=>{if(musicArtworkUrl)URL.revokeObjectURL(musicArtworkUrl);musicArtworkUrl=null;musicArtworkImage=null;musicArtworkColor=null;musicPlatterColorManuallySet=false;$('musicCoverFile').value='';$('musicCoverPreview').removeAttribute('src');$('musicCoverPreview').hidden=true;$('removeMusicCover').hidden=true;invalidateMusicVideo();renderMusicPreview();};
+$('removeMusicPlatter').onclick=()=>{if(musicPlatterUrl)URL.revokeObjectURL(musicPlatterUrl);musicPlatterUrl=null;musicPlatterImage=null;$('musicPlatterFile').value='';$('musicPlatterPreview').removeAttribute('src');$('musicPlatterPreview').hidden=true;$('removeMusicPlatter').hidden=true;invalidateMusicVideo();renderMusicPreview();};
+$('removeMusicScene').onclick=()=>{if(musicSceneUrl)URL.revokeObjectURL(musicSceneUrl);musicSceneUrl=null;musicSceneImage=null;$('musicSceneFile').value='';$('removeMusicScene').hidden=true;invalidateMusicVideo();renderMusicPreview();};
+$('musicSeek').max='0';updateMusicClipControls();renderMusicPreview();updateMusicPlayButton();
+$('createMusicVideo').onclick=async()=>{
+ const audio=$('musicAudio'),preview=$('musicPreviewCanvas'),file=$('musicFile').files[0];
+ if(!file||!musicPosterCanvas){$('musicExportStatus').textContent='Choisis une musique et prépare l’aperçu vertical avant de créer la vidéo.';return;}
+ if(typeof MediaRecorder==='undefined'||typeof preview.captureStream!=='function'){$('musicExportStatus').textContent='La création vidéo n’est pas prise en charge par ce navigateur. Essaie avec la dernière version de Chrome.';return;}
+ const start=musicClipStart(),requestedDuration=musicClipDuration(),duration=Math.min(requestedDuration,Number($('musicDuration').value),Number.isFinite(audio.duration)?audio.duration-start:requestedDuration);
+ if(duration<=0){$('musicExportStatus').textContent='La durée de cette musique est invalide.';return;}
+ const mimeTypes=['video/mp4;codecs=avc1.42E01E,mp4a.40.2','video/mp4','video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm'],mimeType=mimeTypes.find(type=>MediaRecorder.isTypeSupported(type));
+ if(!mimeType){$('musicExportStatus').textContent='Aucun format vidéo compatible n’est disponible dans ce navigateur.';return;}
+ try{
+   audio.pause();audio.currentTime=start;await ensureMusicAudioGraph();await audio.play();const playbackStart=audio.currentTime,outputCanvas=document.createElement('canvas');outputCanvas.width=1080;outputCanvas.height=1920;const videoStream=outputCanvas.captureStream(30);for(const track of musicAudioDestination.stream.getAudioTracks())videoStream.addTrack(track);
+  const recorder=new MediaRecorder(videoStream,{mimeType,videoBitsPerSecond:4000000,audioBitsPerSecond:192000}),chunks=[],frequencies=new Uint8Array(musicAnalyser.frequencyBinCount);let animation=0,progressTimer=0,stopTimer=0,recordingFailure='';
+   $('musicExportStatus').textContent=`Création en cours : 0:00 / ${formatMusicTime(duration)}. Garde l’application ouverte.`;$('musicExportProgress').hidden=false;$('musicExportProgress').value=0;$('createMusicVideo').disabled=true;$('prepareMusicPreview').disabled=true;['musicFile','musicDuration','musicClipDuration','musicTitle','musicArtist','musicModel','musicCoverFile','musicPlatterColor','musicPlatterFile','musicSceneFile','musicSeek','musicPlayToggle','musicLikeToggle','musicSkipBack','musicSkipForward','setMusicClipStart','removeMusicCover','removeMusicPlatter','removeMusicScene'].forEach(id=>$(id).disabled=true);audio.controls=false;musicRecording=true;recorder.ondataavailable=event=>{if(event.data.size)chunks.push(event.data);};
+   const draw=()=>{musicAnalyser.getByteFrequencyData(frequencies);const elapsed=Math.max(0,Math.min(duration,audio.currentTime-playbackStart)),progress=elapsed/duration;drawMusicFrame(outputCanvas,frequencies,progress,duration,$('musicTitle').value,$('musicArtist').value,audio.currentTime,elapsed,performance.now()/1000);$('musicExportProgress').value=progress;$('musicExportStatus').textContent=`Création en cours : ${formatMusicTime(elapsed)} / ${formatMusicTime(duration)}. Garde l’application ouverte.`;if(recorder.state==='recording')animation=requestAnimationFrame(draw);};
+  recorder.onerror=event=>{recordingFailure=`Erreur pendant l’enregistrement vidéo : ${event.error?.message||'erreur du navigateur'}.`;$('musicExportStatus').textContent=recordingFailure;if(recorder.state==='recording')recorder.stop();};
+  recorder.onstop=()=>{
+   cancelAnimationFrame(animation);clearInterval(progressTimer);clearTimeout(stopTimer);for(const track of videoStream.getTracks())track.stop();audio.pause();audio.controls=false;musicAudioContext.suspend();musicRecording=false;['musicFile','musicDuration','musicClipDuration','musicTitle','musicArtist','musicModel','musicCoverFile','musicPlatterColor','musicPlatterFile','musicSceneFile','musicSeek','musicPlayToggle','musicLikeToggle','musicSkipBack','musicSkipForward','setMusicClipStart','removeMusicCover','removeMusicPlatter','removeMusicScene'].forEach(id=>$(id).disabled=false);$('prepareMusicPreview').disabled=false;$('createMusicVideo').disabled=false;$('musicExportProgress').hidden=true;updateMusicClipControls();if(recordingFailure){$('musicExportStatus').textContent=recordingFailure;return;}
+   const blob=new Blob(chunks,{type:recorder.mimeType||mimeType});if(!blob.size){$('musicExportStatus').textContent='La vidéo n’a pas pu être créée. Essaie avec un fichier audio différent.';return;}
+   if(musicVideoUrl)URL.revokeObjectURL(musicVideoUrl);musicVideoUrl=URL.createObjectURL(blob);const extension=blob.type.includes('mp4')?'mp4':'webm',name=`statut-musique-${new Date().toISOString().replace(/[:.]/g,'-')}.${extension}`;$('musicVideoResult').src=musicVideoUrl;$('musicVideoResult').hidden=false;$('musicPreviewCanvas').hidden=true;$('musicTimeline').hidden=true;$('musicPlayerControls').hidden=true;$('downloadMusicVideo').href=musicVideoUrl;$('downloadMusicVideo').download=name;$('downloadMusicVideo').textContent=`Télécharger la vidéo ${extension.toUpperCase()} (${(blob.size/1048576).toFixed(1)} Mo)`;$('downloadMusicVideo').classList.remove('hidden');$('musicExportStatus').textContent=`Vidéo prête (${extension.toUpperCase()}, 1080 × 1920, 9:16, ${formatMusicTime(duration)}). Lis l’aperçu au-dessus pour vérifier aussi le son, puis télécharge-la pour TikTok ou WhatsApp > Statut.`;$('editor').scrollTop=0;
+  };
+  draw();recorder.start(250);animation=requestAnimationFrame(draw);progressTimer=setInterval(()=>{$('musicExportProgress').value=Math.min(1,Math.max(0,audio.currentTime-playbackStart)/duration);},250);stopTimer=setTimeout(()=>{if(recorder.state==='recording'){audio.pause();recorder.stop();}},duration*1000);
+  audio.onended=()=>{if(recorder.state==='recording')recorder.stop();};
+ }catch(error){console.error(error);musicRecording=false;audio.pause();audio.controls=false;['musicFile','musicDuration','musicClipDuration','musicTitle','musicArtist','musicModel','musicCoverFile','musicPlatterColor','musicPlatterFile','musicSceneFile','musicSeek','musicPlayToggle','musicLikeToggle','musicSkipBack','musicSkipForward','setMusicClipStart','removeMusicCover','removeMusicPlatter','removeMusicScene'].forEach(id=>$(id).disabled=false);$('prepareMusicPreview').disabled=false;$('createMusicVideo').disabled=false;$('musicExportProgress').hidden=true;$('musicExportStatus').textContent=`Impossible de créer la vidéo : ${error.message}`;}
 };
 $('resetAll').onclick=async()=>{if(!confirm('Créer une nouvelle affiche ? Le brouillon actuel sera effacé.'))return;clearTimeout(saveTimer);if(db)try{await store('readwrite',projects=>projects.delete('__draft__'));}catch(error){}location.reload();};
 updateText();
@@ -808,9 +1435,11 @@ setBgBlur();
 updateStyleOverlay();
 loadVerses();
 window.addEventListener('resize',()=>{fitStage();fitTextLayer();});
+if('ResizeObserver'in window){const stageResizeObserver=new ResizeObserver(fitStage);stageResizeObserver.observe(document.querySelector('.preview-wrap'));}
 fitStage();
-(async()=>{try{await openDatabase();const draft=await store('readonly',projects=>projects.get('__draft__'));if(draft?.state){restore(draft.state);setStatus('Ton dernier brouillon a été retrouvé automatiquement.');}await renderHistory();}catch(error){console.warn('Stockage local indisponible.',error);$('historyList').textContent='Stockage local indisponible dans ce navigateur.';}})();
-if('serviceWorker' in navigator && location.protocol.startsWith('http')){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js?v=9',{updateViaCache:'none'}).catch(()=>{}));}
+resetHistory();
+(async()=>{try{await openDatabase();const draft=await store('readonly',projects=>projects.get('__draft__'));if(draft?.state){restore(draft.state);resetHistory();setStatus('Ton dernier brouillon a été retrouvé automatiquement.');}await renderHistory();}catch(error){console.warn('Stockage local indisponible.',error);$('historyList').textContent='Stockage local indisponible dans ce navigateur.';}})();
+if('serviceWorker' in navigator && location.protocol.startsWith('http')){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js?v=15',{updateViaCache:'none'}).catch(()=>{}));}
 const launchSplash=$('launchSplash');
 if(launchSplash&&(window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true)&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
  launchSplash.classList.remove('hidden');setTimeout(()=>{launchSplash.classList.add('leaving');setTimeout(()=>{launchSplash.classList.add('hidden');launchSplash.classList.remove('leaving');},380);},900);
