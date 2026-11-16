@@ -5,6 +5,7 @@ CONTENU
 - manifest.webmanifest : informations d'installation
 - bible-verses.json et versets_b.txt : bibliothèque de versets
 - sw.js : cache pour fonctionnement hors ligne après première visite
+- modele-bible.jpg : photo intégrée d'une Bible ouverte, sans texte préimprimé
 - icon.svg : icône vectorielle source
 - icon-192.png, icon-512.png et icon-maskable-512.png : icônes PWA
 
@@ -18,9 +19,21 @@ VERSETS ET MARQUEUR
 - L'onglet Versets peut rechercher une référence biblique en ligne (chapitre, verset ou plage) dans les traductions françaises Louis Segond 1910, J.N. Darby et Ostervald. Clique sur « Utiliser dans l'affiche » sur un résultat pour l'appliquer immédiatement, ou ajoute une sélection à ta bibliothèque locale après vérification des doublons. Les livres deutérocanoniques ne sont pas inclus dans ces éditions en ligne.
 - La recherche en ligne utilise la Free Use Bible API (https://bible.helloao.org/). Seules la référence recherchée et la traduction choisie sont transmises au service ; les créations et images restent sur l'appareil.
 - Pour un effet page biblique, importe ta propre photo comme arrière-plan. L'application n'invente pas de page.
-- Dans Texte > Édition avancée, sélectionne un passage, choisis la couleur et l'effet du surlignage, puis applique-le.
+- Dans Fond > « Utiliser le modèle “Bible ouverte” », applique la photo intégrée au format Story ; ajoute ensuite jusqu'à quatre blocs de texte indépendants depuis les boutons + de l'onglet Texte.
+- Dans Texte, ajoute un titre ou un paragraphe avec les boutons +. Sélectionne un bloc sur l'aperçu pour le déplacer, le modifier ou le supprimer ; chaque bloc garde ses propres styles.
+- Dans Texte, le bouton rouge « ✝ Activer le mode Croix » permet d’activer ou quitter rapidement cette disposition. Le curseur « Taille de toute la croix » agrandit ou réduit ensemble tous les mots ; touche ensuite un mot dans l’aperçu ou utilise le pavé ↑ et ↓ pour le choisir, puis règle son pourcentage individuel. Fais glisser un mot sur l’aperçu pour déplacer toute la croix. Chaque mot garde sa taille propre ; le PNG reprend les tailles choisies. Si les mots sont devenus trop petits, le bouton « Rétablir les tailles des mots à 100 % » remet tout le passage à une taille lisible.
+- Pour supprimer une partie d’un texte, ouvre « Modifier le texte », sélectionne le passage dans la zone de saisie, appuie sur « Supprimer le passage sélectionné », puis enregistre. Les réglages de taille des mots conservés sont préservés après cette modification.
+- Dans Texte, choisis librement la couleur du surlignage et applique-la à une sélection ou à tout le bloc. Les anciennes couleurs prédéfinies restent prises en charge dans les créations déjà enregistrées.
 - Le surlignage est reproduit dans le PNG ; aucun dessin de stylo n'est affiché.
 - Le curseur Courbure légère du texte est facultatif et commence désactivé.
+- Dans l’onglet Musique, l’aperçu de l’affiche principale est masqué. Sur téléphone, le lecteur garde sa taille pendant le défilement et ne recouvre pas les réglages. Tu peux écouter et parcourir toute la chanson avec l’unique curseur, puis avancer/reculer de 10 secondes. Place la lecture au début voulu puis appuie sur « Définir le début de l’extrait ici » ; saisis ensuite sa durée. La durée maximale du statut peut aller jusqu’à 7 minutes, sans dépasser la durée restante de la piste. Modifie le titre et l’artiste. L’aperçu « Studio vinyle » affiche un disque tournant avec le bras posé sur les sillons ; « Carte de statut (photo) » propose un autre habillage et une photo de fond facultative. Choisis une couleur ou importe une image pour le cadre rectangulaire derrière le disque, et importe éventuellement une pochette au centre du disque. La vidéo est générée en format vertical 9:16 (1080 × 1920), adapté à TikTok et WhatsApp Statut. Une fois créée, la vidéo avec son remplace l’aperçu dans le lecteur, sans afficher un deuxième visuel sous celui-ci. Le format MP4 est utilisé si le navigateur le prend en charge, sinon l’application indique et télécharge un fichier WebM. L’audio et les images sont traités localement ; garde l’application ouverte pendant l’enregistrement.
+- Les couleurs du lecteur musical s’harmonisent automatiquement avec la couleur dominante de la pochette centrale ; sans pochette, une palette colorée varie selon le titre et l’artiste. La couleur du cadre reste modifiable.
+- Les titres de chanson trop longs défilent dans le lecteur et la vidéo, marquent une pause à chaque extrémité, puis recommencent ; le défilement s’interrompt avec la lecture et reprend ensuite.
+- Le vinyle conserve ses sillons et un éclairage doux, sans reflet artificiel en secteurs ; le bras de lecture pivote visiblement autour de son axe. La vidéo ajoute le cœur, le menu et les commandes graphiques (retour, pause, avance), tandis que son indicateur de lecture suit la progression réelle de la piste audio.
+- Dans l’aperçu musical, touche « ♡ J’aime » pour activer ou désactiver le cœur. Le choix est repris dans la vidéo exportée ; il s’agit d’un élément visuel, pas d’un bouton cliquable dans la vidéo.
+- Sur téléphone, l’aperçu vertical du lecteur musical occupe maintenant davantage de hauteur d’écran pour rester bien visible au-dessus des commandes.
+- Si l’aperçu de l’affiche se réduit après un changement de fenêtre ou d’onglet, son ajustement se recalcule automatiquement. Dans le modèle Studio vinyle, le disque tourne lentement et le bras métallique oscille légèrement dans l’aperçu et la vidéo.
+- Sur téléphone, le bouton PNG de l’en-tête télécharge directement l’affiche, même si le panneau de téléchargement inférieur est masqué.
 
 SAUVEGARDE
 - Le brouillon est sauvegardé automatiquement dans le stockage local du navigateur.
@@ -33,8 +46,10 @@ UTILISATION
 1. Décompresse le ZIP.
 2. Héberge le contenu du dossier sur un hébergement HTTPS (par exemple GitHub Pages ou Netlify).
 3. Ouvre l'adresse HTTPS dans Chrome sur Android.
-4. Menu ⋮ de Chrome > Ajouter à l'écran d'accueil / Installer l'application.
-5. Ouvre Studio WhatsApp depuis l'icône créée. La première visite nécessite une connexion pour charger les polices et mettre l'application en cache.
+4. Les onglets de navigation restent accessibles dans la barre flottante en bas de l’écran.
+5. Menu ⋮ de Chrome > Ajouter à l'écran d'accueil / Installer l'application.
+6. Ouvre Studio WhatsApp depuis l'icône créée. La première visite nécessite une connexion pour charger les polices et mettre l'application en cache.
+7. Utilise les boutons ↶ et ↷ dans l'en-tête pour annuler ou rétablir les dernières modifications de l'affiche.
 
 IMPORTANT
 L'installation PWA via Chrome nécessite une adresse HTTPS (ou un serveur local adapté). Ouvrir simplement index.html comme un fichier ne permet généralement pas l'installation PWA.
