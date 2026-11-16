@@ -1,5 +1,5 @@
-const CACHE='studio-whatsapp-v14';
-const FILES=['./','./index.html','./manifest.webmanifest?v=2','./icon.svg','./icon-192.png','./icon-512.png','./icon-maskable-512.png','./bible-verses.json','./versets-b.json'];
+const CACHE='studio-whatsapp-v42';
+const FILES=['./','./index.html','./manifest.webmanifest?v=2','./icon.svg','./icon-192.png','./icon-512.png','./icon-maskable-512.png','./bible-verses.json','./versets-b.json','./modele-bible.jpg'];
 
 self.addEventListener('install',event=>event.waitUntil((async()=>{
 	const cache=await caches.open(CACHE);
